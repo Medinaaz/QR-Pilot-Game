@@ -14,6 +14,7 @@ class CreateGame extends React.Component {
       password: "",
       game_desc: "",
       game_type: "",
+      
       invite_link: "https://lorem.ipsum/invite/duiwbahlsd"
     }
   }
