@@ -3,10 +3,6 @@ import {withRouter} from "react-router";
 
 
 class Navbar extends React.Component {
-    constructor(){
-        super();
-    }
-
     signout = () => {
         this.props.history.push("/");
     }

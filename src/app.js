@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { Route, BrowserRouter as Router} from "react-router-dom";
 import CreateGame from "./components/create_game"
 import Home from "./components/home"
 import Login from "./components/login"

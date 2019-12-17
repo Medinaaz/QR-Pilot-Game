@@ -57,9 +57,6 @@ class CreateGame extends React.Component {
     for(var i = 0; i < this.state.hints.length; i++){
       blobs.push(this.get_qr_blob(i))
     }
-    for(var i = 0; i < this.state.hints.length; i++){
-      blobs.push(this.get_qr_blob(i))
-    }
     this.setState({
       qr_blobs: blobs
     },() => {console.log(this.state)})
