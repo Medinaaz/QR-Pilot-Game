@@ -231,7 +231,7 @@ class CreateGame extends React.Component {
       <div className="container">
             <Navbar />
             <div className={"modal modal-md " + (this.state.show_share_code === true ? "active" : "")}>
-              <a href="/#" className="modal-overlay" aria-label="Close">a</a>
+              <a href="/#" className="modal-overlay" aria-label="Close"> </a>
               <div className="modal-container">
                 <div className="modal-header">
                   <button onClick={this.go("manage-game")} className="btn btn-clear float-right" aria-label="Close"></button>
