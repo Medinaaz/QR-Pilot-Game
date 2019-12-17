@@ -77,7 +77,11 @@ class CreateGame extends React.Component {
       geolocation_err: false,
       game_duration_err: false,
       //is custom location clicked
-      custom_location: false
+      custom_location: false,
+      //pop share link
+      show_share_code: false,
+      //TODO set state accordingly (after create game)
+      share_code: "Ab5CQr"
     }
   }
 
@@ -87,56 +91,64 @@ class CreateGame extends React.Component {
     })
   }
 
-  check_errors = () => {
+  check_errors = (callback) => {
     this.setState({
       hint_err: this.state.hints.length === 0 ? true : false,
       title_err: this.state.game_title === "" ? true : false,
       desc_err: this.state.game_desc === "" ? true : false,
       game_duration_err: this.state.game_duration <= 0 ? true: false,
       geolocation_err: (this.state.radius === 0 || this.state.longitude === "" || this.state.latitude === "") ? true : false,
-    }, () => {return (this.state.hint_err === true || this.state.title_err === true ||
-                      this.state.desc_err  === true || this.state.geolocation_err === true ||this.state.game_duration_err === true)})
-
+    },() => {
+      console.log(this.state)
+      callback(this.state.hint_err === true || this.state.title_err === true || this.state.desc_err  === true || this.state.geolocation_err === true ||this.state.game_duration_err === true)
+    })
   }
 
   submit_data = (e) => {
     e.preventDefault()
+    this.check_errors((err) => {
+      if (!err) {
+        var secrets_arr = []
+        var i
+        for(i = 0; i < this.state.hints.length; i++){
+          secrets_arr.push(uuid.v4())
+        }
 
-    if (this.check_errors()) {
-      console.log(this.state)
-      return;
-    } 
-
-    var secrets_arr = []
-    var i
-    for(i = 0; i < this.state.hints.length; i++){
-      secrets_arr.push(uuid.v4())
-    }
-
-    this.setState({
-      secrets: secrets_arr
-    },() => {
-      var data = {
-        "players": "sadhlskdjgskdsa",
-        "name": this.state.game_title,
-        "adminId": "sadhlskdjgskdsa",
-        "type": this.state.game_type,
-        "location": {
-          "latitude": this.state.latitude,
-          "longitude": this.state.longitude,
-          "radius": this.state.radius
-        },
-        "hints": {
-          "hintSecret": this.state.secrets,
-          "hint": this.state.hints
-        },
-        "description": this.state.description
+        this.setState({
+          secrets: secrets_arr
+        }, () => {
+          var data = {
+            "players": "sadhlskdjgskdsa",
+            "name": this.state.game_title,
+            "adminId": "sadhlskdjgskdsa",
+            "type": this.state.game_type,
+            "location": {
+              "latitude": this.state.latitude,
+              "longitude": this.state.longitude,
+              "radius": this.state.radius
+            },
+            "hints": {
+              "hintSecret": this.state.secrets,
+              "hint": this.state.hints
+            },
+            "description": this.state.description
+          }
+          //TODO sent data to backend instead of printing
+          console.log(data)
+          var game_id = "asdfkjhadlsadl"
+          var game_title = this.state.game_title
+          localStorage.setItem("game_id", game_id)
+          localStorage.setItem("game_title", game_title)
+          this.setState({
+            show_share_code: true
+            })
+          })
+      } else {
+        return ;
       }
-      console.log(data)
-    })
-    
-  }
 
+    }) 
+  }
 
   download_all = (e) => {
     e.preventDefault()
@@ -144,12 +156,15 @@ class CreateGame extends React.Component {
       this.download_QR(i)
   }
 
+  /*
+  May help later
   get_qr_blob = (index) => {
     const canvas = document.getElementById(this.state.hints[index]);
     canvas.toBlob( blob => {
         return blob
      }, 'image/png', 1)
   }
+  */
 
   download_QR = (index) => {
     const canvas = document.getElementById(this.state.hints[index]);
@@ -163,6 +178,13 @@ class CreateGame extends React.Component {
     downloadLink.click();
     document.body.removeChild(downloadLink);
   }
+
+  go = (link) => {
+    const fn = () =>{
+        this.props.history.push(link);
+    }
+    return fn.bind(this);
+}
 
   removeHint = (key) => {
     return  () => {
@@ -208,6 +230,16 @@ class CreateGame extends React.Component {
     return(
       <div className="container">
             <Navbar />
+            <div className={"modal modal-md " + (this.state.show_share_code === true ? "active" : "")}>
+              <a href="/#" className="modal-overlay" aria-label="Close">a</a>
+              <div className="modal-container">
+                <div className="modal-header">
+                  <button onClick={this.go("manage-game")} className="btn btn-clear float-right" aria-label="Close"></button>
+                  <div className=" p-centered  modal-title h5">The more the merrier, Share this code with friends :)</div>
+                </div>
+                  <h2 className = " p-centered text-primary">{this.state.share_code}</h2>
+              </div>
+            </div>
             <div className="columns">
             <div className="col-2 hide-lg"></div>
 
