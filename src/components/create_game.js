@@ -1,19 +1,29 @@
 import React from 'react';
 import QRCode from "qrcode.react";
 import uuid from "uuid"
+import Navbar from "./navbar"
 
+/*
+  make routing
+  ask cansu for push
+  offer List of locations
+  radius small, medium ... large etc.
+  allow custom geolocation is also avaiable
+  show share 5 letter code as popover after creation
+*/
 
 class CreateGame extends React.Component {
   constructor(){
     super()
     this.state = {
       hints: [],
+      secrets: [],
       qr_blobs: [],
       hint_input: "",
       game_title: "",
       max_player: "",
-      password: "",
       game_desc: "",
+      game_duration: "",
       game_type: "Standard",
       latitude: "",
       longitude: "",
@@ -42,7 +52,11 @@ class CreateGame extends React.Component {
     if (this.check_errors()) {
       return;
     } 
+
     var blobs = []
+    for(var i = 0; i < this.state.hints.length; i++){
+      blobs.push(this.get_qr_blob(i))
+    }
     for(var i = 0; i < this.state.hints.length; i++){
       blobs.push(this.get_qr_blob(i))
     }
@@ -51,6 +65,7 @@ class CreateGame extends React.Component {
     },() => {console.log(this.state)})
     
   }
+
 
   download_all = (e) => {
     e.preventDefault()
@@ -108,6 +123,7 @@ class CreateGame extends React.Component {
   render(){
     return(
       <div className="container">
+            <Navbar />
             <div className="columns">
             <div className="col-2 hide-lg"></div>
 
@@ -191,20 +207,10 @@ class CreateGame extends React.Component {
                 </div>
                 <div style={{paddingTop: "4%"}}>
                   <input className="form-input input-lg"
-                            placeholder="Maximum Player (Optional)"
-                            name="max_player"
-                            type = "text"
-                            pattern="[0-9]+"
-                            onChange={this.handleChange}
-                            value={this.state.max_player}/>
-                </div>
-                <div style={{paddingTop: "4%"}}>
-                  <input className="form-input input-lg"
-                            placeholder="Set Password (Optional)"
-                            name= "password"
-                            type = "text"
-                            onChange={this.handleChange}
-                            value={this.state.password}/>
+                          placeholder="Game Duration"
+                          name="game_duration"
+                          onChange={this.handleChange}
+                          value={this.state.game_duration}/>
                 </div>
                 <form style={{paddingTop: "4%"}} className="form-horizontal">
                 <div className="form-group">

@@ -1,5 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CreateGame from "./create_game";
+import App from "./app.js";
 
-ReactDOM.render(<CreateGame />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
