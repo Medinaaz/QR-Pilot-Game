@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, BrowserRouter as Router} from "react-router-dom";
 import CreateGame from "./components/create_game"
-import Home from "./components/home"
 import Login from "./components/login"
 import ManageGame from "./components/manage_game"
 import PlayGame from "./components/play_game"
@@ -16,7 +15,6 @@ class App extends React.Component {
       return (
         <Router>
             <Route path="/create-game" exact component={CreateGame} />
-            <Route path="/home" exact component={Home} />
             <Route path="/manage-game" exact component={ManageGame} />
             <Route path="/play-game" exact component={PlayGame} />
             <Route path="/sign-up" exact component={SignUp} />

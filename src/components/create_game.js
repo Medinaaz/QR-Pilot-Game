@@ -241,9 +241,9 @@ class CreateGame extends React.Component {
               </div>
             </div>
             <div className="columns">
-            <div className="col-2 hide-lg"></div>
+            <div className="col-3 col-lg-2 col-md-1"></div>
 
-            <div className="column">
+            <div className="column grid-lg">
             <div style={{paddingTop: "10%", display: "flex", justifyContent: "center"}}>
               <h1 className="hide-lg">Manage Hints</h1>
               <h3 className="show-lg">Manage Hints</h3>
@@ -297,7 +297,7 @@ class CreateGame extends React.Component {
             <div className="divider show-lg" data-content=" "></div>
 
 
-            <div className="column">
+            <div className="column grid-lg">
               <div style={{paddingTop: "10%", display: "flex", justifyContent: "center"}}>
                 <h1 className="hide-lg">Game Configuration</h1>
                 <h3 className="show-lg">Game Configuration</h3>
@@ -388,7 +388,7 @@ class CreateGame extends React.Component {
               </div>
             </div>
 
-            <div className="col-2 hide-lg">
+            <div className="col-3 col-lg-2 col-md-1">
             
             </div>
             </div>

@@ -27,7 +27,7 @@ class JoinGame extends React.Component {
     }
 
     close = () => {
-        this.props.history.push("home")
+        this.props.history.push("profile")
     }
 
     render(){
