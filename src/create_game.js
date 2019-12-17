@@ -1,6 +1,6 @@
 import React from 'react';
-import { saveAs } from 'file-saver';
 import QRCode from "qrcode.react";
+import uuid from "uuid"
 
 
 class CreateGame extends React.Component {
@@ -8,27 +8,56 @@ class CreateGame extends React.Component {
     super()
     this.state = {
       hints: [],
+      qr_blobs: [],
       hint_input: "",
       game_title: "",
       max_player: "",
       password: "",
       game_desc: "",
-      game_type: "",
-      
-      invite_link: "https://lorem.ipsum/invite/duiwbahlsd"
+      game_type: "Standard",
+      latitude: "",
+      longitude: "",
+      radius: "",
+      game_id: uuid.v4(),
+      hint_err: false,
+      title_err: false,
+      desc_err: false,
+      geolocation_err: false,
     }
   }
 
-  download_all = () => {
+  check_errors = () => {
+    this.setState({
+      hint_err: this.state.hints.length === 0 ? true : false,
+      title_err: this.state.game_title === "" ? true : false,
+      desc_err: this.state.game_desc === "" ? true : false,
+      geolocation_err: (this.state.radius === "" || this.state.longitude === "" || this.state.latitude === "") ? true : false,
+    }, () => {return (this.state.hint_err || this.state.title_err ||this.state.desc_err || this.state.geolocation_err)})
+
+  }
+
+  submit_data = (e) => {
+    e.preventDefault()
+    if (this.check_errors() !== 0) {
+      return;
+    } 
+    var blobs = []
+    for(var i = 0; i < this.state.hints.length; i++){
+      blobs.push(this.get_qr_blob(i))
+    }
+    console.log(this.state)
+  }
+
+  download_all = (e) => {
+    e.preventDefault()
     for(var i = 0; i < this.state.hints.length; i++)
       this.download_QR(i)
   }
 
-  send_QR_tobackend = (index) => {
+  get_qr_blob = (index) => {
     const canvas = document.getElementById(this.state.hints[index]);
     canvas.toBlob( blob => {
-        /* Send blob to backend */
-        console.log(blob)
+        return blob
      }, 'image/png', 1)
   }
 
@@ -63,6 +92,9 @@ class CreateGame extends React.Component {
   }
 
   add_hint = () => {
+    if (this.state.hint_input === "") {
+      return;
+    } 
     this.setState({
       hints: this.state.hints.concat(this.state.hint_input),
       hint_input: ""
@@ -80,7 +112,7 @@ class CreateGame extends React.Component {
               <h1 className="hide-lg">Manage Hints</h1>
               <h3 className="show-lg">Manage Hints</h3>
             </div>
-                   
+            
             <table style={{paddingTop: "10%" }} className="table table-striped table-hover">
               <thead>
                 <tr>
@@ -119,13 +151,14 @@ class CreateGame extends React.Component {
                       />
               <button className="btn btn-primary btn-lg input-group-btn" onClick={this.add_hint}>Add Hint</button>
             </div >
-            <div style={{paddingTop: "5%" }}>
+            {this.state.hint_err ? <p class="text-error">At least one hint is needed</p>: ""}
+            <div style={{paddingTop: "3%" }}>
               <button onClick={this.download_all} className="btn btn-success">Print QR codes <i className="icon icon-download"></i></button>
             </div>
 
             <div style={{paddingTop: "10%" }}>
               <h5 style = {{color: "blue"}} >The more the merrier! Share this link with friends :)</h5>
-              <u style= {{color: "blue"}}> {this.state.invite_link}</u>
+              <u style= {{color: "blue"}}> {`https://share.qrpilot/invite/${this.state.game_id}`}</u>
             </div>
             </div>
             <div className="divider-vert hide-lg" data-content=" "></div>
@@ -145,13 +178,16 @@ class CreateGame extends React.Component {
                           onChange={this.handleChange}
                           value={this.state.game_title}/>
                 </div>
+                {this.state.title_err ? <p class="text-error">Title cannot be empty</p>: ""}
                 <div style={{paddingTop: "4%"}}>
-                  <select onChange={this.handleChange} name="game_type" value={this.state.game_type} className="form-select select-lg">
-                      <option>Choose an option</option>
-                      <option>Time Rush</option>
+                  <select  required onChange={this.handleChange} name="game_type" value={this.state.game_type} className="form-select select-lg">
                       <option>Standard</option>
-                    </select>
+                      <option>Time Rush</option>
+                  </select>
                 </div>
+                <form>
+
+                
                 <div style={{paddingTop: "4%"}}>
                   <input className="form-input input-lg"
                             placeholder="Maximum Player (Optional)"
@@ -169,6 +205,26 @@ class CreateGame extends React.Component {
                             onChange={this.handleChange}
                             value={this.state.password}/>
                 </div>
+                <form style={{paddingTop: "4%"}} class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-4 col-sm-12">
+                      <input class="form-input" type="text" name="latitude" placeholder="Center Latitude"
+                        onChange={this.handleChange}
+                        value={this.state.latitude}/>
+                    </div>
+                    <div class="col-4 col-sm-12">
+                      <input class="form-input" type="text" name="longitude" placeholder="Center Longitude"
+                        onChange={this.handleChange}
+                        value={this.state.longitude}/>
+                    </div>
+                    <div class="col-4 col-sm-12">
+                      <input class="form-input" type="text" name="radius" placeholder="Radius in meters"
+                        onChange={this.handleChange}
+                        value={this.state.radius}/>
+                    </div>
+                </div>
+                {this.state.geolocation_err ? <p class="text-error">All geolocation information must be given</p>: ""}
+                </form>
                 <div style={{paddingTop: "4%"}}>
                   <textarea className="form-input input-lg"
                             placeholder="Game Description ..."
@@ -178,9 +234,9 @@ class CreateGame extends React.Component {
                             value={this.state.game_desc}/>
                 </div>
                 <div style={{paddingTop: "4%"}}>
-                  <button className="btn btn-success btn-lg">Create Game</button>
+                  <button onClick={this.submit_data} className="btn btn-success btn-lg">Create Game</button>
                 </div>
-                
+                </form>
               </div>
             </div>
 
