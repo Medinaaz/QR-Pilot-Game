@@ -32,20 +32,24 @@ class CreateGame extends React.Component {
       title_err: this.state.game_title === "" ? true : false,
       desc_err: this.state.game_desc === "" ? true : false,
       geolocation_err: (this.state.radius === "" || this.state.longitude === "" || this.state.latitude === "") ? true : false,
-    }, () => {return (this.state.hint_err || this.state.title_err ||this.state.desc_err || this.state.geolocation_err)})
+    }, () => {return (this.state.hint_err === true || this.state.title_err === true ||
+                      this.state.desc_err  === true || this.state.geolocation_err === true)})
 
   }
 
   submit_data = (e) => {
     e.preventDefault()
-    if (this.check_errors() !== 0) {
+    if (this.check_errors()) {
       return;
     } 
     var blobs = []
     for(var i = 0; i < this.state.hints.length; i++){
       blobs.push(this.get_qr_blob(i))
     }
-    console.log(this.state)
+    this.setState({
+      qr_blobs: blobs
+    },() => {console.log(this.state)})
+    
   }
 
   download_all = (e) => {
@@ -151,7 +155,7 @@ class CreateGame extends React.Component {
                       />
               <button className="btn btn-primary btn-lg input-group-btn" onClick={this.add_hint}>Add Hint</button>
             </div >
-            {this.state.hint_err ? <p class="text-error">At least one hint is needed</p>: ""}
+            {this.state.hint_err ? <p className="text-error">At least one hint is needed</p>: ""}
             <div style={{paddingTop: "3%" }}>
               <button onClick={this.download_all} className="btn btn-success">Print QR codes <i className="icon icon-download"></i></button>
             </div>
@@ -178,16 +182,13 @@ class CreateGame extends React.Component {
                           onChange={this.handleChange}
                           value={this.state.game_title}/>
                 </div>
-                {this.state.title_err ? <p class="text-error">Title cannot be empty</p>: ""}
+                {this.state.title_err ? <p className="text-error">Title cannot be empty</p>: ""}
                 <div style={{paddingTop: "4%"}}>
                   <select  required onChange={this.handleChange} name="game_type" value={this.state.game_type} className="form-select select-lg">
                       <option>Standard</option>
                       <option>Time Rush</option>
                   </select>
                 </div>
-                <form>
-
-                
                 <div style={{paddingTop: "4%"}}>
                   <input className="form-input input-lg"
                             placeholder="Maximum Player (Optional)"
@@ -205,25 +206,25 @@ class CreateGame extends React.Component {
                             onChange={this.handleChange}
                             value={this.state.password}/>
                 </div>
-                <form style={{paddingTop: "4%"}} class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-4 col-sm-12">
-                      <input class="form-input" type="text" name="latitude" placeholder="Center Latitude"
+                <form style={{paddingTop: "4%"}} className="form-horizontal">
+                <div className="form-group">
+                    <div className="col-4 col-sm-12">
+                      <input className="form-input" type="number"  name="latitude" placeholder="Center Latitude"
                         onChange={this.handleChange}
                         value={this.state.latitude}/>
                     </div>
-                    <div class="col-4 col-sm-12">
-                      <input class="form-input" type="text" name="longitude" placeholder="Center Longitude"
+                    <div className="col-4 col-sm-12">
+                      <input className="form-input" type="number" name="longitude" placeholder="Center Longitude"
                         onChange={this.handleChange}
                         value={this.state.longitude}/>
                     </div>
-                    <div class="col-4 col-sm-12">
-                      <input class="form-input" type="text" name="radius" placeholder="Radius in meters"
+                    <div className="col-4 col-sm-12">
+                      <input className="form-input" type="number" name="radius" placeholder="Radius in meters"
                         onChange={this.handleChange}
                         value={this.state.radius}/>
                     </div>
                 </div>
-                {this.state.geolocation_err ? <p class="text-error">All geolocation information must be given</p>: ""}
+                {this.state.geolocation_err ? <p className="text-error">All geolocation information must be given</p>: ""}
                 </form>
                 <div style={{paddingTop: "4%"}}>
                   <textarea className="form-input input-lg"
@@ -233,10 +234,10 @@ class CreateGame extends React.Component {
                             onChange={this.handleChange}
                             value={this.state.game_desc}/>
                 </div>
+                {this.state.desc_err ? <p className="text-error">Please enter a description</p>: ""}
                 <div style={{paddingTop: "4%"}}>
                   <button onClick={this.submit_data} className="btn btn-success btn-lg">Create Game</button>
                 </div>
-                </form>
               </div>
             </div>
 
