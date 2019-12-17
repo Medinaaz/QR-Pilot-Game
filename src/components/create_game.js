@@ -3,12 +3,53 @@ import QRCode from "qrcode.react";
 import uuid from "uuid"
 import Navbar from "./navbar"
 
+
+const Word2Radius = {
+    "Pick Size": 0,
+    "Tiny": 40,
+    "Small": 80,
+    "Medium": 200,
+    "Large": 500,
+    "Extreme": 1000,
+}
+
+const Location2Geo = {
+    "Pick Location": {
+      latitude: "",
+      longitude: ""
+    },
+    "MED" : {
+      latitude: "41.105399",
+      longitude: "29.023522"
+    },
+
+    "Kadikoy Bull" : {
+      latitude: "40.990437",
+      longitude: "29.029146"
+    },
+
+    "Taksim Square" : {
+      latitude: "41.036899",
+      longitude: "28.985056"
+    },
+
+    "Galata Bridge" : {
+      latitude: "41.020069",
+      longitude: "28.973243"
+    },
+
+    "Uskudar Fountain of Ahmed III" : {
+      latitude: "41.026785",
+      longitude: "29.015357"
+    },
+
+    "Macka Park" : {
+      latitude:   "41.042234",
+      longitude:  "28.994765"
+    }
+}
+
 /*
-  make routing
-  ask cansu for push
-  offer List of locations
-  radius small, medium ... large etc.
-  allow custom geolocation is also avaiable
   show share 5 letter code as popover after creation
 */
 
@@ -16,24 +57,34 @@ class CreateGame extends React.Component {
   constructor(){
     super()
     this.state = {
+      //data for backend
       hints: [],
       secrets: [],
-      qr_blobs: [],
       hint_input: "",
       game_title: "",
-      max_player: "",
       game_desc: "",
-      game_duration: "",
+      game_duration: 0,
       game_type: "Standard",
       latitude: "",
       longitude: "",
       radius: "",
-      game_id: uuid.v4(),
+      area_size: "",
+      game_location: "",
+      //For Error handling
       hint_err: false,
       title_err: false,
       desc_err: false,
       geolocation_err: false,
+      game_duration_err: false,
+      //is custom location clicked
+      custom_location: false
     }
+  }
+
+  toggle_custom_location = () => {
+    this.setState({
+      custom_location: !this.state.custom_location
+    })
   }
 
   check_errors = () => {
@@ -41,25 +92,48 @@ class CreateGame extends React.Component {
       hint_err: this.state.hints.length === 0 ? true : false,
       title_err: this.state.game_title === "" ? true : false,
       desc_err: this.state.game_desc === "" ? true : false,
-      geolocation_err: (this.state.radius === "" || this.state.longitude === "" || this.state.latitude === "") ? true : false,
+      game_duration_err: this.state.game_duration <= 0 ? true: false,
+      geolocation_err: (this.state.radius === 0 || this.state.longitude === "" || this.state.latitude === "") ? true : false,
     }, () => {return (this.state.hint_err === true || this.state.title_err === true ||
-                      this.state.desc_err  === true || this.state.geolocation_err === true)})
+                      this.state.desc_err  === true || this.state.geolocation_err === true ||this.state.game_duration_err === true)})
 
   }
 
   submit_data = (e) => {
     e.preventDefault()
+
     if (this.check_errors()) {
+      console.log(this.state)
       return;
     } 
 
-    var blobs = []
-    for(var i = 0; i < this.state.hints.length; i++){
-      blobs.push(this.get_qr_blob(i))
+    var secrets_arr = []
+    var i
+    for(i = 0; i < this.state.hints.length; i++){
+      secrets_arr.push(uuid.v4())
     }
+
     this.setState({
-      qr_blobs: blobs
-    },() => {console.log(this.state)})
+      secrets: secrets_arr
+    },() => {
+      var data = {
+        "players": "sadhlskdjgskdsa",
+        "name": this.state.game_title,
+        "adminId": "sadhlskdjgskdsa",
+        "type": this.state.game_type,
+        "location": {
+          "latitude": this.state.latitude,
+          "longitude": this.state.longitude,
+          "radius": this.state.radius
+        },
+        "hints": {
+          "hintSecret": this.state.secrets,
+          "hint": this.state.hints
+        },
+        "description": this.state.description
+      }
+      console.log(data)
+    })
     
   }
 
@@ -102,9 +176,22 @@ class CreateGame extends React.Component {
   }
 
   handleChange = (e) => {
-    this.setState({
+    if (e.target.name === "game_location"){
+      this.setState({
+        game_location: e.target.value,
+        latitude: Location2Geo[e.target.value].latitude,
+        longitude: Location2Geo[e.target.value].longitude
+      })
+    } else if (e.target.name === "area_size") {
+      this.setState({
+        area_size: e.target.value,
+        radius: Word2Radius[e.target.value]
+      })
+    } else {
+      this.setState({
         [e.target.name]: e.target.value
     });
+    }
   }
 
   add_hint = () => {
@@ -172,11 +259,7 @@ class CreateGame extends React.Component {
             <div style={{paddingTop: "3%" }}>
               <button onClick={this.download_all} className="btn btn-success">Print QR codes <i className="icon icon-download"></i></button>
             </div>
-
-            <div style={{paddingTop: "10%" }}>
-              <h5 style = {{color: "blue"}} >The more the merrier! Share this link with friends :)</h5>
-              <u style= {{color: "blue"}}> {`https://share.qrpilot/invite/${this.state.game_id}`}</u>
-            </div>
+          
             </div>
             <div className="divider-vert hide-lg" data-content=" "></div>
             <div className="divider show-lg" data-content=" "></div>
@@ -202,33 +285,62 @@ class CreateGame extends React.Component {
                       <option>Time Rush</option>
                   </select>
                 </div>
-                <div style={{paddingTop: "4%"}}>
+                <div style={{paddingTop: "2%"}}>
+                 <label className="form-label">Game Duration in Minutes</label>
                   <input className="form-input input-lg"
                           placeholder="Game Duration"
                           name="game_duration"
+                          type="number"
                           onChange={this.handleChange}
                           value={this.state.game_duration}/>
+                  {this.state.game_duration_err ? <p className="text-error">Game duration must be greater than 0 minutes</p>: ""}
                 </div>
-                <form style={{paddingTop: "4%"}} className="form-horizontal">
+                
+
+                {
+                  this.state.custom_location ? 
+                  (<form style={{paddingTop: "4%"}} className="form-horizontal">
+                      <div className="form-group">
+                        <div className="col-4 col-sm-12">
+                          <input className="form-input" type="text"  name="latitude" placeholder="Center Latitude"
+                            onChange={this.handleChange}
+                            value={this.state.latitude}/>
+                        </div>
+                        <div className="col-4 col-sm-12">
+                          <input className="form-input" type="text" name="longitude" placeholder="Center Longitude"
+                            onChange={this.handleChange}
+                            value={this.state.longitude}/>
+                        </div>
+                        <div className="col-4 col-sm-12">
+                          <select  onChange={this.handleChange} name="area_size" value={this.state.area_size} className="form-select select-lg">
+                            {Object.keys(Word2Radius).map((opt, key) => <option key={key}>{opt}</option>)}
+                          </select>
+                        </div>
+                      </div>
+                    </form>
+                    )
+                      :
+                      <div className="form-group">
+                        <label className="form-label">Game Area</label>
+                        <select onChange={this.handleChange} name="game_location" value={this.state.game_location} className="form-select select-lg">
+                          {Object.keys(Location2Geo).map((opt, key) => <option key={key}>{opt}</option> )}
+                        </select>
+                        <select  onChange={this.handleChange} name="area_size" value={this.state.area_size} className="form-select select-lg">
+                          {Object.keys(Word2Radius).map((opt, key) => <option key={key}>{opt}</option> )}
+                        </select>
+                      </div>
+                }
                 <div className="form-group">
-                    <div className="col-4 col-sm-12">
-                      <input className="form-input" type="number"  name="latitude" placeholder="Center Latitude"
-                        onChange={this.handleChange}
-                        value={this.state.latitude}/>
-                    </div>
-                    <div className="col-4 col-sm-12">
-                      <input className="form-input" type="number" name="longitude" placeholder="Center Longitude"
-                        onChange={this.handleChange}
-                        value={this.state.longitude}/>
-                    </div>
-                    <div className="col-4 col-sm-12">
-                      <input className="form-input" type="number" name="radius" placeholder="Radius in meters"
-                        onChange={this.handleChange}
-                        value={this.state.radius}/>
-                    </div>
+                  <label className="form-checkbox">
+                    <input onClick={this.toggle_custom_location} type="checkbox"/>
+                    <i className="form-icon"/>Custom Location
+                  </label>
                 </div>
-                {this.state.geolocation_err ? <p className="text-error">All geolocation information must be given</p>: ""}
-                </form>
+
+                {this.state.geolocation_err ? <p className="text-error">All geolocation information must be given</p>: ""} 
+                
+                
+                
                 <div style={{paddingTop: "4%"}}>
                   <textarea className="form-input input-lg"
                             placeholder="Game Description ..."
