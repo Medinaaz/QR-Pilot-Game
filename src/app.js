@@ -7,23 +7,27 @@ import PlayGame from "./components/play_game"
 import SignUp from "./components/sign_up"
 import Profile from "./components/profile"
 import JoinGame from "./components/join_game";
-
+import './App.css';
+import ResetPassword from "./components/reset_password";
 
 
 class App extends React.Component {
     render() {
-      return (
-        <Router>
-            <Route path="/create-game" exact component={CreateGame} />
-            <Route path="/manage-game" exact component={ManageGame} />
-            <Route path="/play-game" exact component={PlayGame} />
-            <Route path="/sign-up" exact component={SignUp} />
-            <Route path="/profile" exact component={Profile} />
-            <Route path="/join-game" exact component={JoinGame} />
-            <Route path="/" exact component={Login} />
-        </Router>
-      )
+        return (
+            <Router>
+
+                <Route path="/create-game" exact component={CreateGame} />
+                <Route path="/manage-game" exact component={ManageGame} />
+                <Route path="/play-game" exact component={PlayGame} />
+                <Route path="/" exact component={SignUp} />
+                <Route path="/profile" exact component={Profile} />
+                <Route path="/join-game" exact component={JoinGame} />
+                <Route path="/login" exact component={Login} />
+                <Route path="/login/reset-password" exact component={ResetPassword}/>
+
+            </Router>
+        );
     }
 }
 
-export default App
+export default App;
