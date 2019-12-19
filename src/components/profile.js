@@ -6,6 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import Navbar from "./navbar"
 import {Container} from "@material-ui/core";
 import Sky from 'react-sky';
+import { FaBeer } from 'react-icons/fa';
+import Button from "@material-ui/core/Button";
 
 
 
@@ -21,6 +23,15 @@ const divStyle = {
 };
 
 export default class Profile extends React.Component {
+    constructor() {
+        super();
+        this.state ={
+            text: " "
+        };
+    }
+    clicked(text){
+        this.setState({text: text})
+    }
     render() {
         return (
             <div className="cComponent" style={divStyle} >
@@ -35,54 +46,64 @@ export default class Profile extends React.Component {
                         size={'50px'} /* size of the rendered images */
                         /*background={'palettedvioletred'} /* color of the background */
                     />
-                    <Paper style={{ padding: 16 }}>
-                        <Grid container alignItems="flex-start">
-                            <Grid item xs={2}>
-                                <Paper style={{width:100, marginLeft:20}}>
-                                    <Grid container alignItems="flex-start">
-                                        <b>PROFILE SETTINGS</b>
-                                    </Grid>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Paper style={{width:450, marginLeft:2,marginRight:1,height:"500"}}>
-                                    <Grid container alignItems="flex-start">
-                                        <h5 style = {{color: "MediumSeaGreen", justifyContent:"center",paddingTop:"5%"}} >USER PROFILE </h5>
-                                        <div style={{paddingTop: "15%",paddingRight:"2%",paddingLeft:"3%"}}>
-                                            <button onClick={this.submit_data} className="btn btn-info">Game History</button>
-                                        </div>
-                                        <div style={{paddingTop: "15%",paddingRight:"2%",paddingLeft:"3%"}}>
-                                            <button onClick={this.submit_data} className="btn btn-info">Edit Profile</button>
-                                        </div>
-                                        <div style={{paddingTop: "5%",paddingRight:"2%",paddingLeft:"33%"}}>
-                                            <div className="form-group">
-                                                <div style={{textAlign: "center",fontSize:"25px"}}>
-                                                    <label htmlFor="exampleFormControlSelect2"></label>
-                                                    <select multiple className="form-control" id="exampleFormControlSelect2">
-                                                        <option>Player 1</option>
-                                                        <option>Player 2</option>
-                                                        <option>Player 3</option>
-                                                        <option>Player 4</option>
-                                                        <option></option>
-                                                    </select>
-                                                </div>
+                    <Grid container alignItems="flex-start">
+                        <Grid item xs={2}>
+                            <Paper style={{width:150, marginLeft:20,marginTop:100}}>
+                                <Grid container alignItems="flex-start">
+                                    <h1 style = {{color: "MediumSeaGreen", justifyContent:"center",fontSize:"20px"}} >Profile Settings </h1>
+                                </Grid>
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Paper style={{width:450, marginLeft:2,marginRight:1,height:"500",marginTop:100}}>
+                                <Grid container alignItems="flex-start">
+                                    <h5 style = {{color: "MediumSeaGreen", justifyContent:"center",fontSize:"25px"}} >USER PROFILE </h5>
+                                    <div style={{paddingTop: "15%",paddingRight:"2%",paddingLeft:"3%"}}>
+                                        <button onClick={this.submit_data} className="btn btn-success">Edit Profile</button>
+                                    </div>
+                                    <div style={{paddingTop: "15%",paddingRight:"2%",paddingLeft:"3%"}}>
+                                        {this.state.text}
+                                        <button onClick={(e)=>this.clicked("hello")} className="btn btn-success">History </button>
+                                    </div>
+                                    <div style={{paddingTop: "5%",paddingRight:"1%",paddingLeft:"40%"}}>
+                                        <div className="form-group">
+                                            <div style={{textAlign: "center",fontSize:"25px"}}>
+                                                <label htmlFor="exampleFormControlSelect2"></label>
+                                                <select multiple className="form-control" id="exampleFormControlSelect2">
+                                                    <option>Player 1</option>
+                                                    <option>Player 2</option>
+                                                    <option>Player 3</option>
+                                                    <option>Player 4</option>
+                                                    <option></option>
+                                                </select>
                                             </div>
                                         </div>
-                                    </Grid>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Paper style={{width:350, marginLeft:50}}>
-                                    <Grid container alignItems="flex-start">
-                                        <h6 style = {{color: "MediumSeaGreen"}} >GAME HISTORY</h6>
-                                        <div style={{paddingTop: "15%",paddingRight:"2%",paddingLeft:"3%"}}>
-                                            <h6 style = {{color: "MediumSeaGreen"}} >GAME HISTORY</h6>
-                                        </div>
-                                    </Grid>
-                                </Paper>
-                            </Grid>
+                                    </div>
+                                </Grid>
+                            </Paper>
                         </Grid>
-                    </Paper>
+                        <Grid item xs={4}>
+                            <Paper style={{width:500, marginLeft:50,marginTop:100}}>
+                                <Grid container alignItems="flex-start">
+                                    <h6 style = {{color: "MediumSeaGreen",fontSize:"25px"}} >GAME HISTORY</h6>
+                                    <div style={{paddingTop: "10%" ,paddingRight:"25%"}}>
+                                        <h5 style = {{color: "DarkCyan"}} >Game         X</h5>
+                                        <h5 style = {{color: "DarkCyan"}} >Game         X</h5>
+                                        <h5 style = {{color: "DarkCyan "}} >Game         X</h5>
+                                        <h5 style = {{color: "DarkCyan "}} >Game         X</h5>
+                                        <h5 style = {{color: "DarkCyan "}} >Game         X</h5>
+                                    </div>
+                                    <div style={{paddingTop: "10%" }}>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                    </div>
+                                </Grid>
+                            </Paper>
+                        </Grid>
+                    </Grid>
                 </div>
             </div>
         );
