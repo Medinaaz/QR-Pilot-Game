@@ -126,48 +126,39 @@ class CreateGame extends React.Component {
     e.preventDefault()
     this.check_errors((err) => {
       if (!err) {
-        var secrets_arr = []
-        var i
-        for(i = 0; i < this.state.hints.length; i++){
-          secrets_arr.push(uuid.v4())
-        }
-
-        this.setState({
-          secrets: secrets_arr
-        }, () => {
-            axios({
-                method: 'post',
-                url: config.GAME_URL,
-                headers: {'Content-Type': 'application/json',
-                          'Authorization': this.state.user_token},
-                data: {
-                  "players": [this.state.user_id],
-                  "name": this.state.game_title,
-                  "adminId": this.state.user_id,
-                  "type": this.state.game_type,
-                  "location": {
-                    "latitude": this.state.latitude,
-                    "longitude": this.state.longitude,
-                    "radius": this.state.radius
-                  },
-                  "hints": {
-                    "hintSecret": this.state.secrets,
-                    "hint": this.state.hints
-                  },
-                  "description": this.state.game_desc
-                }
-            }).then( (res) => {
-              if (res.data.success) {
-                localStorage.setItem("game_id", this.state.game_id)
-                localStorage.setItem("game_title", this.state.game_title)
-                this.setState({
-                  share_code: res.data.data.shareCode,
-                  show_share_code: true
-                })
-            }}).catch( (err) => {
-              console.log("err", err);
+        console.log(this.state.secrets)
+        axios({
+            method: 'post',
+            url: config.GAME_URL,
+            headers: {'Content-Type': 'application/json',
+                      'Authorization': this.state.user_token},
+            data: {
+              "players": [this.state.user_id],
+              "name": this.state.game_title,
+              "adminId": this.state.user_id,
+              "type": this.state.game_type,
+              "location": {
+                "latitude": this.state.latitude,
+                "longitude": this.state.longitude,
+                "radius": this.state.radius
+              },
+              "hints": {
+                "hintSecret": this.state.secrets,
+                "hint": this.state.hints
+              },
+              "description": this.state.game_desc
+            }
+        }).then( (res) => {
+          if (res.data.success) {
+            localStorage.setItem("game_id", this.state.game_id)
+            localStorage.setItem("game_title", this.state.game_title)
+            this.setState({
+              share_code: res.data.data.shareCode,
+              show_share_code: true
             })
-          })
+        }}).catch( (err) => {
+          console.log("err", err);
+        })
       }
     })
 }
@@ -190,7 +181,7 @@ class CreateGame extends React.Component {
   */
 
   download_QR = (index) => {
-    const canvas = document.getElementById(this.state.hints[index]);
+    const canvas = document.getElementById(this.state.secrets[index]);
     const pngUrl = canvas
       .toDataURL("image/png")
       .replace("image/png", "image/octet-stream");
@@ -245,6 +236,7 @@ class CreateGame extends React.Component {
     } 
     this.setState({
       hints: this.state.hints.concat(this.state.hint_input),
+      secrets: this.state.secrets.concat(uuid.v4()),
       hint_input: ""
     })
   }
@@ -288,8 +280,8 @@ class CreateGame extends React.Component {
                         <i className="icon icon-cross"></i>
                       </button>
                       <QRCode style={{display: "none"}}
-                          id={item}
-                          value={item}
+                          id={this.state.secrets[key]}
+                          value={this.state.secrets[key]}
                           size={290}
                           level={"H"}
                           includeMargin={true}
