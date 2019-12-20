@@ -11,6 +11,8 @@ class JoinGame extends React.Component {
         }
     }
 
+
+
     join = () => {
         console.log(this.state)
         if (this.state.game_code === "") {

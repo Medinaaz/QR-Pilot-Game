@@ -4,6 +4,7 @@ import uuid from "uuid"
 import Navbar from "./navbar"
 import config from "../config";
 import axios from "axios";
+import LocTracker from "./loc_tracker.js"
 
 
 const Word2Radius = {
