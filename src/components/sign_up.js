@@ -88,20 +88,20 @@ class SignUp extends Component{
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="password">Password </label>
-                                <input type="text" id="password" className="FormField__Input" placeholder="Enter your password"
+                                <input type="password" id="password" className="FormField__Input" placeholder="Enter your password"
                                        name="password" value={this.state.password} onChange={this.handleChange}/>
                             </div>
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="secretq">Secret Question </label>
                                 <input type="text" id="secretq" className="FormField__Input" placeholder="Enter your secret question"
-                                       name="secretQuestion" value={this.state.secretq} onChange={this.handleChange}/>
+                                       name="secretQuestion" value={this.state.secretQuestion} onChange={this.handleChange}/>
                             </div>
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="secreta">Secret Answer </label>
                                 <input type="text" id="secreta" className="FormField__Input" placeholder="Enter your secret answer"
-                                       name="secretAnswer" value={this.state.secreta} onChange={this.handleChange}/>
+                                       name="secretAnswer" value={this.state.secretAnswer} onChange={this.handleChange}/>
                             </div>
 
                             <div>
