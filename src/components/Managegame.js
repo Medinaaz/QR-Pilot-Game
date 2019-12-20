@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './Managegame.css';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } from "react-google-maps"
+import QrReader from 'react-qr-reader'
 
 //This structure may be changed
 var radius = 300;
@@ -99,12 +100,62 @@ class Managegame extends React.Component {
             playerData: [],
             leaderboard:"",
             remainingTime:"",
-            x:""
+            x:"",
+            qrData:"",
+            qrDiv:""
         }
         this.changeTime = this.changeTime.bind(this);
         this.closeWarning = this.closeWarning.bind(this);
+        this.openCamera = this.openCamera.bind(this);
 
     }
+    openCamera(){
+        console.log("girdi");
+        var content =<div className="modal active" id="modal-id">
+        
+        <div className="modal-container">
+          <div className="modal-header">
+            <a href="/manage-game" className="btn btn-clear float-right" aria-label="Close"></a>
+            <div className="modal-title h5">Scan The QR Code</div>
+          </div>
+          <div className="modal-body">
+            <div className="content">
+            <QrReader
+                delay={300}
+                onError={this.handleError}
+                onScan={this.handleScan}
+                style={{ width: '80%' }}
+                />
+                <p>{this.state.qrData}</p>
+            </div>
+          </div>
+
+          <div className="modal-footer">
+          <p>{this.state.qrData}</p>
+          <button className="btn btn-primary">Submit</button>
+          &nbsp;&nbsp;
+          <a href="/manage-game" className="btn" aria-label="Close">Close</a>
+         
+        </div>
+          
+        </div>
+      </div>
+
+      this.setState({qrDiv: content})
+    }
+    handleScan = data => {
+        if (data) {
+          this.setState({
+            qrData: data
+          })
+        }
+        alert(this.state.qrData);
+      }
+
+      handleError = err => {
+        console.error(err)
+      }
+      
     changeTime(){
          // Get today's date and time
          var now = new Date().getTime();
@@ -192,9 +243,11 @@ class Managegame extends React.Component {
         return (
             //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
             <div className="flex-centered">  {this.state.x}
+            {this.state.qrDiv}
            
                 <div className="card">   
-                        <div className="header">  
+                        <div className="header"> 
+                            {this.state.qrData} 
                              <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>  
                         </div> 
                         <div className="container">
@@ -247,7 +300,7 @@ class Managegame extends React.Component {
                             <br/>
                             Submit a QR
                             <div className="flex-centered" >
-                                <img src="./camera.png" className="img-responsive ..." alt="..."></img>
+                            <button onClick={this.openCamera}><img src="./camera.png" className="img-responsive ..." alt="..."></img></button>
                             </div>
                             <br/>
                             Hint
