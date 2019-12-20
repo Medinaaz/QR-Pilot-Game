@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './Managegame.css';
+import './play-game.css';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } from "react-google-maps"
 import QrReader from 'react-qr-reader'
 import LocTracker from "./loc_tracker.js"

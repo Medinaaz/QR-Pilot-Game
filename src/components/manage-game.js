@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './AdminManage.css';
+import './manage-game.css';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } from "react-google-maps"
 import DatePicker from "react-datepicker";
 import LocTracker from "./loc_tracker"
