@@ -6,6 +6,10 @@ import Paper from "@material-ui/core/Paper";
 import Navbar from "./navbar"
 import {Container} from "@material-ui/core";
 import Sky from 'react-sky';
+import { FaBeer } from 'react-icons/fa';
+import Button from "@material-ui/core/Button";
+
+
 
 const myImage = require('../components/medii.png');
 const imgMyimageexample = require('../components/prof_pic.png');
@@ -19,6 +23,15 @@ const divStyle = {
 };
 
 export default class Profile extends React.Component {
+    constructor() {
+        super();
+        this.state ={
+            text: " "
+        };
+    }
+    clicked(text){
+        this.setState({text: text})
+    }
     render() {
         return (
             <div className="cComponent" style={divStyle} >
@@ -33,44 +46,64 @@ export default class Profile extends React.Component {
                         size={'50px'} /* size of the rendered images */
                         /*background={'palettedvioletred'} /* color of the background */
                     />
-                    <Fragment>
-                        <Grid container>
-                            <Grid item xs={4}>
-                                <Grid container justify="center" color={"inherit"}>
-                                    <Paper style={{ padding: 20, width: 1730, marginBottom:30, marginTop:30,marginLeft:10}}>
-                                        <Typography variant="h6" component="h6" align={"justify"} paragraph={true}>
-                                            <b>User Profile</b>
-                                        </Typography>
-
-                                    </Paper>
+                    <Grid container alignItems="flex-start">
+                        <Grid item xs={2}>
+                            <Paper style={{width:150, marginLeft:20,marginTop:100}}>
+                                <Grid container alignItems="flex-start">
+                                    <h1 style = {{color: "MediumSeaGreen", justifyContent:"center",fontSize:"20px"}} >Profile Settings </h1>
                                 </Grid>
-                            </Grid>
+                            </Paper>
                         </Grid>
-                        <Grid container>
-                            <Grid item xs={4}>
-                                <Grid container justify="center" color={"inherit"}>
-                                    <Paper style={{ padding: 20, width: 1730, marginBottom:30, marginTop:30,marginLeft:10}}>
-                                        <Typography variant="h6" component="h6" align={"justify"} paragraph={true}>
-                                            <b>Game History</b>
-                                        </Typography>
-
-                                    </Paper>
+                        <Grid item xs={4}>
+                            <Paper style={{width:450, marginLeft:2,marginRight:1,height:"500",marginTop:100}}>
+                                <Grid container alignItems="flex-start">
+                                    <h5 style = {{color: "MediumSeaGreen", justifyContent:"center",fontSize:"25px"}} >USER PROFILE </h5>
+                                    <div style={{paddingTop: "15%",paddingRight:"2%",paddingLeft:"3%"}}>
+                                        <button onClick={this.submit_data} className="btn btn-success">Edit Profile</button>
+                                    </div>
+                                    <div style={{paddingTop: "15%",paddingRight:"2%",paddingLeft:"3%"}}>
+                                        {this.state.text}
+                                        <button onClick={(e)=>this.clicked("hello")} className="btn btn-success">History </button>
+                                    </div>
+                                    <div style={{paddingTop: "5%",paddingRight:"1%",paddingLeft:"40%"}}>
+                                        <div className="form-group">
+                                            <div style={{textAlign: "center",fontSize:"25px"}}>
+                                                <label htmlFor="exampleFormControlSelect2"></label>
+                                                <select multiple className="form-control" id="exampleFormControlSelect2">
+                                                    <option>Player 1</option>
+                                                    <option>Player 2</option>
+                                                    <option>Player 3</option>
+                                                    <option>Player 4</option>
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </Grid>
-                            </Grid>
+                            </Paper>
                         </Grid>
-                        <Grid container>
-                            <Grid item xs={4}>
-                                <Grid container justify="center" color={"inherit"}>
-                                    <Paper style={{ padding: 20, width: 1730, marginBottom:30, marginTop:30,marginLeft:10}}>
-                                        <Typography variant="h6" component="h6" align={"justify"} paragraph={true}>
-                                            <b>Burak's crabs</b>
-                                        </Typography>
-
-                                    </Paper>
+                        <Grid item xs={4}>
+                            <Paper style={{width:500, marginLeft:50,marginTop:100}}>
+                                <Grid container alignItems="flex-start">
+                                    <h6 style = {{color: "MediumSeaGreen",fontSize:"25px"}} >GAME HISTORY</h6>
+                                    <div style={{paddingTop: "10%" ,paddingRight:"25%"}}>
+                                        <h5 style = {{color: "DarkCyan"}} >Game         X</h5>
+                                        <h5 style = {{color: "DarkCyan"}} >Game         X</h5>
+                                        <h5 style = {{color: "DarkCyan "}} >Game         X</h5>
+                                        <h5 style = {{color: "DarkCyan "}} >Game         X</h5>
+                                        <h5 style = {{color: "DarkCyan "}} >Game         X</h5>
+                                    </div>
+                                    <div style={{paddingTop: "10%" }}>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                        <h5 style = {{color: "LightSlateGrey"}} >Score         X</h5>
+                                    </div>
                                 </Grid>
-                            </Grid>
+                            </Paper>
                         </Grid>
-                    </Fragment>
+                    </Grid>
                 </div>
             </div>
         );
