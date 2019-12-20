@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './AdminManage.css';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } from "react-google-maps"
 import DatePicker from "react-datepicker";
+import LocTracker from "./loc_tracker"
  
 import "react-datepicker/dist/react-datepicker.css";
 import QrReader from 'react-qr-reader'
@@ -92,6 +93,7 @@ class AdminManage extends React.Component {
         this.state = {
             userName: '',
             gameName:'Yakup\'s Hunger Games',
+            gameId:"",
             playerNumber:4,
             totalQR:24,
             findingQR:12,
@@ -261,6 +263,9 @@ class AdminManage extends React.Component {
         var y;
 
         //It can be controlled in a time interval.
+        let game_title = localStorage.getItem("game_title")
+        let game_id = localStorage.getItem("game_id")
+        this.setState({ gameName: game_title, gameId:game_id  })
 
         var latDiff = (userInfo[0].lat - lat)*(userInfo[0].lat - lat)
         var lngDiff = (userInfo[0].lng - lng)*(userInfo[0].lng - lng)
@@ -312,7 +317,7 @@ class AdminManage extends React.Component {
        
         return (
             //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
-            <div className="flex-centered">  {this.state.x}
+            <div className="flex-centered">  <LocTracker time={5000}/>{this.state.x}
             {this.state.qrDiv}
             <div className="card">
                  
