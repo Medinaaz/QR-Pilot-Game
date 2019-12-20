@@ -22,7 +22,7 @@ const data = [
     {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:6, owner:false, username: 'Player6',avatar:"https://picturepan2.github.io/spectre/img/avatar-2.png", score:6, lat:41.013000, lng:28.972500}
 ];
 const userInfo = [
-    {gametype:"time", time: "Dec 20, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880}
+    {gametype:"hint", time: "Dec 20, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880}
 ];
 
 function Map(){
@@ -119,6 +119,7 @@ class AdminManage extends React.Component {
 
         this.myRef = React.createRef();
         this.openCamera = this.openCamera.bind(this);
+        this.updateHint = this.updateHint.bind(this);
 
     }
     openCamera(){
@@ -128,40 +129,69 @@ class AdminManage extends React.Component {
         <div className="modal-container">
           <div className="modal-header">
             <a href="/manage-game" className="btn btn-clear float-right" aria-label="Close"></a>
-            <div className="modal-title h5">Scan The QR Code</div>
+            <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
           </div>
           <div className="modal-body">
             <div className="content">
+            <div className="flex-centered">
             <QrReader
                 delay={300}
                 onError={this.handleError}
                 onScan={this.handleScan}
                 style={{ width: '80%' }}
                 />
-                <p>{this.state.qrData}</p>
             </div>
           </div>
-
+          </div>
           <div className="modal-footer">
-          <p>{this.state.qrData}</p>
-          <button className="btn btn-primary">Submit</button>
-          &nbsp;&nbsp;
           <a href="/manage-game" className="btn" aria-label="Close">Close</a>
-         
         </div>
-          
         </div>
       </div>
 
       this.setState({qrDiv: content})
     }
+    updateHint(){
+        var number = this.state.findingQR;
+        number++;
+        this.setState({findingQR: number, qrDiv:""})
+        console.log("x:"+this.state.findingQR);
+        this.componentDidMount();
+    }
+
     handleScan = data => {
+        var content=<div className="modal active" id="modal-id">
+        
+        <div className="modal-container">
+          <div className="modal-header">
+            <a href="/play-game" className="btn btn-clear float-right" aria-label="Close"></a>
+            <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
+          </div>
+          <div className="modal-body">
+            <div className="content">
+            <div className="flex-centered" style={{textAlign:'center', color:'blue', fontWeight:'bold', fontSize:20}}>
+            Congratulations! <br></br>
+            You read the qr code.<br></br>
+            "{data}"
+            </div>
+          </div>
+          </div>
+          <div className="modal-footer">
+          <p>{this.state.qrData}</p>
+          <button className="btn btn-primary" onClick={this.updateHint}>Submit</button>
+          &nbsp;&nbsp;
+          <button className="btn" onClick={this.openCamera}>Back</button>
+        </div>
+        </div>
+      </div>
         if (data) {
           this.setState({
-            qrData: data
+            qrData: data,
+            qrDiv:content
           })
         }
-        alert(this.state.qrData);
+        console.log(this.state.qrData);
+        //alert(this.state.qrData);
       }
 
       handleError = err => {
