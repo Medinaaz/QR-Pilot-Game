@@ -4,6 +4,7 @@ import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } fr
 import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";
+import QrReader from 'react-qr-reader'
 
 //This structure may be changed
 var radius = 300;
@@ -102,7 +103,9 @@ class AdminManage extends React.Component {
             startDate: new Date(),
             x:"",
             a:"",
-            newTime:""
+            newTime:"",
+            qrData:"",
+            qrDiv:""
         }
         data.sort((a, b) => Number(b.score) - Number(a.score));
         console.log("descending", data);
@@ -113,8 +116,55 @@ class AdminManage extends React.Component {
         this.closeWarning = this.closeWarning.bind(this);
 
         this.myRef = React.createRef();
+        this.openCamera = this.openCamera.bind(this);
 
     }
+    openCamera(){
+        console.log("girdi");
+        var content =<div className="modal active" id="modal-id">
+        
+        <div className="modal-container">
+          <div className="modal-header">
+            <a href="/manage-game" className="btn btn-clear float-right" aria-label="Close"></a>
+            <div className="modal-title h5">Scan The QR Code</div>
+          </div>
+          <div className="modal-body">
+            <div className="content">
+            <QrReader
+                delay={300}
+                onError={this.handleError}
+                onScan={this.handleScan}
+                style={{ width: '80%' }}
+                />
+                <p>{this.state.qrData}</p>
+            </div>
+          </div>
+
+          <div className="modal-footer">
+          <p>{this.state.qrData}</p>
+          <button className="btn btn-primary">Submit</button>
+          &nbsp;&nbsp;
+          <a href="/manage-game" className="btn" aria-label="Close">Close</a>
+         
+        </div>
+          
+        </div>
+      </div>
+
+      this.setState({qrDiv: content})
+    }
+    handleScan = data => {
+        if (data) {
+          this.setState({
+            qrData: data
+          })
+        }
+        alert(this.state.qrData);
+      }
+
+      handleError = err => {
+        console.error(err)
+      }
     //Inform all users!
     handleTime(){
         clearInterval(timee);
@@ -263,6 +313,7 @@ class AdminManage extends React.Component {
         return (
             //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
             <div className="flex-centered">  {this.state.x}
+            {this.state.qrDiv}
             <div className="card">
                  
                 <div style={{color:"red", textAlign:"center", fontSize:20}} >You are the owner of the game!</div>
@@ -322,7 +373,7 @@ class AdminManage extends React.Component {
                     <br/>
                     Submit a QR
                     <div className="flex-centered" >
-                            <img src="./camera.png" className="img-responsive ..." alt="..."></img>
+                    <button onClick={this.openCamera}><img src="./camera.png" className="img-responsive ..." alt="..."></img></button>
                         </div>
                     <br/>
                     Hint
