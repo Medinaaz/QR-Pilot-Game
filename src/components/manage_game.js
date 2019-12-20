@@ -7,11 +7,11 @@ function Map(){
     const [number, desc] = useState(null);
 
     return(
-        <GoogleMap defaultZoom={10} 
+        <GoogleMap defaultZoom={10}
         defaultCenter={{lat: 41.013000, lng: 28.974800}}
         >
-        
-        
+
+
         <Marker key="1" position={{lat: 41.013000, lng: 28.974800}}
         onClick={()=> {
             desc(this);
@@ -23,7 +23,7 @@ function Map(){
             ><div>Hit details</div></InfoWindow>
         )}
         </GoogleMap>
-        
+
     );
 
 }
@@ -52,36 +52,29 @@ class Managegame extends React.Component {
         }
 
     }
-   
- 
-    
+
     render() {
-       
         return (
-            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
-            <div className="flex-centered">  
-            
-                <div className="page">  
-                        <div className="header">  
-                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
-                            
-                             
-                        </div> 
-                        <div className="map"> 
-                        
-                        <WrappedMap  
-                             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places`}
+            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s
+            <div className="flex-centered">
+                <div className="page">
+                        <div className="header">
+                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
+                        </div>
+                        <div className="map">
+                        <WrappedMap
+                             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s`}
                             loadingElement = {<div style={{height:"100%"}} />}
                             containerElement = {<div style={{height:"100%"}} />}
                             mapElement = {<div style={{height:"100%"}} />}
                         />
-                        </div> 
-                        <div className="leaderboard"> 
+                        </div>
+                        <div className="leaderboard">
                         <br/>
                         Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
                         <br></br>
                         <div className="bar bar-lg">
-                        <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%', 
+                        <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%',
                         background: '#2196f3'}} aria-valuenow= {(this.state.findingQR*100)/this.state.totalQR} aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <br></br>
@@ -90,7 +83,7 @@ class Managegame extends React.Component {
                              {
                                  data.map((item, key) =>
                                  <li className="menu-item" key={item.id}>
-                                     
+
                                      <div className="tile-icon">
                                          <figure className="avatar">
                                             <img src={item.avatar} alt="Avatar">
@@ -103,11 +96,11 @@ class Managegame extends React.Component {
                                         {item.username}
                                              </p>
                                       </div>
-                                     
-                                     
+
+
                                      </li>
                                 )
-                               
+
                              }
                         </ul>
 
@@ -120,7 +113,7 @@ class Managegame extends React.Component {
                         Hint
                         <br/>
                         <div className="popover popover-left">
-                        
+
                         <div className="popover-container">
                             <div className="card">
                             <div className="card-header">
@@ -131,11 +124,11 @@ class Managegame extends React.Component {
                             </div>
                             </div>
                         </div>
-                        
+
 
                         </div>
-                        
-                        </div> 
+
+                        </div>
                 </div>
             </div>
         )
