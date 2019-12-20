@@ -1,7 +1,8 @@
-
 import React,{Component} from 'react';
 import qrcode from "../qr-code.png";
 import {BrowserRouter as Router, NavLink} from "react-router-dom";
+import axios from "axios";
+import config from "../config";
 
 class SignUp extends Component{
     constructor() {
@@ -11,8 +12,8 @@ class SignUp extends Component{
             username: '',
             email: '',
             password: '',
-            secretq: '',
-            secreta: ''
+            secretQuestion: '',
+            secretAnswer: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -29,11 +30,29 @@ class SignUp extends Component{
         });
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
 
-        console.log('The form was submitted with the following data:');
-        console.log(this.state);
+        console.log("state", this.state);
+
+        const res = await axios({
+            method: 'post',
+            url: config.SIGNUP_URL,
+            headers: {'Content-Type': 'application/json'},
+            data: {
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password,
+                secretQuestion: this.state.secretQuestion,
+                secretAnswer: this.state.secretAnswer,
+            }
+        });
+
+        console.log(res);
+
+        if (res.data.success) {
+            this.props.history.push("/login");
+        }
     }
 
     render() {
@@ -76,13 +95,13 @@ class SignUp extends Component{
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="secretq">Secret Question </label>
                                 <input type="text" id="secretq" className="FormField__Input" placeholder="Enter your secret question"
-                                       name="secretq" value={this.state.secretq} onChange={this.handleChange}/>
+                                       name="secretQuestion" value={this.state.secretq} onChange={this.handleChange}/>
                             </div>
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="secreta">Secret Answer </label>
                                 <input type="text" id="secreta" className="FormField__Input" placeholder="Enter your secret answer"
-                                       name="secreta" value={this.state.secreta} onChange={this.handleChange}/>
+                                       name="secretAnswer" value={this.state.secreta} onChange={this.handleChange}/>
                             </div>
 
                             <div>

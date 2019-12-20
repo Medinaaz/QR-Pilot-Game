@@ -45,7 +45,7 @@ class Login extends Component{
             console.log(res);
 
             if (res.data.success) {
-                localStorage.setItem("userId", res.data.message._id);
+                localStorage.setItem("userId", res.data.userId);
                 localStorage.setItem("token", res.data.data.token);
                 this.props.history.push("/profile");
             }
@@ -80,7 +80,7 @@ class Login extends Component{
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="password">Password </label>
-                                <input type="text" id="password" className="FormField__Input" placeholder="Enter your password"
+                                <input type="password" id="password" className="FormField__Input" placeholder="Enter your password"
                                        name="password" value={this.state.password} onChange={this.handleChange}/>
                             </div>
 
