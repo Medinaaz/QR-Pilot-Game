@@ -2,6 +2,8 @@ import React from 'react';
 import QRCode from "qrcode.react";
 import uuid from "uuid"
 import Navbar from "./navbar"
+import config from "../config";
+import axios from "axios";
 
 
 const Word2Radius = {
@@ -57,6 +59,9 @@ class CreateGame extends React.Component {
   constructor(){
     super()
     this.state = {
+      //auth
+      user_id: "",
+      user_token: "",
       //data for backend
       hints: [],
       secrets: [],
@@ -83,6 +88,21 @@ class CreateGame extends React.Component {
       //TODO set state accordingly (after create game)
       share_code: "Ab5CQr"
     }
+    this.submit_data = this.submit_data.bind(this)
+  }
+
+  componentDidMount(){
+    var userId = localStorage.getItem("userId")
+    var userToken = localStorage.getItem("token")
+
+    if ((userId) || (userToken)) {
+      this.props.history.push("/login")
+    }
+
+    this.setState({
+      user_id: userId,
+      user_token: userToken
+    })
   }
 
   toggle_custom_location = () => {
@@ -104,7 +124,7 @@ class CreateGame extends React.Component {
     })
   }
 
-  submit_data = (e) => {
+  submit_data(e){
     e.preventDefault()
     this.check_errors((err) => {
       if (!err) {
@@ -117,38 +137,43 @@ class CreateGame extends React.Component {
         this.setState({
           secrets: secrets_arr
         }, () => {
-          var data = {
-            "players": "sadhlskdjgskdsa",
-            "name": this.state.game_title,
-            "adminId": "sadhlskdjgskdsa",
-            "type": this.state.game_type,
-            "location": {
-              "latitude": this.state.latitude,
-              "longitude": this.state.longitude,
-              "radius": this.state.radius
-            },
-            "hints": {
-              "hintSecret": this.state.secrets,
-              "hint": this.state.hints
-            },
-            "description": this.state.description
-          }
-          //TODO sent data to backend instead of printing
-          console.log(data)
-          var game_id = "asdfkjhadlsadl"
-          var game_title = this.state.game_title
-          localStorage.setItem("game_id", game_id)
-          localStorage.setItem("game_title", game_title)
-          this.setState({
-            show_share_code: true
+            axios({
+                method: 'post',
+                url: config.GAME_URL,
+                headers: {'Content-Type': 'application/json',
+                          'Authorization': this.state.user_token},
+                data: {
+                  "players": [this.state.user_id],
+                  "name": this.state.game_title,
+                  "adminId": this.state.user_id,
+                  "type": this.state.game_type,
+                  "location": {
+                    "latitude": this.state.latitude,
+                    "longitude": this.state.longitude,
+                    "radius": this.state.radius
+                  },
+                  "hints": {
+                    "hintSecret": this.state.secrets,
+                    "hint": this.state.hints
+                  },
+                  "description": this.state.description
+                }
+            }).then( (res) => {
+              if (res.data.success) {
+                localStorage.setItem("game_id", this.state.game_id)
+                localStorage.setItem("game_title", this.state.game_title)
+                this.setState({
+                  share_code: res.data.shareCode,
+                  show_share_code: true
+                })
+            }}).catch( (err) => {
+              console.log("err", err);
             })
           })
-      } else {
-        return ;
       }
-
-    }) 
-  }
+    })
+}
+      
 
   download_all = (e) => {
     e.preventDefault()
