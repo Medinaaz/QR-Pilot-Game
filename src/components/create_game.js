@@ -5,6 +5,7 @@ import Navbar from "./navbar"
 import config from "../config";
 import axios from "axios";
 import LocTracker from "./loc_tracker.js"
+import './create_game.css'
 
 
 const Word2Radius = {

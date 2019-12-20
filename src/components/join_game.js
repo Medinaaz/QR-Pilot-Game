@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./navbar"
+import './join_game.css'
 
 class JoinGame extends React.Component {
     constructor(){
