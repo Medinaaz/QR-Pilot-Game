@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import qrcode from "../qr-code.png";
+import axios from "axios";
+import config from "../config";
 
 class Login extends Component{
     constructor() {
@@ -25,11 +27,31 @@ class Login extends Component{
         });
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
 
-        console.log('The form was submitted with the following data:');
-        console.log(this.state);
+        try {
+            const res = await axios({
+                method: 'post',
+                url: config.LOGIN_URL,
+                headers: {'Content-Type': 'application/json'},
+                data: {
+                    username: this.state.username,
+                    password: this.state.password
+                }
+            });
+
+            console.log(this.state.username, this.state.password);
+            console.log(res);
+
+            if (res.data.success) {
+                localStorage.setItem("userId", res.data.message._id);
+                localStorage.setItem("token", res.data.data.token);
+                this.props.history.push("/profile");
+            }
+        } catch (err) {
+            console.log("err", err);
+        }
     }
 
     render() {
