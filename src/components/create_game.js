@@ -94,8 +94,7 @@ class CreateGame extends React.Component {
   componentDidMount(){
     var userId = localStorage.getItem("userId")
     var userToken = localStorage.getItem("token")
-
-    if ((userId) || (userToken)) {
+    if ((userId === null) || (userToken === null)) {
       this.props.history.push("/login")
     }
 
@@ -119,7 +118,6 @@ class CreateGame extends React.Component {
       game_duration_err: this.state.game_duration <= 0 ? true: false,
       geolocation_err: (this.state.radius === 0 || this.state.longitude === "" || this.state.latitude === "") ? true : false,
     },() => {
-      console.log(this.state)
       callback(this.state.hint_err === true || this.state.title_err === true || this.state.desc_err  === true || this.state.geolocation_err === true ||this.state.game_duration_err === true)
     })
   }
@@ -156,14 +154,14 @@ class CreateGame extends React.Component {
                     "hintSecret": this.state.secrets,
                     "hint": this.state.hints
                   },
-                  "description": this.state.description
+                  "description": this.state.game_desc
                 }
             }).then( (res) => {
               if (res.data.success) {
                 localStorage.setItem("game_id", this.state.game_id)
                 localStorage.setItem("game_title", this.state.game_title)
                 this.setState({
-                  share_code: res.data.shareCode,
+                  share_code: res.data.data.shareCode,
                   show_share_code: true
                 })
             }}).catch( (err) => {

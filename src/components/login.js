@@ -45,7 +45,7 @@ class Login extends Component{
             console.log(res);
 
             if (res.data.success) {
-                localStorage.setItem("userId", res.data.userId);
+                localStorage.setItem("userId", res.data.id);
                 localStorage.setItem("token", res.data.data.token);
                 this.props.history.push("/profile");
             }
