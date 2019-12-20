@@ -1,11 +1,7 @@
-.page {
-    
-    display: table-cell;
-    vertical-align: middle;
+.card {
     position: absolute;
     top: 10%;
     right: 10%;
-    bottom: 10%;
     left: 10%;
     border: 1px solid #443e4048;
 }
@@ -21,44 +17,30 @@
 .map{
     background: #eeeeee;
     border: 1px solid #574f5248;
-    width: 65%;
-    height: 75%;
-    float: left;
-    
-    right: 5%;
-    bottom: 5%;
-    left: 5%;
-    margin-left: 5%;
+    width: 100%;
+    height: 100%;
+    min-height: 70vh;
+    padding: 1%;
 }
 .leaderboard{
     background: #eeeeee;
     border: 1px solid #574f5248;
-    float: right;
-    margin-right: 5%;
-    width: 23%;
-    height: 75%;
-    right: 5%;
-    bottom: 5%;
-    left: 5%;
+    padding: 5%;
     text-align: center;
     color: #2196f3;;
     font-weight: 700;
-   
-    padding-left: 4%;
-    padding-right: 4%;
-    padding-bottom: 1%;
 }
 .bar {
     width:100%;
     background: #b6d4ef;
-    
 }
 .menu{
     background: #ffffff;
     border: 1px solid #574f5248;
-    width: 100%;
+    width: 80%;
     height: 25%;
     min-width: 0;
+    max-height: 35vh;
     overflow: scroll;
 }
 .tile-icon{
@@ -73,27 +55,10 @@
     color:black;
     font-weight: 500;
 }
-.cameraIcon{
-  
-    width: 2.5vw;
+.timeBox{
+    border: 1px solid #574f5248;
     height: 5vh;
-    margin-left: 39%;
-    background-image: url("./camera.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-    min-width: 0;
-
-}
-.popover{
-    width: 2.5vw;
-    height: 5vh;
-    background-image: url("./hint.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-    min-width: 0;
-    
+    justify-content: center;
+    padding-top: 3%;
+    color: blue;
 }
