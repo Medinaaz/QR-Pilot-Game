@@ -2,8 +2,8 @@ import React from "react";
 import { Route, BrowserRouter as Router} from "react-router-dom";
 import CreateGame from "./components/create_game"
 import Login from "./components/login"
-import ManageGame from "./components/manage-game"
-import PlayGame from "./components/play-game"
+import ManageGame from "./components/manage_game"
+import PlayGame from "./components/play_game"
 import SignUp from "./components/sign_up"
 import Profile from "./components/profile"
 import JoinGame from "./components/join_game";
