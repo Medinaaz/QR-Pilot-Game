@@ -34,10 +34,13 @@ class JoinGame extends React.Component {
             return;
         } 
         axios({
-            method: 'get',
+            method: 'put',
             url: config.JOIN_GAME + this.state.game_code,
             headers: {'Content-Type': 'application/json',
-                      'Authorization': this.state.user_token}
+                      'Authorization': this.state.user_token},
+            data: {
+                "userId": this.state.user_id
+            }
         }).then( (res) => {
           if (res.data.success) {
             console.log("join successfull")
