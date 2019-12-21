@@ -76,7 +76,7 @@ class Managegame extends React.Component {
         super();
         this.state = {
             userName: '',
-            gameName:'Yakup\'s Hunger Games',
+            gameName:'',
             found_QRs: [],
             gameId: "",
             playerNumber:4,
@@ -92,13 +92,15 @@ class Managegame extends React.Component {
             hint:"",
             center_lat: 0,
             center_lng: 0,
-            center_radius: 0
+            center_radius: 0,
+            description:""
         }
         this.changeTime = this.changeTime.bind(this);
         this.closeWarning = this.closeWarning.bind(this);
         this.openCamera = this.openCamera.bind(this);
         this.updateHint = this.updateHint.bind(this);
         this.handleData = this.handleData.bind(this);
+        this.closeCamera = this.closeCamera.bind(this);
     }
     openCamera(){
         console.log("girdi");
@@ -106,7 +108,7 @@ class Managegame extends React.Component {
         
         <div className="modal-container">
           <div className="modal-header">
-            <a href="/play-game" className="btn btn-clear float-right" aria-label="Close"></a>
+            <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
             <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
           </div>
           <div className="modal-body">
@@ -123,13 +125,18 @@ class Managegame extends React.Component {
           </div>
 
           <div className="modal-footer">
-          <a href="/play-game" className="btn" aria-label="Close">Close</a>
+          <button onClick={this.closeCamera} className="btn" aria-label="Close">Close</button>
         </div>
           
         </div>
       </div>
 
       this.setState({qrDiv: content})
+    }
+
+    closeCamera(){
+        var content = ""
+        this.setState({qrDiv: content})
     }
 
     handleData(data, err){
@@ -167,12 +174,13 @@ class Managegame extends React.Component {
         this.setState({ 
             gameType:data.data.type, 
             totalQR:data.data.hints.hint.length,  
-            findingQR: data.data.submittedQRs,
+            //findingQR: data.data.submittedQRs,
             playersData: data.data.ranking,
             playerNumber:  data.data.ranking.length-1,
             center_radius  :data.data.location.radius,
             center_lat: data.data.location.latitude,
-            center_lng: data.data.location.longitude
+            center_lng: data.data.location.longitude,
+            description: data.data.description
         })
 
         if(data.data.type==="Standard"){
@@ -211,7 +219,7 @@ class Managegame extends React.Component {
             method: 'post',
             url: config.SUBMIT_QR_URL,
             headers: {'Content-Type': 'application/json',
-                      'Authorization': this.localStorage.getItem("token")},
+                      'Authorization': localStorage.getItem("token")},
             data: {
                 "hint": this.state.hintContent,
                 "hintSecret": this.state.qrData,
@@ -223,7 +231,7 @@ class Managegame extends React.Component {
             if(res.data.success) {
                 let newFound_QRS = this.state.found_QRs
                 newFound_QRS.push(this.state.hintContent)
-                this.setState({findingQR: this.state.findingQR +1, qrDiv:"", found_QRs: newFound_QRS})
+                this.setState({findingQR: newFound_QRS.length, qrDiv:"", found_QRs: newFound_QRS})
                 console.log("x:"+this.state.findingQR);
             
             } else {
@@ -239,7 +247,7 @@ class Managegame extends React.Component {
         
         <div className="modal-container">
           <div className="modal-header">
-            <a href="/play-game" className="btn btn-clear float-right" aria-label="Close"></a>
+            <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
             <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
           </div>
           <div className="modal-body">
@@ -332,7 +340,8 @@ class Managegame extends React.Component {
                 <div className="card">   
                         <div className="header"> 
                            
-                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>  
+                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
+                             <p>Description of the Game: {this.state.description}</p> 
                         </div> 
                         <div className="container">
                         <div className="columns">

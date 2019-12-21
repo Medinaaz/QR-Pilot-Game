@@ -105,7 +105,8 @@ class AdminManage extends React.Component {
             playersData:[],
             center_lat: 0,
             center_lng: 0,
-            center_radius: 0
+            center_radius: 0,
+            description:""
         }
         this.kickPlayer = this.kickPlayer.bind(this);
         this.changeTime = this.changeTime.bind(this);
@@ -119,6 +120,8 @@ class AdminManage extends React.Component {
         this.closeCamera = this.closeCamera.bind(this);
 
     }
+
+    //Kullanıcı atıldığında çıkart
 
     /*
     componentWillUnmount() {
@@ -161,12 +164,13 @@ class AdminManage extends React.Component {
         this.setState({ 
             gameType:data.data.type, 
             totalQR:data.data.hints.hint.length,  
-            findingQR: data.data.submittedQRs,
+            //findingQR: data.data.submittedQRs,
             playersData: data.data.ranking,
             playerNumber:  data.data.ranking.length-1,
             center_radius  :data.data.location.radius,
             center_lat: data.data.location.latitude,
-            center_lng: data.data.location.longitude
+            center_lng: data.data.location.longitude,
+            description: data.data.description
         })
 
         if(data.data.type==="Standard"){
@@ -251,7 +255,7 @@ class AdminManage extends React.Component {
                 
                 let newFound_QRS = this.state.found_QRs
                 newFound_QRS.push(this.state.hintContent)
-                this.setState({findingQR: this.state.findingQR +1, qrDiv:"", found_QRs: newFound_QRS})
+                this.setState({findingQR: newFound_QRS.length, qrDiv:"", found_QRs: newFound_QRS})
                 console.log("x:"+this.state.findingQR);
             
             } else {
@@ -269,7 +273,7 @@ class AdminManage extends React.Component {
         
         <div className="modal-container">
           <div className="modal-header">
-            <a href="/play-game" className="btn btn-clear float-right" aria-label="Close"></a>
+            <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
             <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
           </div>
           <div className="modal-body">
@@ -381,6 +385,7 @@ class AdminManage extends React.Component {
        
     }
 
+    //warning??????
     closeWarning(){
         this.setState({x:""})
     }
@@ -400,14 +405,14 @@ class AdminManage extends React.Component {
 
    //Inform player!!!!
    kickPlayer(element){
-       var newPlayerData = this.state.playerData;
-    console.log(this.state.playerData);
-     var index = this.state.playerData.findIndex(obj => obj.username===element.username);
+       var newPlayerData = this.state.playersData;
+    console.log(this.state.playersData);
+     var index = this.state.playersData.findIndex(obj => obj.names===element.names);
      console.log(index);
      newPlayerData.splice(index,1);
      console.log(newPlayerData);
      this.setState({
-        playerData: newPlayerData
+        playersData: newPlayerData
      })
    }
  
@@ -423,6 +428,7 @@ class AdminManage extends React.Component {
                 <div style={{color:"red", textAlign:"center", fontSize:20}} >You are the owner of the game!</div>
                 <div className="header">                              
                     <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
+                    <p>Description of the Game: {this.state.description}</p>
                 </div> 
                 <div className="container">
                 <div className="columns">
