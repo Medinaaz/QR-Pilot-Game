@@ -94,8 +94,8 @@ class AdminManage extends React.Component {
         super();
         this.state = {
             gameDATA:"",
-            userName: '',
-            gameName:'Yakup\'s Hunger Games',
+            userName: "",
+            gameName:"",
             gameId:"",
             playerNumber:4,
             totalQR:24,
@@ -124,6 +124,7 @@ class AdminManage extends React.Component {
         this.myRef = React.createRef();
         this.openCamera = this.openCamera.bind(this);
         this.updateHint = this.updateHint.bind(this);
+        this.handleData = this.handleData.bind(this);
 
     }
 
@@ -133,11 +134,12 @@ class AdminManage extends React.Component {
     }
 
     handleData(data, err){
-        if (err===null) {
+        if (err) {
             alert("Game cannot be loaded");
         }
-        this.setState({gameDATA:data})
+        this.setState({gameName:data.data.title})
         console.log(data)
+        console.log(data.data.title)
     }
     openCamera(){
         console.log("girdi");
