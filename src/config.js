@@ -5,7 +5,8 @@ const development = {
     SIGNUP_URL : 'https://qrpilot-api.appspot.com/signUp',
     GAME_URL: 'https://qrpilot-api.appspot.com/game',
     UPDATE_LOCATION_URL: "https://qrpilot-api.appspot.com/update-location/",
-    JOIN_URL: "https://qrpilot-api.appspot.com/game-join/"
+    JOIN_URL: "https://qrpilot-api.appspot.com/game-join/",
+    PROFILE_URL: "https://qrpilot-api.appspot.com/user/"
 };
 
 const production = {
@@ -13,7 +14,8 @@ const production = {
     SIGNUP_URL : 'https://qrpilot-api.appspot.com/signUp',
     GAME_URL: 'https://qrpilot-api.appspot.com/game',
     UPDATE_LOCATION_URL: "https://qrpilot-api.appspot.com/update-location/",
-    JOIN_URL: "https://qrpilot-api.appspot.com/game-join/"
+    JOIN_URL: "https://qrpilot-api.appspot.com/game-join/",
+    PROFILE_URL: "https://qrpilot-api.appspot.com/user/"
 };
 
 const config = {

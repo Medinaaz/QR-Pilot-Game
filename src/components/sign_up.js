@@ -42,12 +42,12 @@ class SignUp extends Component {
         })
     }
 
-    async handleSubmit(e) {
+    handleSubmit(e) {
         e.preventDefault();
         this.check_errors((err) => {
             if (!err) {
                 console.log("state", this.state)
-                const res = axios({
+                axios({
                     method: 'post',
                     url: config.SIGNUP_URL,
                     headers: {'Content-Type': 'application/json'},
@@ -58,11 +58,13 @@ class SignUp extends Component {
                         secretQuestion: this.state.secretQuestion,
                         secretAnswer: this.state.secretAnswer,
                     }
-                }).then(res)
-
-                if (res.data.success) {
-                    this.props.history.push("/login");
-                }
+                }).then(res => {
+                    if (res.data.success) {
+                        this.props.history.push("/login");
+                    }
+                }).catch( err => {
+                    alert("Your username or email is in use!")
+                })
             }
         })
     }

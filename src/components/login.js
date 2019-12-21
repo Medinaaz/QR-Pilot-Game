@@ -40,8 +40,7 @@ class Login extends Component{
         e.preventDefault();
         this.check_errors((err) => {
             if (!err) {
-                try {
-                    const res = axios({
+                    axios({
                         method: 'post',
                         url: config.LOGIN_URL,
                         headers: {'Content-Type': 'application/json'},
@@ -49,22 +48,18 @@ class Login extends Component{
                             username: this.state.username,
                             password: this.state.password
                         }
-                    });
-
-                    console.log(this.state.username, this.state.password);
-                    console.log(res);
-
-                    if (res.data.success) {
-                        localStorage.setItem("userId", res.data.id);
-                        localStorage.setItem("token", res.data.data.token);
-                        this.props.history.push("/profile");
-                    }
-                } catch (err) {
-                    console.log("err", err);
-                    alert('Your username or password is incorrect!');
-
-                }
-
+                    }).then((res) => {
+                        console.log(this.state.username, this.state.password);
+                        console.log(res)
+                        if (res.data.success) {
+                            localStorage.setItem("userId", res.data.id);
+                            localStorage.setItem("token", res.data.data.token);
+                            this.props.history.push("/profile");
+                        }
+                    }).catch((err) =>  {
+                        console.log("err", err);
+                        alert('Your username or password is incorrect!');
+                    })    
             }
 
         });
