@@ -57,7 +57,7 @@ function Map(){
     const [number, desc] = useState(null);
     return(
         <GoogleMap defaultZoom={15} 
-        defaultCenter={{lat: lat, lng: lng}}
+        defaultCenter={{lat: 41.014000, lng: 28.974800}}
         
         >
         <Marker key="1" position={{lat: lat, lng: lng}}
@@ -72,7 +72,7 @@ function Map(){
         )}
 
         <Circle
-            defaultCenter={{
+            center={{
                 lat: parseFloat(lat),
                 lng: parseFloat(lng)
             }}
@@ -144,6 +144,7 @@ class AdminManage extends React.Component {
         this.openCamera = this.openCamera.bind(this);
         this.updateHint = this.updateHint.bind(this);
         this.handleData = this.handleData.bind(this);
+        this.closeCamera = this.closeCamera.bind(this);
 
     }
 
@@ -188,8 +189,8 @@ class AdminManage extends React.Component {
         this.setState({ gameType:data.data.type, 
             totalQR:data.data.hints.hint.length,  
             findingQR: data.data.submittedQRs,
-            playersData: players_temp,
-            playerNumber:  players_temp.length-1
+            playersData: data.data.ranking,
+            playerNumber:  data.data.ranking.length-1
         })
         if(data.data.type==="Standard"){
             this.setState({hint: true})
@@ -202,13 +203,17 @@ class AdminManage extends React.Component {
         console.log(data.data.title)
         
     }
+    closeCamera(){
+        var content = ""
+        this.setState({qrDiv: content})
+    }
     openCamera(){
         console.log("girdi");
         var content =<div className="modal active" id="modal-id">
         
         <div className="modal-container">
           <div className="modal-header">
-            <a href="/manage-game" className="btn btn-clear float-right" aria-label="Close"></a>
+            <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
             <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
           </div>
           <div className="modal-body">
@@ -224,7 +229,7 @@ class AdminManage extends React.Component {
           </div>
           </div>
           <div className="modal-footer">
-          <a href="/manage-game" className="btn" aria-label="Close">Close</a>
+          <button onClick={this.closeCamera} className="btn" aria-label="Close">Close</button>
         </div>
         </div>
       </div>
@@ -448,7 +453,7 @@ class AdminManage extends React.Component {
                     <ul className="menu">
                     {
                         this.state.playersData.map((item, key) =>
-                        <li className="menu-item" key={item.id}>
+                        <li className="menu-item" key={item._id}>
                         
                         <div className="tile-icon">
                             
@@ -461,7 +466,7 @@ class AdminManage extends React.Component {
                         </div>
                         <div className="tile-content">
                         <p className="tile-title">
-                        {item.username}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.score}</span>&nbsp;
+                        {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
                         <button className="btn btn-error" onClick={() => this.kickPlayer(item)}>X</button>
                         </p>
                         
