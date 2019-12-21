@@ -4,7 +4,6 @@ import uuid from "uuid"
 import Navbar from "./navbar"
 import config from "../config";
 import axios from "axios";
-import './create_game.css'
 
 
 const Word2Radius = {
@@ -245,7 +244,7 @@ class CreateGame extends React.Component {
 
   render(){
     return(
-      <div className="container">
+      <div style={{color: "grey", backgroundColor: "#52C4B9" }} className="container">
             <Navbar />
             <div className={"modal modal-md " + (this.state.show_share_code === true ? "active" : "")}>
               <a href="/#" className="modal-overlay" aria-label="Close"> </a>
@@ -272,7 +271,7 @@ class CreateGame extends React.Component {
                   <th>Hints</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style = {{backgroundColor: "white"}}>
                 {this.state.hints.map((item,key) => 
                   <tr key={key}>
                     <td>{item}</td>

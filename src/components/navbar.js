@@ -17,7 +17,7 @@ class Navbar extends React.Component {
     }
     render(){
         return(
-            <div>
+            <div style={{backgroundColor: "black"}}>
             <header className="navbar hide-md">
                 <section className="navbar-section">
                     <button href="" onClick={this.go("/create-game")} className="btn btn-link navbar-brand mr-1">Create Game</button>

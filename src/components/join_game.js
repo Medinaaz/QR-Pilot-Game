@@ -41,6 +41,7 @@ class JoinGame extends React.Component {
         }).then( (res) => {
           if (res.data.success) {
             console.log("join successfull")
+            console.log("game_data: ", res.data)
             localStorage.setItem("game_data", res.data)
             this.props.history.push("play-game")
           } else {
@@ -50,7 +51,7 @@ class JoinGame extends React.Component {
               })
           }
         }).catch( (err) => {
-          console.log("err", err);
+          alert(err);
         })
     }
 
