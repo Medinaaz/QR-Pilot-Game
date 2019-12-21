@@ -45,7 +45,7 @@ class UpdateGame extends React.Component {
           user_id: userId,
           user_token: userToken
         })
-        this.interval = setInterval(this.position, this.props.time)
+        this.interval = setInterval(this.getData, this.props.time)
     }
 
     componentWillUnmount(){
