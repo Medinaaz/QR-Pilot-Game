@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import QRCode from "qrcode.react";
 import config from "../config";
 import axios from "axios";
+import Typical from 'react-typical'
 
 const history = [
     {
@@ -61,9 +62,11 @@ export default class Profile extends React.Component {
             usernameInput: " ",
             passwInput: " ",
             secretInput: " ",
+            secretAnswer:" ",
             user_err: false,
             pass_err: false,
-            secret_err: false
+            secret_err: false,
+            answ_err: false
         };
         this.submit_data = this.submit_data.bind(this);
     }
@@ -73,8 +76,9 @@ export default class Profile extends React.Component {
             user_err: this.state.data.username === 0 ? true : false,
             pass_err: this.state.password === "" ? true : false,
             secret_err: this.state.secret_err === "" ? true : false,
+            answ_err: this.state.secret_err === "" ? true : false,
         },() => {
-            callback(this.state.user_err === true || this.state.pass_err === true || this.state.secret_err  === true )
+            callback(this.state.user_err === true || this.state.pass_err === true || this.state.secret_err  === true || this.state.answ_err  === true)
         })
     }
 
@@ -182,7 +186,7 @@ export default class Profile extends React.Component {
                     />
                     <Grid container alignItems="flex-start">
                         <Grid item xs={4}>
-                            <Paper style={{width: 250, marginLeft: 50, marginRight: 1, height: 300, marginTop: 70}}>
+                            <Paper style={{width: 250, marginLeft: 50, marginRight: 1, height: 300, marginTop: 40}}>
                                 <Grid container alignItems="flex-start">
                                     <div style={{paddingTop: "8%", paddingRight: "2%", paddingLeft: "10%"}}>
                                         <h5 style={{
@@ -191,12 +195,12 @@ export default class Profile extends React.Component {
                                             fontSize: "25px"
                                         }}>USER PROFILE </h5>
                                         <h5 style={{
-                                            color: "MediumSeaGreen",
+                                            color: "Peru",
                                             justifyContent: "center",
                                             fontSize: "20px"
                                         }}>{this.state.username}</h5>
                                         <h5 style={{
-                                            color: "MediumSeaGreen",
+                                            color: "Peru",
                                             justifyContent: "center",
                                             fontSize: "20px"
                                         }}>{this.state.email} </h5>
@@ -223,7 +227,7 @@ export default class Profile extends React.Component {
                         </Grid>
                         {
                             !this.state.viewEdit ? (
-                                <Paper style={{width: 350, marginLeft: 10, marginTop: 70, height: 250}}>
+                                <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 250}}>
                                     <Grid container alignItems="flex-start">
                                         <h6 style={{color: "MediumSeaGreen", fontSize: "25px"}}>GAME HISTORY</h6>
                                         <table style={{paddingTop: "10%"}}
@@ -251,7 +255,7 @@ export default class Profile extends React.Component {
                                 </Paper>
                             ) : (
                                 /*enter another grid that shows the profile*/
-                                <Paper style={{width: 350, marginLeft: 10, marginTop: 70, height: 250}}>
+                                <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 352}}>
                                     <Grid container alignItems="flex-start">
                                         <h6 style={{
                                             color: "MediumSeaGreen",
@@ -260,10 +264,12 @@ export default class Profile extends React.Component {
                                             marginLeft: "5%"
                                         }}>EDIT</h6>
                                         <div className="form-group">
-                                            <div style={{paddingTop: "5%", paddingLeft: "20%"}}>
-                                                <tr>
-                                                    <th>Username</th>
-                                                </tr>
+                                            <div style={{paddingLeft: "20%"}}>
+                                                <Typical
+                                                    steps={['Edit', 1000, 'Edit username!', 500]}
+                                                    loop={Infinity}
+                                                    wrapper="p"
+                                                />
                                                 <input className="form-input input-lg"
                                                        placeholder="Enter new username"
                                                        name="usernameInput"
@@ -274,10 +280,12 @@ export default class Profile extends React.Component {
                                             {this.state.user_err ?
                                                 <p className="text-error">You didn't change your username</p> : ""}
                                             <div className="form-group">
-                                                <div style={{paddingTop: "5%", paddingLeft: "20%"}}>
-                                                    <tr>
-                                                        <th>Password</th>
-                                                    </tr>
+                                                <div style={{paddingLeft: "20%"}}>
+                                                    <Typical
+                                                        steps={['Edit', 1000, 'Edit password!', 500]}
+                                                        loop={Infinity}
+                                                        wrapper="p"
+                                                    />
                                                     <input className="form-input input-lg"
                                                            placeholder="Enter new password"
                                                            name="passwInput"
@@ -290,10 +298,12 @@ export default class Profile extends React.Component {
                                                         password</p> : ""}
 
                                                 <div className="form-group">
-                                                    <div style={{paddingTop: "5%", paddingLeft: "20%"}}>
-                                                        <tr>
-                                                            <th>Secret Question</th>
-                                                        </tr>
+                                                    <div style={{paddingLeft: "20%"}}>
+                                                        <Typical
+                                                            steps={['Edit', 1000, 'Edit secret question!', 500]}
+                                                            loop={Infinity}
+                                                            wrapper="p"
+                                                        />
                                                         <input className="form-input input-lg"
                                                                placeholder="Enter new secret question"
                                                                name="secretInput"
@@ -305,10 +315,29 @@ export default class Profile extends React.Component {
                                                         <p className="text-error">You didn't change your secret
                                                             question</p> : ""}
 
-                                                    <div style={{paddingTop: "20%", paddingLeft: "2%"}}>
-                                                        <button onClick={this.submit_data}
-                                                                className="btn btn-success btn-lg">SUBMIT CHANGES
-                                                        </button>
+                                                    <div className="form-group">
+                                                        <div style={{paddingLeft: "20%"}}>
+                                                            <Typical
+                                                                steps={['Edit', 1000, 'Edit answer question!', 500]}
+                                                                loop={Infinity}
+                                                                wrapper="p"
+                                                            />
+                                                            <input className="form-input input-lg"
+                                                                   placeholder="Enter new answer"
+                                                                   name="secretAnswer"
+                                                                   onChange={this.handleChange}
+                                                                   value={this.state.secretAnswer}
+                                                            />
+                                                        </div>
+                                                        {this.state.answ_err ?
+                                                            <p className="text-error">You didn't change your secret
+                                                                answer</p> : ""}
+
+                                                        <div style={{paddingTop: "1%", paddingLeft: "2%"}}>
+                                                            <button onClick={this.submit_data}
+                                                                    className="btn btn-success btn-lg">SUBMIT CHANGES
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
