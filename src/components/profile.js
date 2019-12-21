@@ -12,9 +12,6 @@ import QRCode from "qrcode.react";
 import config from "../config";
 import axios from "axios";
 
-
-const USERNAME = "medina";
-const EMAIL = "medina@gmail.com"
 const history = [
     {
         "title":"game1",
@@ -81,12 +78,38 @@ export default class Profile extends React.Component {
         })
     }
 
-    componentDidMount() {
-        let userId = localStorage.getItem("userId")
-        let userToken = localStorage.getItem("token")
+    async componentDidMount() {
+        let userId = localStorage.getItem("userId");
+        let userToken = localStorage.getItem("token");
+
         if ((userId === null) || (userToken === null)) {
             this.props.history.push("/login")
-        }}
+        }
+
+        try {
+            console.log(this.state.userToken);
+
+            const res = await axios({
+                method: 'get',
+                url: config.PROFILE_URL + localStorage.getItem("userId"),
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': userToken},
+            });
+
+            console.log("respond", res.data.data);
+
+            if (res.data.success) {
+                this.setState({
+                    username: res.data.data.username,
+                    email: res.data.data.email
+                })
+            }
+
+        } catch (err) {
+            console.log("err", err);
+        }
+
+    }
 
     handleHistoryClick  = (e) =>{
         e.preventDefault()
@@ -123,55 +146,34 @@ export default class Profile extends React.Component {
                 [e.target.name]: e.target.value
             });
         }
-    }
+    };
 
-    componentDidMount() {
-        let userId = localStorage.getItem("userId")
-        let userToken = localStorage.getItem("token")
+    async submit_data(e) {
+        e.preventDefault();
 
-        if ((userId === null) || (userToken === null)) {
-            this.props.history.push("/login")
-        }
-        this.setState({
-            user_id: userId,
-            user_token: userToken, //authentication
-            username: USERNAME,
-            email : EMAIL
-        })
-    }
-
-    submit_data(e){
-        e.preventDefault()
-        axios({
-            method: 'post',
+        const res = await axios({
+            method: 'put',
+            url: config.PROFILE_URL,
+            headers: {'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token")},
             data: {
-                "username": this.state.username,
-                "password": this.state.password,
-                "secret" : this.state.secretQuestion
-            },
-            gameInfos:{
-                "game_type": this.state.gameNumber,
-                "game_scores":this.state.gameScore,
-                "game_rank":this.state.gameScore
+                username: this.state.username,
+                password: this.state.password
             }
-        }).then((res)=>{
-            if(res.data.success){
-                localStorage.setItem("username", this.state.username)
-                localStorage.setItem("password", this.state.password)
-                localStorage.setItem("password", this.state.secretQuestion)
-            }
-        }).catch( (err) => {
-            console.log("err", err);
-        })}
+        });
 
-    render() {
+        console.log(res);
+    }
+
+    render()
+    {
         return (
-            <div className="cComponent" style={divStyle} >
+            <div className="cComponent" style={divStyle}>
                 <div>
                     <Navbar/>
                     <Sky
-                        images ={{
-                            0:myImage
+                        images={{
+                            0: myImage
                         }}
                         how={130} /* Pass the number of images Sky will render chosing randomly */
                         time={40} /* time of animation */
@@ -180,16 +182,38 @@ export default class Profile extends React.Component {
                     />
                     <Grid container alignItems="flex-start">
                         <Grid item xs={4}>
-                            <Paper style={{width:250, marginLeft:50,marginRight:1,height:300,marginTop:70}}>
+                            <Paper style={{width: 250, marginLeft: 50, marginRight: 1, height: 300, marginTop: 70}}>
                                 <Grid container alignItems="flex-start">
-                                    <div style={{paddingTop: "8%",paddingRight:"2%",paddingLeft:"10%"}}>
-                                        <h5 style = {{color: "MediumSeaGreen", justifyContent:"center",fontSize:"25px"}} >USER PROFILE </h5>
-                                        <h5 style = {{color: "MediumSeaGreen", justifyContent:"center",fontSize:"20px"}} >{this.state.username}</h5>
-                                        <h5 style = {{color: "MediumSeaGreen", justifyContent:"center",fontSize:"20px"}} >{this.state.email} </h5>
-                                        <div style={{paddingTop: "15%",paddingRight:"2%",paddingLeft:"3%",size:"lg",width:"90%"}}>
-                                            <button onClick={this.handleEditClick} className="btn btn-success btn-lg">Edit Profile</button>
-                                            <div style={{paddingTop: "15%",paddingRight:"2%",paddingLeft:"1%"}}>
-                                                <button onClick={this.handleHistoryClick} className="btn btn-success btn-lg" >Game History</button>
+                                    <div style={{paddingTop: "8%", paddingRight: "2%", paddingLeft: "10%"}}>
+                                        <h5 style={{
+                                            color: "MediumSeaGreen",
+                                            justifyContent: "center",
+                                            fontSize: "25px"
+                                        }}>USER PROFILE </h5>
+                                        <h5 style={{
+                                            color: "MediumSeaGreen",
+                                            justifyContent: "center",
+                                            fontSize: "20px"
+                                        }}>{this.state.username}</h5>
+                                        <h5 style={{
+                                            color: "MediumSeaGreen",
+                                            justifyContent: "center",
+                                            fontSize: "20px"
+                                        }}>{this.state.email} </h5>
+                                        <div style={{
+                                            paddingTop: "15%",
+                                            paddingRight: "2%",
+                                            paddingLeft: "3%",
+                                            size: "lg",
+                                            width: "90%"
+                                        }}>
+                                            <button onClick={this.handleEditClick}
+                                                    className="btn btn-success btn-lg">Edit Profile
+                                            </button>
+                                            <div style={{paddingTop: "15%", paddingRight: "2%", paddingLeft: "1%"}}>
+                                                <button onClick={this.handleHistoryClick}
+                                                        className="btn btn-success btn-lg">Game History
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -198,11 +222,12 @@ export default class Profile extends React.Component {
                             </Paper>
                         </Grid>
                         {
-                            !this.state.viewEdit  ? (
-                                <Paper style={{width:350, marginLeft:10,marginTop:70,height:250}}>
+                            !this.state.viewEdit ? (
+                                <Paper style={{width: 350, marginLeft: 10, marginTop: 70, height: 250}}>
                                     <Grid container alignItems="flex-start">
-                                        <h6 style = {{color: "MediumSeaGreen",fontSize:"25px"}} >GAME HISTORY</h6>
-                                        <table style={{paddingTop: "10%" }} className="table table-striped table-hover">
+                                        <h6 style={{color: "MediumSeaGreen", fontSize: "25px"}}>GAME HISTORY</h6>
+                                        <table style={{paddingTop: "10%"}}
+                                               className="table table-striped table-hover">
                                             <thead>
                                             <tr>
                                                 <th>Game Title</th>
@@ -213,7 +238,7 @@ export default class Profile extends React.Component {
                                             <tbody>
                                             {
                                                 this.state.gameInfos.map((item, key) =>
-                                                    <tr key = {key}>
+                                                    <tr key={key}>
                                                         <td>{item.title}</td>
                                                         <td>{item.score}</td>
                                                         <td>{item.rank} </td>
@@ -224,13 +249,18 @@ export default class Profile extends React.Component {
                                         </table>
                                     </Grid>
                                 </Paper>
-                            ): (
+                            ) : (
                                 /*enter another grid that shows the profile*/
-                                <Paper style={{width:350, marginLeft:10,marginTop:70,height:250}}>
+                                <Paper style={{width: 350, marginLeft: 10, marginTop: 70, height: 250}}>
                                     <Grid container alignItems="flex-start">
-                                        <h6 style = {{color: "MediumSeaGreen",fontSize:"25px",marginTop:"5%",marginLeft:"5%"}} >EDIT</h6>
+                                        <h6 style={{
+                                            color: "MediumSeaGreen",
+                                            fontSize: "25px",
+                                            marginTop: "5%",
+                                            marginLeft: "5%"
+                                        }}>EDIT</h6>
                                         <div className="form-group">
-                                            <div style={{paddingTop: "5%",paddingLeft:"20%"}}>
+                                            <div style={{paddingTop: "5%", paddingLeft: "20%"}}>
                                                 <tr>
                                                     <th>Username</th>
                                                 </tr>
@@ -241,9 +271,10 @@ export default class Profile extends React.Component {
                                                        value={this.state.usernameInput}
                                                 />
                                             </div>
-                                            {this.state.user_err ? <p className="text-error">You didn't change your username</p>: ""}
+                                            {this.state.user_err ?
+                                                <p className="text-error">You didn't change your username</p> : ""}
                                             <div className="form-group">
-                                                <div style={{paddingTop: "5%",paddingLeft:"20%"}}>
+                                                <div style={{paddingTop: "5%", paddingLeft: "20%"}}>
                                                     <tr>
                                                         <th>Password</th>
                                                     </tr>
@@ -254,10 +285,12 @@ export default class Profile extends React.Component {
                                                            value={this.state.passwInput}
                                                     />
                                                 </div>
-                                                {this.state.pass_err ? <p className="text-error">You didn't change your password</p>: ""}
+                                                {this.state.pass_err ?
+                                                    <p className="text-error">You didn't change your
+                                                        password</p> : ""}
 
                                                 <div className="form-group">
-                                                    <div style={{paddingTop: "5%",paddingLeft:"20%"}}>
+                                                    <div style={{paddingTop: "5%", paddingLeft: "20%"}}>
                                                         <tr>
                                                             <th>Secret Question</th>
                                                         </tr>
@@ -268,13 +301,18 @@ export default class Profile extends React.Component {
                                                                value={this.state.secretInput}
                                                         />
                                                     </div>
-                                                    {this.state.secret_err ? <p className="text-error">You didn't change your secret question</p>: ""}
+                                                    {this.state.secret_err ?
+                                                        <p className="text-error">You didn't change your secret
+                                                            question</p> : ""}
 
-                                                    <div style={{paddingTop: "20%",paddingLeft:"2%"}}>
-                                                        <button onClick={this.submit_data} className="btn btn-success btn-lg">SUBMIT CHANGES</button>
+                                                    <div style={{paddingTop: "20%", paddingLeft: "2%"}}>
+                                                        <button onClick={this.submit_data}
+                                                                className="btn btn-success btn-lg">SUBMIT CHANGES
+                                                        </button>
                                                     </div>
                                                 </div>
-                                            </div></div>
+                                            </div>
+                                        </div>
                                     </Grid>
                                 </Paper>
                             )
