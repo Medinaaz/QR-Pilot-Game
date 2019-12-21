@@ -41,7 +41,7 @@ class JoinGame extends React.Component {
         }).then( (res) => {
           if (res.data.success) {
             console.log("join successfull")
-            localStorage.setItem("gameData", res.data)
+            localStorage.setItem("game_data", res.data)
             this.props.history.push("play-game")
           } else {
               this.setState({

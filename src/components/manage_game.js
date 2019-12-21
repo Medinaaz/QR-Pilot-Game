@@ -126,6 +126,11 @@ class AdminManage extends React.Component {
 
     }
 
+    componentWillUnmount() {
+        localStorage.removeItem("game_title")
+        localStorage.removeItem("game_id")
+    }
+
     handleData(data, err){
         if (err) {
             //handle
