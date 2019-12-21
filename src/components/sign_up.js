@@ -4,7 +4,7 @@ import {BrowserRouter as Router, NavLink} from "react-router-dom";
 import axios from "axios";
 import config from "../config";
 
-class SignUp extends Component{
+class SignUp extends Component {
     constructor() {
         super();
 
@@ -30,30 +30,43 @@ class SignUp extends Component{
         });
     }
 
+    check_errors = (callback) => {
+        this.setState({
+            username_err: this.state.username.length === 0 ? true : false,
+            email_err: this.state.email.length === 0 ? true : false,
+            password_err: this.state.password === "" ? true : false,
+            secretq_err: this.state.secretQuestion=== "" ? true : false,
+            secreta_err: this.state.secretAnswer === "" ? true : false,
+        }, () => {
+            callback(this.state.username_err === true || this.state.email_err === true || this.state.password_err === true || this.state.secretq_err === true || this.state.secreta_err === true)
+        })
+    }
+
     async handleSubmit(e) {
         e.preventDefault();
+        this.check_errors((err) => {
+            if (!err) {
+                console.log("state", this.state)
+                const res = axios({
+                    method: 'post',
+                    url: config.SIGNUP_URL,
+                    headers: {'Content-Type': 'application/json'},
+                    data: {
+                        username: this.state.username,
+                        email: this.state.email,
+                        password: this.state.password,
+                        secretQuestion: this.state.secretQuestion,
+                        secretAnswer: this.state.secretAnswer,
+                    }
+                }).then(res)
 
-        console.log("state", this.state);
-
-        const res = await axios({
-            method: 'post',
-            url: config.SIGNUP_URL,
-            headers: {'Content-Type': 'application/json'},
-            data: {
-                username: this.state.username,
-                email: this.state.email,
-                password: this.state.password,
-                secretQuestion: this.state.secretQuestion,
-                secretAnswer: this.state.secretAnswer,
+                if (res.data.success) {
+                    this.props.history.push("/login");
+                }
             }
-        });
-
-        console.log(res);
-
-        if (res.data.success) {
-            this.props.history.push("/login");
-        }
+        })
     }
+
 
     render() {
         return (
@@ -64,49 +77,69 @@ class SignUp extends Component{
                 <div className="App__Form">
 
                     <div className="PageSwitcher">
-                        <NavLink to="/login" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">Login </NavLink>
-                        <NavLink exact to="/" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">Sign Up </NavLink>
+                        <NavLink to="/login" activeClassName="PageSwitcher__Item--Active"
+                                 className="PageSwitcher__Item">Login </NavLink>
+                        <NavLink exact to="/" activeClassName="PageSwitcher__Item--Active"
+                                 className="PageSwitcher__Item">Sign Up </NavLink>
                     </div>
 
                     <div className="FormTitle">
-                        <NavLink to="/login" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Login</NavLink> or <NavLink exact to="/" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</NavLink>
+                        <NavLink to="/login" activeClassName="FormTitle__Link--Active"
+                                 className="FormTitle__Link">Login</NavLink> or <NavLink exact to="/"
+                                                                                         activeClassName="FormTitle__Link--Active"
+                                                                                         className="FormTitle__Link">Sign
+                        Up</NavLink>
                     </div>
                     <div className="FormCenter">
-                        <form onSubmit={this.handleSubmit} className="FormFields" >
+                        <form onSubmit={this.handleSubmit} className="FormFields">
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="username">Username </label>
-                                <input type="text" id="username" className="FormField__Input" placeholder="Enter your username"
+                                <input type="text" id="username" className="FormField__Input"
+                                       placeholder="Enter your username"
                                        name="username" value={this.state.username} onChange={this.handleChange}/>
                             </div>
+                            {this.state.username_err ? <p className="text-error">You must enter username!</p> : ""}
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="email">Email </label>
-                                <input type="text" id="email" className="FormField__Input" placeholder="Enter your email"
+                                <input type="text" id="email" className="FormField__Input"
+                                       placeholder="Enter your email"
                                        name="email" value={this.state.email} onChange={this.handleChange}/>
                             </div>
+                            {this.state.email_err ? <p className="text-error">You must enter email!</p> : ""}
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="password">Password </label>
-                                <input type="password" id="password" className="FormField__Input" placeholder="Enter your password"
+                                <input type="password" id="password" className="FormField__Input"
+                                       placeholder="Enter your password"
                                        name="password" value={this.state.password} onChange={this.handleChange}/>
                             </div>
+                            {this.state.password_err ? <p className="text-error">You must enter password!</p> : ""}
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="secretq">Secret Question </label>
-                                <input type="text" id="secretq" className="FormField__Input" placeholder="Enter your secret question"
-                                       name="secretQuestion" value={this.state.secretQuestion} onChange={this.handleChange}/>
+                                <input type="text" id="secretq" className="FormField__Input"
+                                       placeholder="Enter your secret question"
+                                       name="secretQuestion" value={this.state.secretQuestion}
+                                       onChange={this.handleChange}/>
                             </div>
+                            {this.state.secretq_err ?
+                                <p className="text-error">You must enter a secret question!</p> : ""}
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="secreta">Secret Answer </label>
-                                <input type="text" id="secreta" className="FormField__Input" placeholder="Enter your secret answer"
-                                       name="secretAnswer" value={this.state.secretAnswer} onChange={this.handleChange}/>
+                                <input type="text" id="secreta" className="FormField__Input"
+                                       placeholder="Enter your secret answer"
+                                       name="secretAnswer" value={this.state.secretAnswer}
+                                       onChange={this.handleChange}/>
                             </div>
+                            {this.state.secreta_err ?
+                                <p className="text-error">You must enter a secret answer!</p> : ""}
 
                             <div>
                                 <div className="FormField">
-                                    <button className="FormField__Button nr-20">Sign Up </button>
+                                    <button className="FormField__Button nr-20">Sign Up</button>
                                 </div>
                             </div>
 
@@ -118,4 +151,5 @@ class SignUp extends Component{
         );
     }
 }
+
 export  default SignUp;

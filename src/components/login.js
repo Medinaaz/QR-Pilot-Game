@@ -27,32 +27,49 @@ class Login extends Component{
         });
     }
 
+    check_errors = (callback) => {
+        this.setState({
+            username_err: this.state.username.length === 0 ? true : false,
+            password_err: this.state.password === "" ? true : false,
+        },() => {
+            callback(this.state.username_err === true || this.state.password_err === true)
+        })
+    }
+
     async handleSubmit(e) {
         e.preventDefault();
+        this.check_errors((err) => {
+            if (!err) {
+                try {
+                    const res = axios({
+                        method: 'post',
+                        url: config.LOGIN_URL,
+                        headers: {'Content-Type': 'application/json'},
+                        data: {
+                            username: this.state.username,
+                            password: this.state.password
+                        }
+                    });
 
-        try {
-            const res = await axios({
-                method: 'post',
-                url: config.LOGIN_URL,
-                headers: {'Content-Type': 'application/json'},
-                data: {
-                    username: this.state.username,
-                    password: this.state.password
+                    console.log(this.state.username, this.state.password);
+                    console.log(res);
+
+                    if (res.data.success) {
+                        localStorage.setItem("userId", res.data.id);
+                        localStorage.setItem("token", res.data.data.token);
+                        this.props.history.push("/profile");
+                    }
+                } catch (err) {
+                    console.log("err", err);
+                    alert('Your username or password is incorrect!');
+
                 }
-            });
 
-            console.log(this.state.username, this.state.password);
-            console.log(res);
-
-            if (res.data.success) {
-                localStorage.setItem("userId", res.data.id);
-                localStorage.setItem("token", res.data.data.token);
-                this.props.history.push("/profile");
             }
-        } catch (err) {
-            console.log("err", err);
-        }
+
+        });
     }
+
 
     render() {
         return (
@@ -77,13 +94,14 @@ class Login extends Component{
                                 <input type="text" id="username" className="FormField__Input" placeholder="Enter your username"
                                        name="username" value={this.state.username} onChange={this.handleChange}/>
                             </div>
+                            {this.state.username_err ? <p className="text-error">Type in correct username!</p>: ""}
 
                             <div className="FormField">
                                 <label className="FormField__Label" htmlFor="password">Password </label>
                                 <input type="password" id="password" className="FormField__Input" placeholder="Enter your password"
                                        name="password" value={this.state.password} onChange={this.handleChange}/>
                             </div>
-
+                            {this.state.password_err ? <p className="text-error">Type in correct password!</p>: ""}
 
                             <div className="FormField">
                                 <button className="FormField__Button nr-20">Login </button> <Link to="/login/reset-password" className="FormField__Link">Forgot Password?</Link>
@@ -97,4 +115,5 @@ class Login extends Component{
         );
     }
 }
+
 export default Login;
