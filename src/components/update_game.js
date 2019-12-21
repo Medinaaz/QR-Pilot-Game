@@ -1,6 +1,7 @@
 import React from "react"
 import config from "../config";
 import axios from "axios";
+import PropTypes from "prop-types"
 
 /*
     props:
@@ -33,8 +34,7 @@ class UpdateGame extends React.Component {
                 this.props.onData((res.data, null))
             } 
         }).catch( (err) => {
-            console.log(res.data)
-            this.props.onData((null, res.data))
+            this.props.onData((null, err))
         })
     }
 

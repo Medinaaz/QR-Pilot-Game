@@ -3,6 +3,8 @@ import './manage_game.css';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } from "react-google-maps"
 import DatePicker from "react-datepicker";
 import LocTracker from "./loc_tracker"
+import UpdateGame from "./update_game"
+
  
 import "react-datepicker/dist/react-datepicker.css";
 import QrReader from 'react-qr-reader'
@@ -122,6 +124,13 @@ class AdminManage extends React.Component {
         this.openCamera = this.openCamera.bind(this);
         this.updateHint = this.updateHint.bind(this);
 
+    }
+
+    handleData(data,err){
+        if (err) {
+            //handle
+        }
+        console.log(data)
     }
     openCamera(){
         console.log("girdi");
@@ -337,7 +346,7 @@ class AdminManage extends React.Component {
        
         return (
             //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
-            <div className="flex-centered">  <LocTracker time={5000}/>{this.state.x}
+            <div className="flex-centered">  <LocTracker time={5000}/> <UpdateGame time={5000} gameId={this.state.gameId} onData={this.handleData} />{this.state.x}
             {this.state.qrDiv}
             <div className="card">
                  
