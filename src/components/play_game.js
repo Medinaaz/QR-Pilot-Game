@@ -184,6 +184,10 @@ class Managegame extends React.Component {
         console.error(err)
       }
       
+    componentWillUnmount(){
+        localStorage.removeItem("game_data")
+    }
+      
     changeTime(){
          // Get today's date and time
          var now = new Date().getTime();

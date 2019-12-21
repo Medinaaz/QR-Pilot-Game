@@ -4,6 +4,8 @@ import {withRouter} from "react-router";
 
 class Navbar extends React.Component {
     signout = () => {
+        localStorage.removeItem("userId")
+        localStorage.removeItem("token")
         this.props.history.push("/");
     }
 
