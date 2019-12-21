@@ -229,15 +229,16 @@ class AdminManage extends React.Component {
     }
     //NEW: I added QR submit 
     updateHint(){
+        console.log("state", this.state);
         if (this.state.found_QRs.includes(this.state.hintContent)) {
             alert("You already submitted this QR")
             return;
         } 
         axios({
-            method: 'post,',
+            method: 'post',
             url: config.SUBMIT_QR_URL,
             headers: {'Content-Type': 'application/json',
-                      'Authorization': this.localStorage.getTime("token")},
+                      'Authorization': localStorage.getItem("token")},
             data: {
                 "hint": this.state.hintContent,
                 "hintSecret": this.state.qrData,
@@ -257,6 +258,8 @@ class AdminManage extends React.Component {
                 alert("QR code does not match your hint, please submit QR in correct order")
             }       
         }).catch((err) => {
+            console.log( this.state.hintContent, this.state.qrData, this.state.gameId, localStorage.getItem("userId"))
+            console.log("err", err);
             alert("Connection failed please check your internet access")
         })
     }

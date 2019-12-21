@@ -205,10 +205,10 @@ class Managegame extends React.Component {
             return;
         } 
         axios({
-            method: 'post,',
+            method: 'post',
             url: config.SUBMIT_QR_URL,
             headers: {'Content-Type': 'application/json',
-                      'Authorization': this.localStorage.getTime("token")},
+                      'Authorization': this.localStorage.getItem("token")},
             data: {
                 "hint": this.state.hintContent,
                 "hintSecret": this.state.qrData,
@@ -216,9 +216,8 @@ class Managegame extends React.Component {
                 "userId": localStorage.getItem("userId")
             }
         }).then((res) => {
-        
+            console.log("res", res);
             if(res.data.success) {
-                
                 let newFound_QRS = this.state.found_QRs
                 newFound_QRS.push(this.state.hintContent)
                 this.setState({findingQR: this.state.findingQR +1, qrDiv:"", found_QRs: newFound_QRS})
