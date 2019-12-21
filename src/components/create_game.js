@@ -135,7 +135,7 @@ class CreateGame extends React.Component {
                       'Authorization': this.state.user_token},
             data: {
               "players": [this.state.user_id],
-              "name": this.state.game_title,
+              "title": this.state.game_title,
               "adminId": this.state.user_id,
               "type": this.state.game_type,
               "location": {
@@ -151,7 +151,8 @@ class CreateGame extends React.Component {
             }
         }).then( (res) => {
           if (res.data.success) {
-            localStorage.setItem("game_id", this.state.game_id)
+            console.log(res.data)
+            localStorage.setItem("game_id", res.data.data._id)
             localStorage.setItem("game_title", this.state.game_title)
             this.setState({
               share_code: res.data.data.shareCode,

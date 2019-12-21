@@ -301,6 +301,7 @@ class AdminManage extends React.Component {
         //It can be controlled in a time interval.
         let game_title = localStorage.getItem("game_title")
         let game_id = localStorage.getItem("game_id")
+        console.log(game_id)
         this.setState({ gameName: game_title, gameId:game_id  })
 
         var latDiff = (userInfo[0].lat - lat)*(userInfo[0].lat - lat)
