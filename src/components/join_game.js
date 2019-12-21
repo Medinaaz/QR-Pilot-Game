@@ -1,26 +1,57 @@
 import React from "react";
 import Navbar from "./navbar"
 import './join_game.css'
+import config from "../config"
+import axios from "axios";
 
 class JoinGame extends React.Component {
     constructor(){
         super()
         this.state = {
+            user_id: "",
+            user_token: "",
             show_modal: true,
             game_code: "",
             invalid_code: false
         }
     }
 
-
+    componentDidMount(){
+        var userId = localStorage.getItem("userId")
+        var userToken = localStorage.getItem("token")
+        if ((userId === null) || (userToken === null)) {
+          this.props.history.push("/login")
+        }
+        this.setState({
+          user_id: userId,
+          user_token: userToken
+        })
+    }
 
     join = () => {
         console.log(this.state)
         if (this.state.game_code === "") {
             return;
         } 
-        //TODO do something logical
-        this.props.history.push("play-game")
+        axios({
+            method: 'get',
+            url: config.JOIN_GAME + this.state.game_code,
+            headers: {'Content-Type': 'application/json',
+                      'Authorization': this.state.user_token}
+        }).then( (res) => {
+          if (res.data.success) {
+            console.log("join successfull")
+            localStorage.setItem("gameData", res.data)
+            this.props.history.push("play-game")
+          } else {
+              this.setState({
+                  invalid_code: true,
+                  game_code: ""
+              })
+          }
+        }).catch( (err) => {
+          console.log("err", err);
+        })
     }
 
     handleChange = (e) => {
