@@ -126,7 +126,7 @@ class AdminManage extends React.Component {
 
     }
 
-    handleData(data,err){
+    handleData(data, err){
         if (err) {
             //handle
         }

@@ -31,10 +31,10 @@ class UpdateGame extends React.Component {
         ).then( (res) => {
             if (res.data.success) {
                 console.log(res.data)
-                this.props.onData((res.data, null))
+                this.props.onData(res.data, null)
             } 
         }).catch( (err) => {
-            this.props.onData((null, err))
+            this.props.onData(null, err)
         })
     }
 
