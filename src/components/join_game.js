@@ -30,23 +30,25 @@ class JoinGame extends React.Component {
     
 
     join = () => {
-        console.log(this.state)
         if (this.state.game_code === "") {
             return;
         } 
         axios({
-            method: 'put,',
-            url: config.JOIN_GAME + this.state.game_code,
+            method: 'put',
+            url: config.JOIN_URL + this.state.game_code,
             headers: {'Content-Type': 'application/json',
-                      'Authorization': this.state.user_token},
+                      'Authorization': localStorage.getItem("token")},
             data: {
-                "userId": this.state.user_id
+                "userId": localStorage.getItem("userId")
             }
         }).then( (res) => {
+            console.log("res",res)
           if (res.data.success) {
             console.log("join successfull")
             console.log("game_data: ", res.data)
-            localStorage.setItem("game_data", res.data)
+            localStorage.setItem("game_id", res.data.data._id)
+            localStorage.setItem("game_title", this.state.game_title)
+
             this.props.history.push("play-game")
           } else {
               this.setState({
@@ -55,6 +57,7 @@ class JoinGame extends React.Component {
               })
           }
         }).catch( (err) => {
+            console.log("catch", err)
           alert(err);
         })
     }

@@ -84,18 +84,21 @@ class Managegame extends React.Component {
             findingQR:0,
             hintContent:"Deneme",
             gameType:"Remaining",
-            playerData: [],
+            playersData: [],
             remainingTime:"",
             x:"",
             qrData:"",
             qrDiv:"",
-            hint:""
+            hint:"",
+            center_lat: 0,
+            center_lng: 0,
+            center_radius: 0
         }
         this.changeTime = this.changeTime.bind(this);
         this.closeWarning = this.closeWarning.bind(this);
         this.openCamera = this.openCamera.bind(this);
         this.updateHint = this.updateHint.bind(this);
-
+        this.handleData = this.handleData.bind(this);
     }
     openCamera(){
         console.log("girdi");
@@ -314,8 +317,9 @@ class Managegame extends React.Component {
          this.setState({playerData: data})*/
  
          //It can be controlled in a time interval.
-         let game_title = localStorage.getItem("game_title")
-         let game_id = localStorage.getItem("game_id")
+        let game_title = localStorage.getItem("game_title")
+        let game_id = localStorage.getItem("game_id")
+
          console.log(game_id)
          this.setState({ gameName: game_title, gameId:game_id  })
     }
@@ -340,6 +344,9 @@ class Managegame extends React.Component {
                              googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places`}
                             loadingElement = {<div style={{height:"100%"}} />}
                             containerElement = {<div style={{height:"100%"}} />}
+                            lat = {this.state.center_lat}
+                            lng = {this.state.center_lng}
+                            radius = {this.state.center_radius}
                             mapElement = {<div style={{height:"100%"}} />}
                         />
                         </div>
@@ -382,7 +389,6 @@ class Managegame extends React.Component {
                                     <div className="tile-content">
                                     <p className="tile-title">
                                     {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
-                                    <button className="btn btn-error" onClick={() => this.kickPlayer(item)}>X</button>
                                     </p>
                                     
                                     </div>
