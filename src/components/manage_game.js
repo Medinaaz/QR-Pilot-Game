@@ -93,6 +93,7 @@ class AdminManage extends React.Component {
     constructor() {
         super();
         this.state = {
+            gameDATA:"",
             userName: '',
             gameName:'Yakup\'s Hunger Games',
             gameId:"",
@@ -127,9 +128,10 @@ class AdminManage extends React.Component {
     }
 
     handleData(data, err){
-        if (err) {
-            //handle
+        if (err===null) {
+            alert("Game cannot be loaded");
         }
+        this.setState({gameDATA:data})
         console.log(data)
     }
     openCamera(){
