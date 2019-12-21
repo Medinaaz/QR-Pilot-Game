@@ -35,13 +35,13 @@ class Navbar extends React.Component {
                         <button  href="" onClick={this.go("/create-game")} className="btn btn-link navbar-brand mr-1">Create</button>
                     </li>
                     <li className="tab-item">
-                        <button  href="" onClick={this.go("/create-game")} className="btn btn-link navbar-brand mr-1">Join</button>
+                        <button  href="" onClick={this.go("/join-game")} className="btn btn-link navbar-brand mr-1">Join</button>
                     </li>
                     <li className="tab-item">
-                        <button  href="" onClick={this.go("/create-game")} className="btn btn-link navbar-brand mr-1">Profile</button>
+                        <button  href="" onClick={this.go("/profile")} className="btn btn-link navbar-brand mr-1">Profile</button>
                     </li>
                     <li className="tab-item">
-                        <button  href="" onClick={this.go("/create-game")} className="btn btn-link navbar-brand mr-1">Sign Out</button>
+                        <button  href="" onClick={this.signout} className="btn btn-link navbar-brand mr-1">Sign Out</button>
                     </li>
                 </ul>
             </div>

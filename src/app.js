@@ -8,6 +8,7 @@ import SignUp from "./components/sign_up"
 import Profile from "./components/profile"
 import JoinGame from "./components/join_game";
 import './App.css';
+import PrivateRoute from "./privateRoute"
 import ResetPassword from "./components/reset_password";
 
 class App extends React.Component {
@@ -17,12 +18,11 @@ class App extends React.Component {
                 <Route path="/create-game" exact component={CreateGame} />
                 <Route path="/manage-game" exact component={ManageGame} />
                 <Route path="/play-game" exact component={PlayGame} />
-                <Route path="/" exact component={SignUp} />
                 <Route path="/profile" exact component={Profile} />
                 <Route path="/join-game" exact component={JoinGame} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/login/reset-password" exact component={ResetPassword}/>
-
+                <Route path="/" exact component={SignUp} />
             </Router>
         );
     }

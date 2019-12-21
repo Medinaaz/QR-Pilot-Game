@@ -313,7 +313,7 @@ class CreateGame extends React.Component {
             <div className="divider show-lg" data-content=" "></div>
 
 
-            <div className="column grid-lg">
+            <div className="column grid-lg ">
               <div style={{paddingTop: "10%", display: "flex", justifyContent: "center"}}>
                 <h1 className="hide-lg">Game Configuration</h1>
                 <h3 className="show-lg">Game Configuration</h3>
