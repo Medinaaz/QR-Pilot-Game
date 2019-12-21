@@ -17,10 +17,7 @@ const area = {
     options: {
       strokeColor: "#ff0000"
     }
-  };
-var radius = 0;
-var lat = 0;
-var lng = 0;
+};
 
 //Data Types may be changed
 const data = [
@@ -50,33 +47,32 @@ const players_temp = [
     {username: 'Player6', score: 6}, 
 ];
 
-function Map(){
+function Map(props){
     //lat lg state
-  
+    console.log(props)
    // const google=window.google;
     const [number, desc] = useState(null);
     return(
         <GoogleMap defaultZoom={15} 
-        defaultCenter={{lat: lat, lng: lng}}
-        
+            defaultCenter={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
+            center={{
+                lat: parseFloat(props.lat),
+                lng: parseFloat(props.lng)
+            }}
         >
-        <Marker key="1" position={{lat: lat, lng: lng}}
+        <Marker key="1" position={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
         onClick={()=> {
            // desc(this);
         }}
         />
-        {data.map((item, key) => <Marker key={item.username} position={{lat: item.lat, lng: item.lng}}
-        onClick={()=> {
-            desc(item);
-        }}/>
-        )}
+        
 
         <Circle
-            defaultCenter={{
-                lat: parseFloat(lat),
-                lng: parseFloat(lng)
+            center={{
+                lat: parseFloat(props.lat),
+                lng: parseFloat(props.lng)
             }}
-            radius={area.radius}
+            radius={props.radius}
             options={area.options}
             />
 
@@ -130,7 +126,10 @@ class AdminManage extends React.Component {
             qrDiv:"",
             hint:"",
             timecontent:"",
-            playersData:[]
+            playersData:[],
+            center_lat: 0,
+            center_lng: 0,
+            center_radius: 0
         }
         data.sort((a, b) => Number(b.score) - Number(a.score));
         console.log("descending", data);
@@ -181,15 +180,16 @@ class AdminManage extends React.Component {
                 alert("You have a connection problem")
             })
         }
-        radius = data.data.location.radius;
-        area.radius=data.data.location.radius;
-        lat = 41.105399;
-        lng = 29.023522;
-        this.setState({ gameType:data.data.type, 
+        
+        this.setState({ 
+            gameType:data.data.type, 
             totalQR:data.data.hints.hint.length,  
             findingQR: data.data.submittedQRs,
             playersData: players_temp,
-            playerNumber:  players_temp.length-1
+            playerNumber:  players_temp.length-1,
+            center_radius  :data.data.location.radius,
+            center_lat: data.data.location.latitude,
+            center_lng: data.data.location.longitude
         })
         if(data.data.type==="Standard"){
             this.setState({hint: true})
@@ -198,6 +198,22 @@ class AdminManage extends React.Component {
         countDownDate = new Date(userInfo[0].time).getTime();
         timee = setInterval(this.changeTime, 1000);
         }
+
+        var latDiff = (userInfo[0].lat - this.state.center_lat)*(userInfo[0].lat - this.state.center_lat)
+        var lngDiff = (userInfo[0].lng - this.state.center_lng)*(userInfo[0].lng - this.state.center_lng)
+        var result = Math.sqrt(latDiff+lngDiff)*100000
+
+        if(result > this.state.center_radius) {
+            console.log("result");
+            var y =<div className="toast toast-warning" style={{textAlign:'center'}}>
+                <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
+                    <p>Warning!!</p>
+                    You are out of the area!!!
+            </div>  
+            this.setState({x:y})
+        }
+        
+       
         console.log(data)
         console.log(data.data.title)
         
@@ -345,7 +361,7 @@ class AdminManage extends React.Component {
             timeCaption="Time"
             dateFormat="h:mm aa"
             customInput={<ExampleCustomInput2 />}
-            />
+        />
             
             &nbsp;&nbsp;
         <button className="btn btn-primary btn-sm" onClick={this.handleTime}><i className="icon icon-edit"></i>
@@ -366,28 +382,12 @@ class AdminManage extends React.Component {
         data.sort((a, b) => Number(b.score) - Number(a.score));
         console.log("descending", data);
         this.setState({playerData: data})*/
-        var y;
 
         //It can be controlled in a time interval.
         let game_title = localStorage.getItem("game_title")
         let game_id = localStorage.getItem("game_id")
         console.log(game_id)
         this.setState({ gameName: game_title, gameId:game_id  })
-
-        var latDiff = (userInfo[0].lat - lat)*(userInfo[0].lat - lat)
-        var lngDiff = (userInfo[0].lng - lng)*(userInfo[0].lng - lng)
-        var result = Math.sqrt(latDiff+lngDiff)*100000
-        
-        if(result > radius){
-        
-            console.log("result");
-                y =<div className="toast toast-warning" style={{textAlign:'center'}}>
-                <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
-                    <p>Warning!!</p>
-                    You are out of the area!!!
-            </div>  
-        }            
-        this.setState({x:y})
    }
 
    //Inform player!!!!
@@ -426,6 +426,9 @@ class AdminManage extends React.Component {
                     googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s `}
                     loadingElement = {<div style={{height:"100%"}} />}
                     containerElement = {<div style={{height:"100%"}} />}
+                    lat = {this.state.center_lat}
+                    lng = {this.state.center_lng}
+                    radius = {this.state.center_radius}
                     mapElement = {<div style={{height:"100%"}} />}
                 />
                 </div> 
