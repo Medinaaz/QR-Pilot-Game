@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useRef }  from "react";
 import { Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +12,9 @@ import QRCode from "qrcode.react";
 import config from "../config";
 import axios from "axios";
 import Typical from 'react-typical'
+import Form from 'react-bootstrap/Form'
+import { useSpring, useChain, animated } from "react-spring";
+
 
 const history = [
     {
@@ -145,6 +148,7 @@ export default class Profile extends React.Component {
             this.setState({
                 passwInput: e.target.value,
             })
+
         } else {
             this.setState({
                 [e.target.name]: e.target.value
@@ -173,182 +177,179 @@ export default class Profile extends React.Component {
     {
         return (
             <div className="cComponent" style={divStyle}>
-                <div>
-                    <Navbar/>
-                    <Sky
-                        images={{
-                            0: myImage
-                        }}
-                        how={130} /* Pass the number of images Sky will render chosing randomly */
-                        time={40} /* time of animation */
-                        size={'50px'} /* size of the rendered images */
-                        /*background={'palettedvioletred'} /* color of the background */
-                    />
-                    <Grid container alignItems="flex-start">
-                        <Grid item xs={4}>
-                            <Paper style={{width: 250, marginLeft: 50, marginRight: 1, height: 300, marginTop: 40}}>
-                                <Grid container alignItems="flex-start">
-                                    <div style={{paddingTop: "8%", paddingRight: "2%", paddingLeft: "10%"}}>
-                                        <h5 style={{
-                                            color: "MediumSeaGreen",
-                                            justifyContent: "center",
-                                            fontSize: "25px"
-                                        }}>USER PROFILE </h5>
-                                        <h5 style={{
-                                            color: "Peru",
-                                            justifyContent: "center",
-                                            fontSize: "20px"
-                                        }}>{this.state.username}</h5>
-                                        <h5 style={{
-                                            color: "Peru",
-                                            justifyContent: "center",
-                                            fontSize: "20px"
-                                        }}>{this.state.email} </h5>
-                                        <div style={{
-                                            paddingTop: "15%",
-                                            paddingRight: "2%",
-                                            paddingLeft: "3%",
-                                            size: "lg",
-                                            width: "90%"
-                                        }}>
-                                            <button onClick={this.handleEditClick}
-                                                    className="btn btn-success btn-lg">Edit Profile
-                                            </button>
-                                            <div style={{paddingTop: "15%", paddingRight: "2%", paddingLeft: "1%"}}>
-                                                <button onClick={this.handleHistoryClick}
-                                                        className="btn btn-success btn-lg">Game History
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+        <div>
+        <Navbar/>
+        <Sky
+        images={{
+        0: myImage
+    }}
+        how={130} /* Pass the number of images Sky will render chosing randomly */
+        time={40} /* time of animation */
+        size={'50px'} /* size of the rendered images */
+        /*background={'palettedvioletred'} /* color of the background */
+        />
+        <Grid container alignItems="flex-start">
+        <Grid item xs={4}>
+        <Paper style={{width: 250, marginLeft: 50, marginRight: 1, height: 300, marginTop: 40}}>
+    <Grid container alignItems="flex-start">
+        <div style={{paddingTop: "8%", paddingRight: "2%", paddingLeft: "10%"}}>
+    <div className="timeBox">
+        <h5 style={{
+        color: "MediumSeaGreen",
+            justifyContent: "center",
+            fontSize: "25px"
+    }}>USER PROFILE </h5></div>
+    <h5 style={{
+        color: "Peru",
+            justifyContent: "center",
+            fontSize: "20px"
+    }}>{this.state.username}</h5>
+    <h5 style={{
+        color: "Peru",
+            justifyContent: "center",
+            fontSize: "20px"
+    }}>{this.state.email} </h5>
+    <div style={{
+        paddingTop: "15%",
+            paddingRight: "2%",
+            paddingLeft: "3%",
+            size: "lg",
+            width: "90%"
+    }}>
+    <button onClick={this.handleEditClick}
+        className="btn btn-success btn-lg">Edit Profile
+    </button>
+    <div style={{paddingTop: "15%", paddingRight: "2%", paddingLeft: "1%"}}>
+    <button onClick={this.handleHistoryClick}
+        className="btn btn-success btn-lg">Game History
+    </button>
+    </div>
+    </div>
+    </div>
 
-                                </Grid>
-                            </Paper>
-                        </Grid>
-                        {
-                            !this.state.viewEdit ? (
-                                <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 250}}>
-                                    <Grid container alignItems="flex-start">
-                                        <h6 style={{color: "MediumSeaGreen", fontSize: "25px"}}>GAME HISTORY</h6>
-                                        <table style={{paddingTop: "10%"}}
-                                               className="table table-striped table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>Game Title</th>
-                                                <th>Score</th>
-                                                <th>Rank</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {
-                                                this.state.gameInfos.map((item, key) =>
-                                                    <tr key={key}>
-                                                        <td>{item.title}</td>
-                                                        <td>{item.score}</td>
-                                                        <td>{item.rank} </td>
-                                                    </tr>
-                                                )
-                                            }
-                                            </tbody>
-                                        </table>
-                                    </Grid>
-                                </Paper>
-                            ) : (
-                                /*enter another grid that shows the profile*/
-                                <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 352}}>
-                                    <Grid container alignItems="flex-start">
-                                        <h6 style={{
-                                            color: "MediumSeaGreen",
-                                            fontSize: "25px",
-                                            marginTop: "5%",
-                                            marginLeft: "5%"
-                                        }}>EDIT</h6>
-                                        <div className="form-group">
-                                            <div style={{paddingLeft: "20%"}}>
-                                                <Typical
-                                                    steps={['Edit', 1000, 'Edit username!', 500]}
-                                                    loop={Infinity}
-                                                    wrapper="p"
-                                                />
-                                                <input className="form-input input-lg"
-                                                       placeholder="Enter new username"
-                                                       name="usernameInput"
-                                                       onChange={this.handleChange}
-                                                       value={this.state.usernameInput}
-                                                />
-                                            </div>
-                                            {this.state.user_err ?
-                                                <p className="text-error">You didn't change your username</p> : ""}
-                                            <div className="form-group">
-                                                <div style={{paddingLeft: "20%"}}>
-                                                    <Typical
-                                                        steps={['Edit', 1000, 'Edit password!', 500]}
-                                                        loop={Infinity}
-                                                        wrapper="p"
-                                                    />
-                                                    <input className="form-input input-lg"
-                                                           placeholder="Enter new password"
-                                                           name="passwInput"
-                                                           onChange={this.handleChange}
-                                                           value={this.state.passwInput}
-                                                    />
-                                                </div>
-                                                {this.state.pass_err ?
-                                                    <p className="text-error">You didn't change your
-                                                        password</p> : ""}
-
-                                                <div className="form-group">
-                                                    <div style={{paddingLeft: "20%"}}>
-                                                        <Typical
-                                                            steps={['Edit', 1000, 'Edit secret question!', 500]}
-                                                            loop={Infinity}
-                                                            wrapper="p"
-                                                        />
-                                                        <input className="form-input input-lg"
-                                                               placeholder="Enter new secret question"
-                                                               name="secretInput"
-                                                               onChange={this.handleChange}
-                                                               value={this.state.secretInput}
-                                                        />
-                                                    </div>
-                                                    {this.state.secret_err ?
-                                                        <p className="text-error">You didn't change your secret
-                                                            question</p> : ""}
-
-                                                    <div className="form-group">
-                                                        <div style={{paddingLeft: "20%"}}>
-                                                            <Typical
-                                                                steps={['Edit', 1000, 'Edit answer question!', 500]}
-                                                                loop={Infinity}
-                                                                wrapper="p"
-                                                            />
-                                                            <input className="form-input input-lg"
-                                                                   placeholder="Enter new answer"
-                                                                   name="secretAnswer"
-                                                                   onChange={this.handleChange}
-                                                                   value={this.state.secretAnswer}
-                                                            />
-                                                        </div>
-                                                        {this.state.answ_err ?
-                                                            <p className="text-error">You didn't change your secret
-                                                                answer</p> : ""}
-
-                                                        <div style={{paddingTop: "1%", paddingLeft: "2%"}}>
-                                                            <button onClick={this.submit_data}
-                                                                    className="btn btn-success btn-lg">SUBMIT CHANGES
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Grid>
-                                </Paper>
-                            )
-                        }
-                    </Grid>
-                </div>
+    </Grid>
+    </Paper>
+    </Grid>
+        {
+            !this.state.viewEdit ? (
+                <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 250}}>
+        <Grid container alignItems="flex-start">
+            <div className="timeBox">
+            <h6 style={{color: "MediumSeaGreen", fontSize: "23px"}}>GAME HISTORY</h6>
+        </div>
+        <table style={{paddingTop: "10%"}}
+            className="table table-striped table-hover">
+                <thead>
+                <tr>
+                <th>Game Title</th>
+        <th>Score</th>
+        <th>Rank</th>
+        </tr>
+        </thead>
+        <tbody>
+        {
+            this.state.gameInfos.map((item, key) =>
+                <tr key={key}>
+            <td>{item.title}</td>
+            <td>{item.score}</td>
+            <td>{item.rank} </td>
+            </tr>
+        )
+        }
+        </tbody>
+        </table>
+        </Grid>
+        </Paper>
+        ) : (
+        /*enter another grid that shows the profile*/
+        <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 380}}>
+        <Grid container alignItems="flex-start">
+            <h6 style={{
+            color: "MediumSeaGreen",
+                fontSize: "25px",
+                marginTop: "5%",
+                marginLeft: "5%",
+        }}>EDIT</h6>
+        <div className="form-group">
+            <div style={{paddingLeft: "20%"}}>
+        <h6 style={{color: "MediumSeaGreen", fontSize: "12px"}}>Username</h6>
+        <input className="form-input input-lg"
+            placeholder="Enter new username"
+            name="usernameInput"
+            onChange={this.handleChange}
+            value={this.state.usernameInput}
+            />
             </div>
-        );
+            {this.state.user_err ?
+            <p className="text-error">You didn't change your username</p> : ""}
+            <div className="form-group">
+                <div style={{paddingLeft: "20%"}}><h6 style={{color: "MediumSeaGreen", fontSize: "12px"}}>Password</h6>
+            <input className="form-input input-lg"
+                placeholder="Enter new password"
+                name="passwInput"
+                onChange={this.handleChange}
+                value={this.state.passwInput}
+                />
+                </div>
+                {this.state.pass_err ?
+                <p className="text-error">You didn't change your
+                    password</p> : ""}
+
+                    <div className="form-group">
+                    <div style={{paddingLeft: "20%"}}>
+                <h6 style={{color: "MediumSeaGreen", fontSize: "12px"}}>Secret Question</h6>
+                <input className="form-input input-lg"
+                    placeholder="Enter new secret question"
+                    name="secretInput"
+                    onChange={this.handleChange}
+                    value={this.state.secretInput}
+                    />
+                    </div>
+                    {this.state.secret_err ?
+                    <p className="text-error">You didn't change your secret
+                        question</p> : ""}
+
+                        <div className="form-group">
+                        <div style={{paddingLeft: "20%"}}>
+                    <h6 style={{color: "MediumSeaGreen", fontSize: "12px"}}>Secret Answer</h6>
+
+                    <input className="form-input input-lg"
+                        placeholder="Enter new answer"
+                        name="secretAnswer"
+                        onChange={this.handleChange}
+                        value={this.state.secretAnswer}
+                        />
+                        </div>
+                        {this.state.answ_err ?
+                        <p className="text-error">You didn't change your secret
+                            answer</p> : ""}
+                            <div style={{paddingTop: "1%", paddingLeft: "20%"}}>
+                        <Form.Group id="formGridCheckbox">
+                            <Form.Check type="checkbox" label=" " />
+                            <Typical
+                            steps={['I agree', 1000, 'I confirm my changes', 500]}
+                            loop={Infinity}
+                            wrapper="p"
+                                />
+                                </Form.Group>
+
+                                </div>
+                                <div style={{paddingTop: "1%", paddingLeft: "2%"}}>
+                        <button onClick={this.submit_data}
+                            className="btn btn-success btn-lg">SUBMIT CHANGES
+                        </button>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </Grid>
+                        </Paper>
+                        )
+        }
+    </Grid>
+    </div>
+    </div>
+    );
     }
 }

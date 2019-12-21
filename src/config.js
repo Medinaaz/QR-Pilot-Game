@@ -9,7 +9,7 @@ const development = {
     SIGNUP_URL : BASE_URL + "signUp",
     GAME_URL:  BASE_URL + "game",
     UPDATE_LOCATION_URL: BASE_URL +  "update-location/",
-    JOIN_URL:  BASE_URL + "game-join/",
+    JOIN_URL:  BASE_URL + "join-game/",
     PROFILE_URL:  BASE_URL + "user/",
     SUBMIT_QR_URL: BASE_URL + "submit-QR"
 };
@@ -19,7 +19,7 @@ const production = {
     SIGNUP_URL : BASE_URL + "signUp",
     GAME_URL:  BASE_URL + "game",
     UPDATE_LOCATION_URL: BASE_URL +  "update-location/",
-    JOIN_URL:  BASE_URL + "game-join/",
+    JOIN_URL:  BASE_URL + "join-game/",
     PROFILE_URL:  BASE_URL + "user/",
     SUBMIT_QR_URL: BASE_URL + "submit-QR"
 };
@@ -28,4 +28,4 @@ const config = {
     development, production
 };
 
-module.exports = config[env];
+module.exports = development;
