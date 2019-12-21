@@ -7,59 +7,42 @@ import config from "../config"
 import axios from "axios";
 import UpdateGame from "./update_game"
 
-//This structure may be changed
-var radius = 300;
-var lat = 41.013000;
-var lng = 28.974800;
 
-//Data Types may be changed
-const data = [
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00", id:1, owner:true, username: 'Player1',avatar: "https://picturepan2.github.io/spectre/img/avatar-1.png", score:1, lat:41.014000, lng:28.974800},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:2, owner:false, username: 'Player2',avatar:"https://picturepan2.github.io/spectre/img/avatar-2.png", score:2, lat:41.015000, lng:28.975000},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:3, owner:false, username: 'Player3',avatar:"https://picturepan2.github.io/spectre/img/avatar-4.png", score:3, lat:41.013500, lng:28.974100},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:4, owner:false, username: 'Player4',avatar:"https://picturepan2.github.io/spectre/img/avatar-3.png", score:4, lat:41.013000, lng:28.974900},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:6, owner:false, username: 'Player6',avatar:"https://picturepan2.github.io/spectre/img/avatar-2.png", score:6, lat:41.013000, lng:28.972500}
+//Random avatars
+const avatar = [
+    "https://picturepan2.github.io/spectre/img/avatar-1.png", "https://picturepan2.github.io/spectre/img/avatar-2.png", "https://picturepan2.github.io/spectre/img/avatar-3.png",
+    "https://picturepan2.github.io/spectre/img/avatar-4.png", "https://picturepan2.github.io/spectre/img/avatar-5.png", "https://img.icons8.com/plasticine/100/000000/user-male-circle.png",
+    "https://img.icons8.com/bubbles/50/000000/guest-male.png","https://img.icons8.com/dusk/64/000000/user-female-circle.png","https://img.icons8.com/color/48/000000/user-female-circle.png"
 ];
 
-const userInfo = [
-    {gametype:"time", time: "Dec 21, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880}
-];
 
-function Map(){
+function Map(props){
     //lat lg state
-  
+    console.log(props)
    // const google=window.google;
     const [number, desc] = useState(null);
-    const area = {
-        radius: 300,
-        options: {
-          strokeColor: "#ff0000"
-        }
-      };
     return(
         <GoogleMap defaultZoom={15} 
-        defaultCenter={{lat: 41.013000, lng: 28.974800}}
-        
+            defaultCenter={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
+            center={{
+                lat: parseFloat(props.lat),
+                lng: parseFloat(props.lng)
+            }}
         >
-        <Marker key="1" position={{lat: 41.013000, lng: 28.974800}}
+        <Marker key="1" position={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
         onClick={()=> {
            // desc(this);
         }}
         />
-        {data.map((item, key) => <Marker key={item.username} position={{lat: item.lat, lng: item.lng}}
-        onClick={()=> {
-            desc(item);
-        }}/>
-        )}
+        
 
         <Circle
-            defaultCenter={{
-                lat: parseFloat(41.013000),
-                lng: parseFloat(28.974800)
+            center={{
+                lat: parseFloat(props.lat),
+                lng: parseFloat(props.lng)
             }}
-            radius={area.radius}
-            options={area.options}
+            radius={props.radius}
+            options={{strokeColor: "red"}}
             />
 
         {number && (
@@ -82,9 +65,7 @@ function Map(){
         )}
 
         </GoogleMap>
-        
     );
-
 }
 
 const WrappedMap = withScriptjs(withGoogleMap(Map));
@@ -148,18 +129,81 @@ class Managegame extends React.Component {
       this.setState({qrDiv: content})
     }
 
-    //NEW: Added handle data logic
     handleData(data, err){
+        console.log("yakdfögdşlsdm");
+        console.log("errr", err);
         if (err) {
-            alert("Game cannot be loaded");
+            return;
         }
-        this.setState({gameName:data.data.title})
+
         console.log(data)
-        console.log(data.data.title)
+        this.setState({
+            gameName: data.data.title
+        })
+
+
+        if (this.state.admin_name === "" ){
+            axios({
+                method: 'get',
+                url: config.PROFILE_URL + data.data.adminId,
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem("token")},
+            }).then(res => {
+                if(res.data.success) {
+                    this.setState({
+                        admin_name: res.data.data.username
+                    })
+                } else {
+                    alert("Could not fetch admin info")
+                }
+            }).catch( err => {
+                alert("You have a connection problem")
+            })
+        }
+        
+        this.setState({ 
+            gameType:data.data.type, 
+            totalQR:data.data.hints.hint.length,  
+            findingQR: data.data.submittedQRs,
+            playersData: data.data.ranking,
+            playerNumber:  data.data.ranking.length-1,
+            center_radius  :data.data.location.radius,
+            center_lat: data.data.location.latitude,
+            center_lng: data.data.location.longitude
+        })
+
+        if(data.data.type==="Standard"){
+            this.setState({hint: true})
+        }
+
+        var user_lat = localStorage.getItem("lat")
+        var user_lng = localStorage.getItem("lng")
+        
+        var latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
+        var lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
+        var result = Math.sqrt(latDiff+lngDiff)*100000
+
+        console.log("111111111111111", result);
+
+        if(result > this.state.center_radius) {
+            console.log("222222222222222", result);
+
+            console.log("result");
+            var y =<div className="toast toast-warning" style={{textAlign:'center'}}>
+                <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
+                    <p>Warning!!</p>
+                    You are out of the area!!!
+            </div>  
+            this.setState({x:y})
+        }
+        
     }
 
-    //NEW: I added QR submit 
     updateHint(){
+        if (this.state.found_QRs.includes(this.state.hintContent)) {
+            alert("You already submitted this QR")
+            return;
+        } 
         axios({
             method: 'post,',
             url: config.SUBMIT_QR_URL,
@@ -168,19 +212,18 @@ class Managegame extends React.Component {
             data: {
                 "hint": this.state.hintContent,
                 "hintSecret": this.state.qrData,
-                "gameId":this.state.gameId
+                "gameId":this.state.gameId,
+                "userId": localStorage.getItem("userId")
             }
         }).then((res) => {
-            
+        
             if(res.data.success) {
-                if (this.state.found_QRs.includes(this.state.hintContent)) {
-                    alert("You already submitted this QR")
-                } else {
-                    let newFound_QRS = this.state.found_QRs
-                    newFound_QRS.push(this.state.hintContent)
-                    this.setState({findingQR: this.state.findingQR +1, qrDiv:"", found_QRs: newFound_QRS})
-                    console.log("x:"+this.state.findingQR);
-                }
+                
+                let newFound_QRS = this.state.found_QRs
+                newFound_QRS.push(this.state.hintContent)
+                this.setState({findingQR: this.state.findingQR +1, qrDiv:"", found_QRs: newFound_QRS})
+                console.log("x:"+this.state.findingQR);
+            
             } else {
                 alert("QR code does not match your hint, please submit QR in correct order")
             }       
@@ -264,47 +307,23 @@ class Managegame extends React.Component {
         console.log("what");
         this.setState({x:""})
     }
-   componentDidMount() {
-
-        data.sort((a, b) => Number(b.score) - Number(a.score));
-        console.log("descending", data);
-        this.setState({playerData: data})
-        var y;
-
-        //It can be controlled in a time interval.
-
-        var latDiff = (userInfo[0].lat - lat)*(userInfo[0].lat - lat)
-        var lngDiff = (userInfo[0].lng - lng)*(userInfo[0].lng - lng)
-        var result = Math.sqrt(latDiff+lngDiff)*100000
-        
-        if(result > radius){
-          
-            console.log("result");
-                y =<div className="toast toast-warning" style={{textAlign:'center'}}>
-                <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
-                    <p>Warning!!</p>
-                    You are out of the area!!!
-            </div>  
-            
-        }
-         
-       this.setState({x:y})
-
-
-        if(userInfo[0].gametype==="hint"){
-            this.setState({hint: true})
-        }
-        else if (userInfo[0].gametype==="time"){
-            countDownDate = new Date(userInfo[0].time).getTime();
-            timee = setInterval(this.changeTime, 1000);
-        }
-
-   }
+    componentDidMount() {
+        /*
+         data.sort((a, b) => Number(b.score) - Number(a.score));
+         console.log("descending", data);
+         this.setState({playerData: data})*/
+ 
+         //It can be controlled in a time interval.
+         let game_title = localStorage.getItem("game_title")
+         let game_id = localStorage.getItem("game_id")
+         console.log(game_id)
+         this.setState({ gameName: game_title, gameId:game_id  })
+    }
     render() {
        
         return (
             //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
-            <div className="flex-centered">  <LocTracker time={5000}/> {this.state.x}
+            <div className="flex-centered">  <LocTracker time={5000}/>  <UpdateGame time={5000} gameId={this.state.gameId} onData={this.handleData} />{this.state.x}
             {this.state.qrDiv}
            
                 <div className="card">   
@@ -347,26 +366,28 @@ class Managegame extends React.Component {
                             Leaderboard
                             <div className="flex-centered" >
                             <ul className="menu">
-                                {
-                                    data.map((item, key) =>
-                                    <li className="menu-item" key={item.id}>
+                            {
+                                    this.state.playersData.map((item, key) =>
+                                    <li className="menu-item" key={item._id}>
+                                    
+                                    <div className="tile-icon">
                                         
-                                        <div className="tile-icon">
+                                        <figure className="avatar">
+                                        <img src={avatar[this.state.playersData.indexOf(item)%avatar.length]} alt="Avatar">
                                         
-                                            <figure className="avatar">
-                                                <img src={item.avatar} alt="Avatar">
-                                                
-                                                </img> 
-                                                {item.owner?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
-                                            </figure>
-                                        </div>
-                                        <div className="tile-content">
-                                            <p className="tile-title">
-                                            {item.username}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.score}</span>&nbsp;
-                                            </p>
-                                        </div>
+                                        </img> 
+                                        {item.owner?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                                        </figure>
+                                    </div>
+                                    <div className="tile-content">
+                                    <p className="tile-title">
+                                    {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
+                                    <button className="btn btn-error" onClick={() => this.kickPlayer(item)}>X</button>
+                                    </p>
+                                    
+                                    </div>
                                         </li>
-                                    )
+                                )
                                 }
                             </ul>
                             </div>

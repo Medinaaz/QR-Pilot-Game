@@ -33,8 +33,9 @@ class LocTracker extends React.Component {
                         }
                     }
                 }).then( (res) => {
-                    console.log(res)
                   if (res.data.success) {
+                    localStorage.setItem("lng", this.state.longitude)
+                    localStorage.setItem("lat", this.state.latitude)
                     console.log("registered location")
                     console.log(this.state.longitude, "   ", this.state.latitude)
                   } 

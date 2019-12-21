@@ -11,26 +11,9 @@ import config from "../config";
 import "react-datepicker/dist/react-datepicker.css";
 import QrReader from 'react-qr-reader'
 
-//This structure may be changed
-const area = {
-    radius: 0,
-    options: {
-      strokeColor: "#ff0000"
-    }
-};
 
-//Data Types may be changed
-const data = [
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00", id:1, owner:true, username: 'Player1',avatar:"https://img.icons8.com/plasticine/100/000000/user-male-circle.png", score:1, lat:41.014000, lng:28.974800},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:2, owner:false, username: 'Player2',avatar:"https://picturepan2.github.io/spectre/img/avatar-2.png", score:2, lat:41.015000, lng:28.975000},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:3, owner:false, username: 'Player3',avatar:"https://picturepan2.github.io/spectre/img/avatar-4.png", score:3, lat:41.013500, lng:28.974100},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:4, owner:false, username: 'Player4',avatar:"https://picturepan2.github.io/spectre/img/avatar-3.png", score:4, lat:41.013000, lng:28.974900},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880},
-    {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:6, owner:false, username: 'Player6',avatar:"https://picturepan2.github.io/spectre/img/avatar-2.png", score:6, lat:41.013000, lng:28.972500}
-];
-const userInfo = [
-    {gametype:"time", time: "Dec 21, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880}
-];
+
+
 //Random avatars
 const avatar = [
     "https://picturepan2.github.io/spectre/img/avatar-1.png", "https://picturepan2.github.io/spectre/img/avatar-2.png", "https://picturepan2.github.io/spectre/img/avatar-3.png",
@@ -38,14 +21,6 @@ const avatar = [
     "https://img.icons8.com/bubbles/50/000000/guest-male.png","https://img.icons8.com/dusk/64/000000/user-female-circle.png","https://img.icons8.com/color/48/000000/user-female-circle.png"
 ];
 
-const players_temp = [
-    {username: 'Player1', score: 1},
-    {username: 'Player2', score: 2},
-    {username: 'Player3', score: 3},
-    {username: 'Player4', score: 4},
-    {username: 'Player5', score: 5},
-    {username: 'Player6', score: 6}, 
-];
 
 function Map(props){
     //lat lg state
@@ -73,7 +48,7 @@ function Map(props){
                 lng: parseFloat(props.lng)
             }}
             radius={props.radius}
-            options={area.options}
+            options={{strokeColor: "red"}}
             />
 
         {number && (
@@ -109,6 +84,7 @@ class AdminManage extends React.Component {
             gameDATA:"",
             userName: "",
             gameName:"",
+            found_QRs: [],
             admin_name: "",
             gameId:"",
             playerNumber:0,
@@ -131,9 +107,6 @@ class AdminManage extends React.Component {
             center_lng: 0,
             center_radius: 0
         }
-        data.sort((a, b) => Number(b.score) - Number(a.score));
-        console.log("descending", data);
-        this.state.playerData = data;
         this.kickPlayer = this.kickPlayer.bind(this);
         this.changeTime = this.changeTime.bind(this);
         this.handleTime = this.handleTime.bind(this);
@@ -154,12 +127,15 @@ class AdminManage extends React.Component {
     }
     */
     handleData(data, err){
+        console.log("yakdfögdşlsdm");
+        console.log("errr", err);
         if (err) {
-            alert("Game cannot be loaded");
             return;
         }
+
+        console.log(data)
         this.setState({
-            gameName:data.data.title
+            gameName: data.data.title
         })
 
 
@@ -192,19 +168,23 @@ class AdminManage extends React.Component {
             center_lat: data.data.location.latitude,
             center_lng: data.data.location.longitude
         })
+
         if(data.data.type==="Standard"){
             this.setState({hint: true})
         }
-        else if (userInfo[0].gametype==="Time Rush"){        
-        countDownDate = new Date(userInfo[0].time).getTime();
-        timee = setInterval(this.changeTime, 1000);
-        }
 
-        var latDiff = (userInfo[0].lat - this.state.center_lat)*(userInfo[0].lat - this.state.center_lat)
-        var lngDiff = (userInfo[0].lng - this.state.center_lng)*(userInfo[0].lng - this.state.center_lng)
+        var user_lat = localStorage.getItem("lat")
+        var user_lng = localStorage.getItem("lng")
+        
+        var latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
+        var lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
         var result = Math.sqrt(latDiff+lngDiff)*100000
 
+        console.log("111111111111111", result);
+
         if(result > this.state.center_radius) {
+            console.log("222222222222222", result);
+
             console.log("result");
             var y =<div className="toast toast-warning" style={{textAlign:'center'}}>
                 <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
@@ -214,17 +194,12 @@ class AdminManage extends React.Component {
             this.setState({x:y})
         }
         
-       
-        console.log(data)
-        console.log(data.data.title)
-        
     }
     closeCamera(){
         var content = ""
         this.setState({qrDiv: content})
     }
     openCamera(){
-        console.log("girdi");
         var content =<div className="modal active" id="modal-id">
         
         <div className="modal-container">
@@ -252,9 +227,38 @@ class AdminManage extends React.Component {
 
       this.setState({qrDiv: content})
     }
+    //NEW: I added QR submit 
     updateHint(){
-        this.setState({findingQR: this.state.findingQR +1, qrDiv:""})
-        console.log("x:"+this.state.findingQR);
+        if (this.state.found_QRs.includes(this.state.hintContent)) {
+            alert("You already submitted this QR")
+            return;
+        } 
+        axios({
+            method: 'post,',
+            url: config.SUBMIT_QR_URL,
+            headers: {'Content-Type': 'application/json',
+                      'Authorization': this.localStorage.getTime("token")},
+            data: {
+                "hint": this.state.hintContent,
+                "hintSecret": this.state.qrData,
+                "gameId":this.state.gameId,
+                "userId": localStorage.getItem("userId")
+            }
+        }).then((res) => {
+        
+            if(res.data.success) {
+                
+                let newFound_QRS = this.state.found_QRs
+                newFound_QRS.push(this.state.hintContent)
+                this.setState({findingQR: this.state.findingQR +1, qrDiv:"", found_QRs: newFound_QRS})
+                console.log("x:"+this.state.findingQR);
+            
+            } else {
+                alert("QR code does not match your hint, please submit QR in correct order")
+            }       
+        }).catch((err) => {
+            alert("Connection failed please check your internet access")
+        })
     }
 
     handleScan = data => {
@@ -287,7 +291,6 @@ class AdminManage extends React.Component {
             qrDiv:content
           })
         }
-        console.log(this.state.qrData);
         //alert(this.state.qrData);
       }
 
@@ -301,7 +304,6 @@ class AdminManage extends React.Component {
         var input = this.state.a +" "+ this.state.b
         countDownDate=new Date(input).getTime();
         timee = setInterval(this.changeTime, 1000);
-        console.log(input.toString())
       
     }
     changeTime(){
@@ -322,7 +324,6 @@ class AdminManage extends React.Component {
             remainingTime: days + "d " + hours + "h "
             + minutes + "m " + seconds + "s "
         })
-        //console.log(this.state.remainingTime);
         
         // If the count down is over, write some text 
         if (distance < 0) {
@@ -378,7 +379,6 @@ class AdminManage extends React.Component {
     }
 
     closeWarning(){
-        console.log("what");
         this.setState({x:""})
     }
 

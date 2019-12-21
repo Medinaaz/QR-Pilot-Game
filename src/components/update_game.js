@@ -30,7 +30,6 @@ class UpdateGame extends React.Component {
             }
         ).then( (res) => {
             if (res.data.success) {
-                console.log(res.data)
                 this.props.onData(res.data, null)
             } 
         }).catch( (err) => {
@@ -48,11 +47,10 @@ class UpdateGame extends React.Component {
         this.interval = setInterval(this.getData, this.props.time)
     }
 
-    /*
     componentWillUnmount(){
         clearInterval(this.interval)
     }
-    */
+
     render(){
         return(<div></div>)
     }
