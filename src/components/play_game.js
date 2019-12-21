@@ -20,7 +20,7 @@ const data = [
 ];
 
 const userInfo = [
-    {gametype:"hint", time: "Dec 20, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880}
+    {gametype:"time", time: "Dec 21, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880}
 ];
 
 function Map(){
@@ -99,11 +99,11 @@ class Managegame extends React.Component {
             hintContent:"Deneme",
             gameType:"Remaining",
             playerData: [],
-            leaderboard:"",
             remainingTime:"",
             x:"",
             qrData:"",
             qrDiv:"",
+            hint:""
         }
         this.changeTime = this.changeTime.bind(this);
         this.closeWarning = this.closeWarning.bind(this);
@@ -143,11 +143,8 @@ class Managegame extends React.Component {
       this.setState({qrDiv: content})
     }
     updateHint(){
-        var number = this.state.findingQR;
-        number++;
-        this.setState({findingQR: number, qrDiv:""})
+        this.setState({findingQR: this.state.findingQR +1, qrDiv:""})
         console.log("x:"+this.state.findingQR);
-        this.componentDidMount();
     }
     handleScan = data => {
         var content=<div className="modal active" id="modal-id">
@@ -167,7 +164,6 @@ class Managegame extends React.Component {
           </div>
           </div>
           <div className="modal-footer">
-          <p>{this.state.qrData}</p>
           <button className="btn btn-primary" onClick={this.updateHint}>Submit</button>
           &nbsp;&nbsp;
           <button className="btn" onClick={this.openCamera}>Back</button>
@@ -214,13 +210,7 @@ class Managegame extends React.Component {
         })
     }
 
-        const content = <div>
-        Remaining time is 
-        <div className="timeBox">
-        {this.state.remainingTime}
-        </div>
-        </div>
-        this.setState({ leaderboard: content})
+        this.setState({hint:false})
     }
     
     closeWarning(){
@@ -255,14 +245,7 @@ class Managegame extends React.Component {
 
 
         if(userInfo[0].gametype==="hint"){
-            const content = <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
-            <br></br>
-            <div className="bar bar-lg">
-            <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%', 
-            background: '#2196f3'}} aria-valuenow= {(this.state.findingQR*100)/this.state.totalQR} aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            </div>
-            this.setState({ leaderboard: content})
+            this.setState({hint: true})
         }
         else if (userInfo[0].gametype==="time"){
             countDownDate = new Date(userInfo[0].time).getTime();
@@ -300,7 +283,19 @@ class Managegame extends React.Component {
                             
                             <div className="leaderboard"> 
                             <br/>
-                            {this.state.leaderboard}
+                            {this.state.hint ? <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
+                            <br></br>
+                            <div className="bar bar-lg">
+                            <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%', 
+                            background: '#2196f3'}} aria-valuenow= {(this.state.findingQR*100)/this.state.totalQR} aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            </div> : <div>
+                            Remaining time is 
+                            <div className="timeBox">
+                            {this.state.remainingTime}
+                            </div>
+                            </div>}
+                            
                             <br></br>
                             Leaderboard
                             <div className="flex-centered" >

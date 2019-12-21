@@ -22,7 +22,7 @@ const data = [
     {gametype:"hint", time: "Dec 19, 2019 22:00:00",id:6, owner:false, username: 'Player6',avatar:"https://picturepan2.github.io/spectre/img/avatar-2.png", score:6, lat:41.013000, lng:28.972500}
 ];
 const userInfo = [
-    {gametype:"hint", time: "Dec 20, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880}
+    {gametype:"time", time: "Dec 21, 2019 22:00:00",id:5, owner:false, username: 'Player5',avatar:"https://picturepan2.github.io/spectre/img/avatar-1.png", score:5, lat:41.010000, lng:28.974880}
 ];
 
 function Map(){
@@ -100,14 +100,15 @@ class AdminManage extends React.Component {
             hintContent:"Deneme",
             gameType:"Remaining",
             playerData: [],
-            leaderboard:"",
             remainingTime:"",
             startDate: new Date(),
             x:"",
             a:"",
             newTime:"",
             qrData:"",
-            qrDiv:""
+            qrDiv:"",
+            hint:"",
+            timecontent:""
         }
         data.sort((a, b) => Number(b.score) - Number(a.score));
         console.log("descending", data);
@@ -152,11 +153,8 @@ class AdminManage extends React.Component {
       this.setState({qrDiv: content})
     }
     updateHint(){
-        var number = this.state.findingQR;
-        number++;
-        this.setState({findingQR: number, qrDiv:""})
+        this.setState({findingQR: this.state.findingQR +1, qrDiv:""})
         console.log("x:"+this.state.findingQR);
-        this.componentDidMount();
     }
 
     handleScan = data => {
@@ -177,7 +175,6 @@ class AdminManage extends React.Component {
           </div>
           </div>
           <div className="modal-footer">
-          <p>{this.state.qrData}</p>
           <button className="btn btn-primary" onClick={this.updateHint}>Submit</button>
           &nbsp;&nbsp;
           <button className="btn" onClick={this.openCamera}>Back</button>
@@ -276,7 +273,7 @@ class AdminManage extends React.Component {
             Change Time
         </button>
         </div>
-        this.setState({ leaderboard: content})
+        this.setState({hint:false, timecontent:content})
        
     }
 
@@ -314,14 +311,7 @@ class AdminManage extends React.Component {
      
 
        if(userInfo[0].gametype==="hint"){
-           console.log("hint");
-           const content = <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
-           <br></br>
-           <div className="bar bar-lg">
-           <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%', 
-           background: '#2196f3'}} aria-valuenow= {(this.state.findingQR*100)/this.state.totalQR} aria-valuemin="0" aria-valuemax="100"></div>
-           </div></div>
-           this.setState({ leaderboard: content})
+        this.setState({hint: true})
        }
        else if (userInfo[0].gametype==="time"){        
         countDownDate = new Date(userInfo[0].time).getTime();
@@ -374,7 +364,13 @@ class AdminManage extends React.Component {
                     
                     <div className="leaderboard"> 
                     <br/>
-                    {this.state.leaderboard}
+                    {this.state.hint? <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
+                            <br></br>
+                            <div className="bar bar-lg">
+                            <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%', 
+                            background: '#2196f3'}} aria-valuenow= {(this.state.findingQR*100)/this.state.totalQR} aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            </div> : this.state.timecontent}
                     <br></br>
                     Leaderboard
                     <div className="flex-centered" >
