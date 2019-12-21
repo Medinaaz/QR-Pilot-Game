@@ -48,10 +48,11 @@ class UpdateGame extends React.Component {
         this.interval = setInterval(this.getData, this.props.time)
     }
 
+    /*
     componentWillUnmount(){
         clearInterval(this.interval)
     }
-
+    */
     render(){
         return(<div></div>)
     }
