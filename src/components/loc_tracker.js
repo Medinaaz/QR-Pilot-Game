@@ -33,6 +33,7 @@ class LocTracker extends React.Component {
                         }
                     }
                 }).then( (res) => {
+                    console.log(res)
                   if (res.data.success) {
                     console.log("registered location")
                     console.log(this.state.longitude, "   ", this.state.latitude)

@@ -3,6 +3,9 @@ import './play_game.css';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow, Circle } from "react-google-maps"
 import QrReader from 'react-qr-reader'
 import LocTracker from "./loc_tracker.js"
+import config from "../config"
+import axios from "axios";
+import UpdateGame from "./update_game"
 
 //This structure may be changed
 var radius = 300;
@@ -93,6 +96,8 @@ class Managegame extends React.Component {
         this.state = {
             userName: '',
             gameName:'Yakup\'s Hunger Games',
+            found_QRs: [],
+            gameId: "",
             playerNumber:4,
             totalQR:24,
             findingQR:0,
@@ -142,10 +147,48 @@ class Managegame extends React.Component {
 
       this.setState({qrDiv: content})
     }
-    updateHint(){
-        this.setState({findingQR: this.state.findingQR +1, qrDiv:""})
-        console.log("x:"+this.state.findingQR);
+
+    //NEW: Added handle data logic
+    handleData(data, err){
+        if (err) {
+            alert("Game cannot be loaded");
+        }
+        this.setState({gameName:data.data.title})
+        console.log(data)
+        console.log(data.data.title)
     }
+
+    //NEW: I added QR submit 
+    updateHint(){
+        axios({
+            method: 'post,',
+            url: config.SUBMIT_QR_URL,
+            headers: {'Content-Type': 'application/json',
+                      'Authorization': this.localStorage.getTime("token")},
+            data: {
+                "hint": this.state.hintContent,
+                "hintSecret": this.state.qrData,
+                "gameId":this.state.gameId
+            }
+        }).then((res) => {
+            
+            if(res.data.success) {
+                if (this.state.found_QRs.includes(this.state.hintContent)) {
+                    alert("You already submitted this QR")
+                } else {
+                    let newFound_QRS = this.state.found_QRs
+                    newFound_QRS.push(this.state.hintContent)
+                    this.setState({findingQR: this.state.findingQR +1, qrDiv:"", found_QRs: newFound_QRS})
+                    console.log("x:"+this.state.findingQR);
+                }
+            } else {
+                alert("QR code does not match your hint, please submit QR in correct order")
+            }       
+        }).catch((err) => {
+            alert("Connection failed please check your internet access")
+        })
+    }
+
     handleScan = data => {
         var content=<div className="modal active" id="modal-id">
         

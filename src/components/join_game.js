@@ -27,6 +27,7 @@ class JoinGame extends React.Component {
           user_token: userToken
         })
     }
+    
 
     join = () => {
         console.log(this.state)
@@ -34,7 +35,7 @@ class JoinGame extends React.Component {
             return;
         } 
         axios({
-            method: 'put',
+            method: 'put,',
             url: config.JOIN_GAME + this.state.game_code,
             headers: {'Content-Type': 'application/json',
                       'Authorization': this.state.user_token},
