@@ -18,7 +18,6 @@ const avatar = [
 
 function Map(props){
     //lat lg state
-    console.log(props)
    // const google=window.google;
     const [number, desc] = useState(null);
     return(
@@ -106,7 +105,6 @@ class Managegame extends React.Component {
         this.closeCamera = this.closeCamera.bind(this);
     }
     openCamera(){
-        console.log("girdi");
         let content =<div className="modal active" id="modal-id">
 
         <div className="modal-container">
@@ -146,8 +144,6 @@ class Managegame extends React.Component {
         if (err) {
             return;
         }
-
-        console.log(data);
 
         let value = data.data.players.indexOf(localStorage.getItem("userId"));
         if(value < 0 ){
@@ -230,12 +226,10 @@ class Managegame extends React.Component {
                 "userId": localStorage.getItem("userId")
             }
         }).then((res) => {
-            console.log("res", res);
             if(res.data.success) {
                 let newFound_QRS = this.state.found_QRs
                 newFound_QRS.push(this.state.hintContent)
                 this.setState({findingQR: newFound_QRS.length, qrDiv:"", found_QRs: newFound_QRS})
-                console.log("x:"+this.state.findingQR);
 
             } else {
                 alert("QR code does not match your hint, please submit QR in correct order")
@@ -275,7 +269,6 @@ class Managegame extends React.Component {
             qrDiv:content
           })
         }
-        console.log(this.state.qrData);
         //alert(this.state.qrData);
       }
 
@@ -317,7 +310,6 @@ class Managegame extends React.Component {
     }
 
     closeWarning(){
-        console.log("what");
         this.setState({x:""})
     }
     componentDidMount() {
@@ -330,7 +322,6 @@ class Managegame extends React.Component {
         let game_title = localStorage.getItem("game_title")
         let game_id = localStorage.getItem("game_id")
 
-         console.log(game_id)
          this.setState({ gameName: game_title, gameId:game_id  })
     }
     render() {

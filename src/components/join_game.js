@@ -27,12 +27,12 @@ class JoinGame extends React.Component {
           user_token: userToken
         })
     }
-    
+
 
     join = () => {
         if (this.state.game_code === "") {
             return;
-        } 
+        }
         axios({
             method: 'put',
             url: config.JOIN_URL + this.state.game_code,
@@ -42,10 +42,7 @@ class JoinGame extends React.Component {
                 "userId": localStorage.getItem("userId")
             }
         }).then( (res) => {
-            console.log("res",res)
           if (res.data.success) {
-            console.log("join successfull")
-            console.log("game_data: ", res.data)
             localStorage.setItem("game_id", res.data.data._id)
             localStorage.setItem("game_title", this.state.game_title)
 
@@ -57,7 +54,6 @@ class JoinGame extends React.Component {
               })
           }
         }).catch( (err) => {
-            console.log("catch", err)
           alert(err);
         })
     }
@@ -86,8 +82,8 @@ class JoinGame extends React.Component {
                         </div>
                         <div className="modal-body">
                         <div className="input-group">
-                            <input type="text" 
-                                    className="form-input input-lg" 
+                            <input type="text"
+                                    className="form-input input-lg"
                                     placeholder="Enter game code"
                                     name="game_code"
                                     onChange={this.handleChange}
@@ -100,7 +96,7 @@ class JoinGame extends React.Component {
                     </div>
                 </div>
             </div>
-            
+
         )
     }
 }

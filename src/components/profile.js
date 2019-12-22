@@ -98,16 +98,12 @@ export default class Profile extends React.Component {
         }
 
         try {
-            console.log(this.state.userToken);
-
             const res = await axios({
                 method: 'get',
                 url: config.PROFILE_URL + localStorage.getItem("userId"),
                 headers: {'Content-Type': 'application/json',
                     'Authorization': userToken},
             });
-
-            console.log("respond", res.data.data);
 
             if (res.data.success) {
                 this.setState({
@@ -173,8 +169,6 @@ export default class Profile extends React.Component {
                 password: this.state.password
             }
         });
-
-        console.log(res);
     }
 
     render()
