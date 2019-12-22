@@ -1,38 +1,15 @@
 import React,{ useRef }  from "react";
-import { Fragment } from "react";
 import Grid from "@material-ui/core/Grid";
-import Typography from '@material-ui/core/Typography';
 import Paper from "@material-ui/core/Paper";
 import Navbar from "./navbar"
-import {Container} from "@material-ui/core";
 import Sky from 'react-sky';
-import { FaBeer } from 'react-icons/fa';
-import Button from "@material-ui/core/Button";
-import QRCode from "qrcode.react";
 import config from "../config";
 import axios from "axios";
 import Typical from 'react-typical'
 import Form from 'react-bootstrap/Form'
-import { useSpring, useChain, animated } from "react-spring";
 
 
-const history = [
-    {
-        "title":"game1",
-        "score": 51,
-        "rank":1
-    },
-    {
-        "title":"game2",
-        "score": 32,
-        "rank":2
-    },
-    {
-        "title":"game3",
-        "score": 10,
-        "rank":3
-    },
-]
+
 
 const myImage = require('../components/medii.png');
 const imgMyimageexample = require('../components/prof_pic.png');
