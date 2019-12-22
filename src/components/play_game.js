@@ -94,7 +94,8 @@ class Managegame extends React.Component {
             center_lat: 0,
             center_lng: 0,
             center_radius: 0,
-            description:""
+            description:"",
+            status:"created"
         }
         this.changeTime = this.changeTime.bind(this);
         this.closeWarning = this.closeWarning.bind(this);
@@ -329,16 +330,34 @@ class Managegame extends React.Component {
     render() {
 
         return (
-            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s
+            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
+            
             <div className="flex-centered">  <LocTracker time={5000}/>  <UpdateGame time={5000} gameId={this.state.gameId} onData={this.handleData} />{this.state.x}
             {this.state.qrDiv}
-
-                <div className="card">
-                        <div className="header">
-
-                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
-                             <p>Description of the Game: {this.state.description}</p>
-                        </div>
+            {this.state.status === "created"? <div className="modal active" id="example-modal-1">
+            <a class="modal-overlay" href="#modals" aria-label="Close"></a>
+            <div className="modal-container" role="document">
+              <div className="modal-header">
+                <div className="modal-title h5" style={{textAlign:"center"}}>Waiting for starting the game</div>
+              </div>
+              <div className="modal-body">
+                <div className="content">
+                <div className="flex-centered">
+                <div class="loading loading-lg"></div>
+                </div>
+              </div>
+              </div>
+              <div className="modal-footer">
+              
+            </div>
+            </div>
+          </div>: null}
+                <div className="card">   
+                        <div className="header"> 
+                           
+                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
+                             <p>Description of the Game: {this.state.description}</p> 
+                        </div> 
                         <div className="container">
                         <div className="columns">
                         <div className="column col-8 col-xs-12">

@@ -202,7 +202,7 @@ class AdminManage extends React.Component {
 
         var latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
         var lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
-        var result = Math.sqrt(latDiff+lngDiff)*100000
+        var result = Math.sqrt(latDiff+lngDiff)
 
         console.log("111111111111111", result);
 
