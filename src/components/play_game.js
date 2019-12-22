@@ -80,6 +80,7 @@ class Managegame extends React.Component {
             gameName:'',
             found_QRs: [],
             gameId: "",
+            admin_name: "",
             playerNumber:4,
             totalQR:24,
             findingQR:0,
