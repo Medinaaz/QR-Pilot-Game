@@ -149,7 +149,9 @@ class Managegame extends React.Component {
         let value = data.data.players.indexOf(localStorage.getItem("userId"));
         if(value < 0 ){
             this.props.history.push("/profile");
-            alert("You have been kicked by the Admin, please behave");
+            localStorage.removeItem("game_id")
+            localStorage.removeItem("game_title")
+            alert("You have been kicked by the Admin, please behave !!!");
         }
 
         this.setState({
@@ -190,6 +192,11 @@ class Managegame extends React.Component {
             status: data.data.status,
             hintContent: this.state.all_hints[this.state.found_QRs.length],
             playerId: player_Id
+        }, () => {
+            if (this.state.status === "Ended") {
+                localStorage.removeItem("game_title")
+                localStorage.removeItem("game_id")
+            }
         });
 
         let user_lat = localStorage.getItem("lat")

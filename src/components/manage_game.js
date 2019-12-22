@@ -192,7 +192,13 @@ class AdminManage extends React.Component {
             all_hints: data.data.hints.hint,
             hintContent: this.state.all_hints[this.state.found_QRs.length],
             status: data.data.status,
-        })
+        }, () => {
+            if (this.state.status === "Ended") {
+                localStorage.removeItem("game_title")
+                localStorage.removeItem("game_id")
+            }}
+        )
+        
 
         if(data.data.type==="Standard"){
             this.setState({hint: true})
