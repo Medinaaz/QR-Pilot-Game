@@ -125,7 +125,6 @@ class CreateGame extends React.Component {
     e.preventDefault()
     this.check_errors((err) => {
       if (!err) {
-        console.log(this.state.secrets)
         axios({
             method: 'post',
             url: config.GAME_URL,
@@ -151,7 +150,6 @@ class CreateGame extends React.Component {
             }
         }).then( (res) => {
           if (res.data.success) {
-            console.log(res.data)
             localStorage.setItem("game_id", res.data.data._id)
             localStorage.setItem("game_title", this.state.game_title)
             this.setState({

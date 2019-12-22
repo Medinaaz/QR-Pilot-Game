@@ -18,7 +18,6 @@ const avatar = [
 
 function Map(props){
     //lat lg state
-    console.log(props)
    // const google=window.google;
     const [number, desc] = useState(null);
     return(
@@ -104,9 +103,9 @@ class Managegame extends React.Component {
         this.updateHint = this.updateHint.bind(this);
         this.handleData = this.handleData.bind(this);
         this.closeCamera = this.closeCamera.bind(this);
+        this.returnProfile = this.returnProfile.bind(this);
     }
     openCamera(){
-        console.log("girdi");
         let content =<div className="modal active" id="modal-id">
 
         <div className="modal-container">
@@ -146,8 +145,6 @@ class Managegame extends React.Component {
         if (err) {
             return;
         }
-
-        console.log(data);
 
         let value = data.data.players.indexOf(localStorage.getItem("userId"));
         if(value < 0 ){
@@ -230,12 +227,10 @@ class Managegame extends React.Component {
                 "userId": localStorage.getItem("userId")
             }
         }).then((res) => {
-            console.log("res", res);
             if(res.data.success) {
                 let newFound_QRS = this.state.found_QRs
                 newFound_QRS.push(this.state.hintContent)
                 this.setState({findingQR: newFound_QRS.length, qrDiv:"", found_QRs: newFound_QRS})
-                console.log("x:"+this.state.findingQR);
 
             } else {
                 alert("QR code does not match your hint, please submit QR in correct order")
@@ -275,7 +270,6 @@ class Managegame extends React.Component {
             qrDiv:content
           })
         }
-        console.log(this.state.qrData);
         //alert(this.state.qrData);
       }
 
@@ -317,8 +311,10 @@ class Managegame extends React.Component {
     }
 
     closeWarning(){
-        console.log("what");
         this.setState({x:""})
+    }
+    returnProfile(){
+        this.props.history.push("/profile");
     }
     componentDidMount() {
         /*
@@ -330,7 +326,6 @@ class Managegame extends React.Component {
         let game_title = localStorage.getItem("game_title")
         let game_id = localStorage.getItem("game_id")
 
-         console.log(game_id)
          this.setState({ gameName: game_title, gameId:game_id  })
     }
     render() {
@@ -358,6 +353,60 @@ class Managegame extends React.Component {
             </div>
             </div>
           </div>: null}
+          {this.state.status==="Ended" ? <div className="modal active" id="example-modal-1">
+            <a class="modal-overlay" href="#modals" aria-label="Close"></a>
+            <div className="modal-container" role="document">
+              <div className="modal-header">
+                <div className="modal-title h5" style={{textAlign:"center"}}>Game is ended!</div>
+              </div>
+              <div className="modal-body">
+                <div className="content">
+                <div className="flex-centered">
+                    <figure className="avatar">
+                    <img src={avatar[0]} alt="Avatar">
+                    </img>
+                    {this.state.admin_name===this.state.playersData[0].names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                    </figure>
+                    &nbsp;
+                     {this.state.playersData[0].names} is the Winner!
+
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                     <div className="flex-centered" >
+                    <ul className="menu">
+                    {
+                            this.state.playersData.map((item, key) =>
+                            <li className="menu-item" key={item._id}>
+
+                            <div className="tile-icon">
+
+                                <figure className="avatar">
+                                <img src={avatar[this.state.playersData.indexOf(item)%avatar.length]} alt="Avatar">
+
+                                </img>
+                                {this.state.admin_name===item.names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                                </figure>
+                            </div>
+                            <div className="tile-content">
+                            <p className="tile-title">
+                            {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
+                            </p>
+
+                            </div>
+                                </li>
+                        )
+                            }
+                        </ul>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    <div className="modal-footer">
+                    <button className="btn btn-primary" onClick={this.returnProfile}>Return Profile Page</button>
+                </div>
+                </div>
+                </div>: null}
                 <div className="card">
                         <div className="header">
 

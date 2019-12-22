@@ -49,16 +49,14 @@ class Login extends Component{
                             password: this.state.password
                         }
                     }).then((res) => {
-                        console.log(res)
                         if (res.data.success) {
                             localStorage.setItem("userId", res.data.id);
                             localStorage.setItem("token", res.data.data.token);
                             this.props.history.push("/profile");
                         }
                     }).catch((err) =>  {
-                        console.log("err", err);
                         alert('Your username or password is incorrect!');
-                    })    
+                    })
             }
 
         });

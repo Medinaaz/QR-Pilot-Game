@@ -46,7 +46,6 @@ class SignUp extends Component {
         e.preventDefault();
         this.check_errors((err) => {
             if (!err) {
-                console.log("state", this.state)
                 axios({
                     method: 'post',
                     url: config.SIGNUP_URL,

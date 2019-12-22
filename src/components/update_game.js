@@ -27,12 +27,11 @@ class UpdateGame extends React.Component {
                         'Authorization': this.state.user_token}
             }
         ).then( (res) => {
-            console.log(res);
+            console.log("update game, game data", res.data);
             if (res.data.success) {
                 this.props.onData(res.data, null)
             }
         }).catch( (err) => {
-            console.log("errrrr", err);
             this.props.onData(null, err)
         })
     };

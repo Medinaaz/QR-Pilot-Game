@@ -20,7 +20,6 @@ const avatar = [
 
 function Map(props){
     //lat lg state
-    console.log(props)
     // const google=window.google;
     const [number, desc] = useState(null);
     return(
@@ -103,7 +102,8 @@ class AdminManage extends React.Component {
             center_lng: 0,
             center_radius: 0,
             description:"",
-            start: true
+            start: true,
+            status: "created"
         }
         this.kickPlayer = this.kickPlayer.bind(this);
         this.changeTime = this.changeTime.bind(this);
@@ -116,6 +116,7 @@ class AdminManage extends React.Component {
         this.handleData = this.handleData.bind(this);
         this.closeCamera = this.closeCamera.bind(this);
         this.startGame = this.startGame.bind(this);
+        this.returnProfile = this.returnProfile.bind(this);
 
     }
 
@@ -139,7 +140,6 @@ class AdminManage extends React.Component {
                 "gameId": localStorage.getItem("game_id")
             }
         }).then((res) => {
-            console.log(res);
             if(res.data.success) {
 
             } else {
@@ -156,7 +156,6 @@ class AdminManage extends React.Component {
             return;
         }
 
-        console.log(data)
         this.setState({
             gameName: data.data.title
         })
@@ -191,7 +190,8 @@ class AdminManage extends React.Component {
             description: data.data.description,
             game_type: data.data.type,
             all_hints: data.data.hints.hint,
-            hintContent: this.state.all_hints[this.state.found_QRs.length]
+            hintContent: this.state.all_hints[this.state.found_QRs.length],
+            status: data.data.status,
         })
 
         if(data.data.type==="Standard"){
@@ -205,12 +205,7 @@ class AdminManage extends React.Component {
         let lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
         let result = Math.sqrt(latDiff+lngDiff)
 
-        console.log("111111111111111", result);
-
         if(result > this.state.center_radius) {
-            console.log("222222222222222", result);
-
-            console.log("result");
             let y =<div className="toast toast-warning" style={{textAlign:'center'}}>
                 <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
                 <p>Warning!!</p>
@@ -254,7 +249,6 @@ class AdminManage extends React.Component {
     }
     //NEW: I added QR submit
     updateHint(){
-        console.log("state", this.state);
         if (this.state.found_QRs.includes(this.state.hintContent)) {
             alert("You already submitted this QR")
             return;
@@ -277,13 +271,11 @@ class AdminManage extends React.Component {
                 let newFound_QRS = this.state.found_QRs
                 newFound_QRS.push(this.state.hintContent)
                 this.setState({findingQR: newFound_QRS.length, qrDiv:"", found_QRs: newFound_QRS})
-                console.log("x:"+this.state.findingQR);
 
             } else {
                 alert("QR code does not match your hint, please submit QR in correct order")
             }
         }).catch((err) => {
-            console.log( this.state.hintContent, this.state.qrData, this.state.gameId, localStorage.getItem("userId"))
             console.log("err", err);
             alert("Connection failed please check your internet access")
         })
@@ -410,7 +402,9 @@ class AdminManage extends React.Component {
     closeWarning(){
         this.setState({x:""})
     }
-
+    returnProfile(){
+        this.props.history.push("/profile");
+    }
     componentDidMount() {
         /*
          data.sort((a, b) => Number(b.score) - Number(a.score));
@@ -420,7 +414,6 @@ class AdminManage extends React.Component {
         //It can be controlled in a time interval.
         let game_title = localStorage.getItem("game_title");
         let game_id = localStorage.getItem("game_id");
-        console.log(game_id)
         this.setState({ gameName: game_title, gameId:game_id  })
     }
 
@@ -435,7 +428,8 @@ class AdminManage extends React.Component {
                 "username": element.names
             }
         }).then((res) => {
-            console.log(res);
+            console.log("kick player response", res);
+
             if(res.data.success) {
                 let newPlayerData = this.state.playersData;
                 let index = this.state.playersData.findIndex(obj => obj.names === element.names);
@@ -443,6 +437,7 @@ class AdminManage extends React.Component {
                 this.setState({
                     playersData: newPlayerData
                 })
+                console.log("new game data", res.data);
             } else {
                 alert("Can not delete delete that player")
             }
@@ -457,6 +452,58 @@ class AdminManage extends React.Component {
             //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s
             <div className="flex-centered">  <LocTracker time={5000}/> <UpdateGame time={5000} gameId={this.state.gameId} onData={this.handleData} />{this.state.x}
                 {this.state.qrDiv}
+                {this.state.status==="Ended" ? <div className="modal active" id="example-modal-1">
+            <a class="modal-overlay" href="#modals" aria-label="Close"></a>
+            <div className="modal-container" role="document">
+              <div className="modal-header">
+                <div className="modal-title h5" style={{textAlign:"center"}}>Game is ended!</div>
+              </div>
+              <div className="modal-body">
+                <div className="content">
+                <div className="flex-centered">
+                    <figure className="avatar">
+                    <img src={avatar[0]} alt="Avatar">
+                    </img>
+                    {this.state.admin_name===this.state.playersData[0].names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                    </figure>
+                    &nbsp;
+                     {this.state.playersData[0].names} is the Winner!
+
+                    <br></br>
+                     <div className="flex-centered" >
+                    <ul className="menu">
+                    {
+                            this.state.playersData.map((item, key) =>
+                            <li className="menu-item" key={item._id}>
+
+                            <div className="tile-icon">
+
+                                <figure className="avatar">
+                                <img src={avatar[this.state.playersData.indexOf(item)%avatar.length]} alt="Avatar">
+
+                                </img>
+                                {this.state.admin_name===item.names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                                </figure>
+                            </div>
+                            <div className="tile-content">
+                            <p className="tile-title">
+                            {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
+                            </p>
+
+                            </div>
+                                </li>
+                        )
+                        }
+                    </ul>
+                    </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="modal-footer">
+                    <button className="btn btn-primary" onClick={this.returnProfile}>Return Profile Page</button>
+                    </div>
+                    </div>
+                </div>: null}
                 <div className="card">
 
                     <div style={{color:"red", textAlign:"center", fontSize:20}} >You are the owner of the game!</div>
