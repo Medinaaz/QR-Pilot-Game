@@ -181,15 +181,16 @@ class Managegame extends React.Component {
             description: data.data.description,
             game_type: data.data.type,
             all_hints: data.data.hints.hint,
+            status: data.data.status,
             hintContent: this.state.all_hints[this.state.found_QRs.length]
         });
-
+        
         var user_lat = localStorage.getItem("lat")
         var user_lng = localStorage.getItem("lng")
 
         var latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
         var lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
-        var result = Math.sqrt(latDiff+lngDiff)*100000
+        var result = Math.sqrt(latDiff+lngDiff)
 
         console.log("111111111111111", result);
 
@@ -434,7 +435,7 @@ class Managegame extends React.Component {
                                 <div className="popover-container">
                                     <div className="card">
                                     <div className="card-header">
-                                        Hint #1
+                                        Hint #{this.state.found_QRs.length+1}
                                     </div>
                                     <div className="card-body">
                                         {this.state.hintContent}

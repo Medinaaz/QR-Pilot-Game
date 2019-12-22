@@ -139,12 +139,14 @@ class AdminManage extends React.Component {
                "gameId": localStorage.getItem(localStorage.getItem("game_id"))
            }
        }).then((res) => {
+           console.log(res);
            if(res.data.success) {
 
            } else {
                alert("Your game is ")
            }
        }).catch((err) => {
+           console.log(err)
            alert("Connection failed please check your internet access")
        })
    }
@@ -532,7 +534,7 @@ class AdminManage extends React.Component {
                             <div className="popover-container">
                                 <div className="card">
                                 <div className="card-header">
-                                    Hint #1
+                                    Hint #{this.state.found_QRs.length+1}
                                 </div>
                                 <div className="card-body">
                                     {this.state.hintContent}
