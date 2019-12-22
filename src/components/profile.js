@@ -130,7 +130,7 @@ export default class Profile extends React.Component {
         })
     }
 
-    
+
 
     handleChange = (e) => {
         this.setState({
@@ -145,7 +145,7 @@ export default class Profile extends React.Component {
         if (this.state.passwInput !== "") {
             let salt = crypto.randomBytes(128).toString('base64');
             let passwordHash = crypto.pbkdf2Sync(this.state.password, salt, 1, 128, 'sha1');
-            update_data.passwordHash = passwordHash
+            update_data.passwordHash = passwordHash;
             update_data.salt = salt
         }
 
@@ -154,24 +154,20 @@ export default class Profile extends React.Component {
         }
 
         if (this.state.secretQuestion !== "") {
-            update_data.secretQuestion = this.state.secretQuestion 
+            update_data.secretQuestion = this.state.secretQuestion
         }
 
         if(this.state.username !== "") {
             update_data.username = this.state.usernameInput
         }
-        
 
-        console.log(update_data)
 
         const res = await axios({
             method: 'put',
             url: config.PROFILE_URL + localStorage.getItem("userId"),
             headers: {'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem("token")},
-            data: {
-                update_data
-            }
+            data: update_data
         });
 
         console.log(res);
