@@ -22,7 +22,7 @@ function Map(props){
    // const google=window.google;
     const [number, desc] = useState(null);
     return(
-        <GoogleMap defaultZoom={15} 
+        <GoogleMap defaultZoom={15}
             defaultCenter={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
             center={{
                 lat: parseFloat(props.lat),
@@ -34,7 +34,7 @@ function Map(props){
            // desc(this);
         }}
         />
-        
+
 
         <Circle
             center={{
@@ -56,8 +56,8 @@ function Map(props){
             <div style={{fontWeight:"bold"}}>
             <figure className="avatar">
             <img src={number.avatar} alt="Avatar">
-            
-            </img> 
+
+            </img>
             {number.owner?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
             </figure>
             {number.username}
@@ -106,7 +106,7 @@ class Managegame extends React.Component {
     openCamera(){
         console.log("girdi");
         var content =<div className="modal active" id="modal-id">
-        
+
         <div className="modal-container">
           <div className="modal-header">
             <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
@@ -128,7 +128,7 @@ class Managegame extends React.Component {
           <div className="modal-footer">
           <button onClick={this.closeCamera} className="btn" aria-label="Close">Close</button>
         </div>
-          
+
         </div>
       </div>
 
@@ -141,17 +141,15 @@ class Managegame extends React.Component {
     }
 
     handleData(data, err){
-        console.log("yakdfögdşlsdm");
-        console.log("errr", err);
         if (err) {
             return;
         }
 
-        console.log(data)
+        console.log(data);
+
         this.setState({
             gameName: data.data.title
-        })
-
+        });
 
         if (this.state.admin_name === "" ){
             axios({
@@ -171,10 +169,9 @@ class Managegame extends React.Component {
                 alert("You have a connection problem")
             })
         }
-        
-        this.setState({ 
-            totalQR:data.data.hints.hint.length,  
-            //findingQR: data.data.submittedQRs,
+
+        this.setState({
+            totalQR:data.data.hints.hint.length,
             playersData: data.data.ranking,
             playerNumber:  data.data.ranking.length-1,
             center_radius  :data.data.location.radius,
@@ -184,12 +181,11 @@ class Managegame extends React.Component {
             game_type: data.data.type,
             all_hints: data.data.hints.hint,
             hintContent: this.state.all_hints[this.state.found_QRs.length]
-        })
-
+        });
 
         var user_lat = localStorage.getItem("lat")
         var user_lng = localStorage.getItem("lng")
-        
+
         var latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
         var lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
         var result = Math.sqrt(latDiff+lngDiff)*100000
@@ -204,17 +200,17 @@ class Managegame extends React.Component {
                 <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
                     <p>Warning!!</p>
                     You are out of the area!!!
-            </div>  
+            </div>
             this.setState({x:y})
         }
-        
+
     }
 
     updateHint(){
         if (this.state.found_QRs.includes(this.state.hintContent)) {
             alert("You already submitted this QR")
             return;
-        } 
+        }
         axios({
             method: 'post',
             url: config.SUBMIT_QR_URL,
@@ -233,10 +229,10 @@ class Managegame extends React.Component {
                 newFound_QRS.push(this.state.hintContent)
                 this.setState({findingQR: newFound_QRS.length, qrDiv:"", found_QRs: newFound_QRS})
                 console.log("x:"+this.state.findingQR);
-            
+
             } else {
                 alert("QR code does not match your hint, please submit QR in correct order")
-            }       
+            }
         }).catch((err) => {
             alert("Connection failed please check your internet access")
         })
@@ -244,7 +240,7 @@ class Managegame extends React.Component {
 
     handleScan = data => {
         var content=<div className="modal active" id="modal-id">
-        
+
         <div className="modal-container">
           <div className="modal-header">
             <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
@@ -283,26 +279,26 @@ class Managegame extends React.Component {
     componentWillUnmount(){
         localStorage.removeItem("game_data")
     }
-     */ 
+     */
     changeTime(){
          // Get today's date and time
          var now = new Date().getTime();
-            
+
          // Find the distance between now and the count down date
          var distance = countDownDate - now;
-             
+
          // Time calculations for days, hours, minutes and seconds
          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
- 
+
          this.setState({
              remainingTime: days + "d " + hours + "h "
              + minutes + "m " + seconds + "s "
          })
 
-         // If the count down is over, write some text 
+         // If the count down is over, write some text
         if (distance < 0) {
             clearInterval(timee);
             this.setState({
@@ -312,7 +308,7 @@ class Managegame extends React.Component {
 
         this.setState({hint:false})
     }
-    
+
     closeWarning(){
         console.log("what");
         this.setState({x:""})
@@ -322,7 +318,7 @@ class Managegame extends React.Component {
          data.sort((a, b) => Number(b.score) - Number(a.score));
          console.log("descending", data);
          this.setState({playerData: data})*/
- 
+
          //It can be controlled in a time interval.
         let game_title = localStorage.getItem("game_title")
         let game_id = localStorage.getItem("game_id")
@@ -331,24 +327,24 @@ class Managegame extends React.Component {
          this.setState({ gameName: game_title, gameId:game_id  })
     }
     render() {
-       
+
         return (
-            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
+            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s
             <div className="flex-centered">  <LocTracker time={5000}/>  <UpdateGame time={5000} gameId={this.state.gameId} onData={this.handleData} />{this.state.x}
             {this.state.qrDiv}
-           
-                <div className="card">   
-                        <div className="header"> 
-                           
-                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
-                             <p>Description of the Game: {this.state.description}</p> 
-                        </div> 
+
+                <div className="card">
+                        <div className="header">
+
+                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
+                             <p>Description of the Game: {this.state.description}</p>
+                        </div>
                         <div className="container">
                         <div className="columns">
                         <div className="column col-8 col-xs-12">
-                         
+
                         <div className="map">
-                        <WrappedMap  
+                        <WrappedMap
                              googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places`}
                             loadingElement = {<div style={{height:"100%"}} />}
                             containerElement = {<div style={{height:"100%"}} />}
@@ -359,24 +355,24 @@ class Managegame extends React.Component {
                         />
                         </div>
                         </div>
-                        
+
                         <div className="column col-4 col-xs-12">
-                            
-                            <div className="leaderboard"> 
+
+                            <div className="leaderboard">
                             <br/>
                             {this.state.game_type !== "Time Rush" ? <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
                             <br></br>
                             <div className="bar bar-lg">
-                            <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%', 
+                            <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%',
                             background: '#2196f3'}} aria-valuenow= {(this.state.findingQR*100)/this.state.totalQR} aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             </div> : <div>
-                            Remaining time is 
+                            Remaining time is
                             <div className="timeBox">
                             {this.state.remainingTime}
                             </div>
                             </div>}
-                            
+
                             <br></br>
                             Leaderboard
                             <div className="flex-centered" >
@@ -384,21 +380,21 @@ class Managegame extends React.Component {
                             {
                                     this.state.playersData.map((item, key) =>
                                     <li className="menu-item" key={item._id}>
-                                    
+
                                     <div className="tile-icon">
-                                        
+
                                         <figure className="avatar">
                                         <img src={avatar[this.state.playersData.indexOf(item)%avatar.length]} alt="Avatar">
-                                        
-                                        </img> 
-                                        {item.owner?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+
+                                        </img>
+                                        {this.state.admin_name===item.names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
                                         </figure>
                                     </div>
                                     <div className="tile-content">
                                     <p className="tile-title">
                                     {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
                                     </p>
-                                    
+
                                     </div>
                                         </li>
                                 )
@@ -427,11 +423,11 @@ class Managegame extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            </div> 
+                            </div>
                         </div>
                         </div>
                         </div>
-                        
+
                 </div>
             </div>
         )
