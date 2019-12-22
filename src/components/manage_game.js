@@ -472,11 +472,13 @@ class AdminManage extends React.Component {
                     </img>
                     {this.state.admin_name===this.state.playersData[0].names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
                     </figure>
-                    &nbsp;
+                  
                      {this.state.playersData[0].names} is the Winner!
 
                     <br></br>
-                     <div className="flex-centered" >
+                    <br></br>
+                    <br></br>
+                    
                     <ul className="menu">
                     {
                             this.state.playersData.map((item, key) =>
@@ -501,7 +503,6 @@ class AdminManage extends React.Component {
                         )
                         }
                     </ul>
-                    </div>
                         </div>
                     </div>
                     </div>

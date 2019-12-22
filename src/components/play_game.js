@@ -374,13 +374,12 @@ class Managegame extends React.Component {
                     </img>
                     {this.state.admin_name===this.state.playersData[0].names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
                     </figure>
-                    &nbsp;
+                    
                      {this.state.playersData[0].names} is the Winner!
 
                     <br></br>
                     <br></br>
                     <br></br>
-                     <div className="flex-centered" >
                     <ul className="menu">
                     {
                             this.state.playersData.map((item, key) =>
@@ -405,7 +404,6 @@ class Managegame extends React.Component {
                         )
                             }
                         </ul>
-                        </div>
                     </div>
                     </div>
                     </div>
@@ -426,7 +424,7 @@ class Managegame extends React.Component {
 
                         <div className="map">
                         <WrappedMap
-                             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places`}
+                             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s`}
                             loadingElement = {<div style={{height:"100%"}} />}
                             containerElement = {<div style={{height:"100%"}} />}
                             lat = {this.state.center_lat}
