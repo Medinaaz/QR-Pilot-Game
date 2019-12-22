@@ -1,4 +1,4 @@
-import React  from "react";
+import React,{ useRef }  from "react";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Navbar from "./navbar"
@@ -10,6 +10,24 @@ import Form from 'react-bootstrap/Form'
 import Logo from  "./history.png"
 import Logo1 from  "./avatar.png"
 
+
+const history = [
+    {
+        "title":"game1",
+        "score": 51,
+        "rank":1
+    },
+    {
+        "title":"game2",
+        "score": 32,
+        "rank":2
+    },
+    {
+        "title":"game3",
+        "score": 10,
+        "rank":3
+    },
+]
 
 const myImage = require('../components/medii.png');
 const imgMyimageexample = require('../components/prof_pic.png');
@@ -71,12 +89,16 @@ export default class Profile extends React.Component {
         }
 
         try {
+            console.log(this.state.userToken);
+
             const res = await axios({
                 method: 'get',
                 url: config.PROFILE_URL + localStorage.getItem("userId"),
                 headers: {'Content-Type': 'application/json',
                     'Authorization': userToken},
             });
+
+            console.log("respond", res.data.data);
 
             if (res.data.success) {
                 this.setState({
@@ -142,6 +164,8 @@ export default class Profile extends React.Component {
                 password: this.state.password
             }
         });
+
+        console.log(res);
     }
 
     render()
@@ -205,9 +229,9 @@ export default class Profile extends React.Component {
                                 </Grid>
                                 {
                                     !this.state.viewEdit ? (
-                                        <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 400}}>
+                                        <Paper style={{width: 500, marginLeft: 10, marginTop: 40, height: 400}}>
                                             <Grid container alignItems="flex-start">
-                                                <img alt="logo" src={Logo}/>
+                                                <img src={Logo}/>
                                                 <table style={{paddingTop: "20%"}}
                                                        className="table table-striped table-hover">
                                                     <thead>
@@ -234,9 +258,9 @@ export default class Profile extends React.Component {
                                         </Paper>
                                     ) : (
                                         /*enter another grid that shows the profile*/
-                                        <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 400}}>
+                                        <Paper style={{width: 500, marginLeft: 10, marginTop: 40, height: 400}}>
                                             <Grid container alignItems="flex-start">
-                                                <img alt="logo" src={Logo1}/>
+                                                <img src={Logo1}/>
                                                 <div className="form-group">
                                                     <div style={{paddingLeft: "20%"}}>
                                                         <h6 style={{color: "MediumSeaGreen", fontSize: "12px"}}>Username</h6>
