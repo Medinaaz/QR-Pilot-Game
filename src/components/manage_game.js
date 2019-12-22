@@ -81,6 +81,7 @@ class AdminManage extends React.Component {
     constructor() {
         super();
         this.state = {
+            all_hints: [],
             gameDATA:"",
             userName: "",
             gameName:"",
@@ -90,8 +91,7 @@ class AdminManage extends React.Component {
             playerNumber:0,
             totalQR:0,
             findingQR:0,
-            hintContent:"Deneme",
-            gameType:"",
+            hintContent:"",
             playerData: [],
             remainingTime:"",
             startDate: new Date(),
@@ -100,7 +100,7 @@ class AdminManage extends React.Component {
             newTime:"",
             qrData:"",
             qrDiv:"",
-            hint:"",
+            game_type: "Standard",
             timecontent:"",
             playersData:[],
             center_lat: 0,
@@ -166,8 +166,7 @@ class AdminManage extends React.Component {
             })
         }
         
-        this.setState({ 
-            gameType:data.data.type, 
+        this.setState({
             totalQR:data.data.hints.hint.length,  
             //findingQR: data.data.submittedQRs,
             playersData: data.data.ranking,
@@ -175,7 +174,10 @@ class AdminManage extends React.Component {
             center_radius  :data.data.location.radius,
             center_lat: data.data.location.latitude,
             center_lng: data.data.location.longitude,
-            description: data.data.description
+            description: data.data.description,
+            game_type: data.data.type,
+            all_hints: data.data.hints.hint,
+            hintContent: this.state.all_hints[this.state.found_QRs.length]
         })
 
         if(data.data.type==="Standard"){
@@ -467,7 +469,7 @@ class AdminManage extends React.Component {
                     
                     <div className="leaderboard"> 
                     <br/>
-                    {this.state.hint? <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
+                    {this.state.game_type !== "Time Rush" ? <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
                             <br></br>
                             <div className="bar bar-lg">
                             <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%', 
