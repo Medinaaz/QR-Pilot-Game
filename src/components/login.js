@@ -36,7 +36,7 @@ class Login extends Component{
         })
     }
 
-    async handleSubmit(e) {
+    handleSubmit(e) {
         e.preventDefault();
         this.check_errors((err) => {
             if (!err) {
@@ -67,7 +67,8 @@ class Login extends Component{
 
     render() {
         return (
-            <div className="App">
+            <div>
+                <div  className="AppLogin hide-sm">
                 <div className="App__Aside">
                     <img src={qrcode} alt="QR Icon"/>
                 </div>
@@ -104,7 +105,40 @@ class Login extends Component{
                         </form>
                     </div>
                 </div>
+                </div>
+                <div style={{backgroundColor: "#2E4158", textAlign: "center", height: "100%"}} className="show-sm">
+                    <div className="PageSwitcher">
+                        <NavLink to="/login" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">Login </NavLink>
+                        <NavLink exact to="/" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">Sign Up </NavLink>
+                    </div>
+
+                    <div className="FormTitle">
+                        <NavLink to="/login" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Login</NavLink> or <NavLink exact to="/" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</NavLink>
+                    </div>
+                    <div   className="FormCenter">
+                        <form onSubmit={this.handleSubmit} className="FormFields" onSubmit={this.handleSubmit} >
+                            <div className="FormField">
+                                <label className="FormField__Label" htmlFor="username_mobile">Username </label>
+                                <input type="text" id="username_mobile" className="FormField__Input" placeholder="Enter your username"
+                                       name="username" value={this.state.username} onChange={this.handleChange}/>
+                            </div>
+                            {this.state.username_err ? <p className="text-error">Type in correct username!</p>: ""}
+
+                            <div className="FormField">
+                                <label className="FormField__Label" htmlFor="password_mobile">Password </label>
+                                <input type="password" id="password_mobile" className="FormField__Input" placeholder="Enter your password"
+                                       name="password" value={this.state.password} onChange={this.handleChange}/>
+                            </div>
+                            {this.state.password_err ? <p className="text-error">Type in correct password!</p>: ""}
+
+                            <div className="FormField">
+                                <button className="FormField__Button nr-20">Login </button> <Link to="/login/reset-password" className="FormField__Link">Forgot Password?</Link>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
+            
 
         );
     }

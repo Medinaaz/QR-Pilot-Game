@@ -7,10 +7,8 @@ import UpdateGame from "./update_game"
 import axios from "axios"
 import config from "../config";
 
- 
 import "react-datepicker/dist/react-datepicker.css";
 import QrReader from 'react-qr-reader'
-
 
 //Random avatars
 const avatar = [
@@ -26,7 +24,7 @@ function Map(props){
    // const google=window.google;
     const [number, desc] = useState(null);
     return(
-        <GoogleMap defaultZoom={15} 
+        <GoogleMap defaultZoom={15}
             defaultCenter={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
             center={{
                 lat: parseFloat(props.lat),
@@ -38,7 +36,7 @@ function Map(props){
            // desc(this);
         }}
         />
-        
+
 
         <Circle
             center={{
@@ -60,8 +58,8 @@ function Map(props){
             <div style={{fontWeight:"bold"}}>
             <figure className="avatar">
             <img src={number.avatar} alt="Avatar">
-            
-            </img> 
+
+            </img>
             {number.owner?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
             </figure>
             {number.username}
@@ -130,11 +128,28 @@ class AdminManage extends React.Component {
     }
     */
    startGame(){
-       this.setState({start:false})
+       this.setState({start:false});
+
+       axios({
+           method: 'post',
+           url: config.START_GAME,
+           headers: {'Content-Type': 'application/json',
+               'Authorization': localStorage.getItem("token")},
+           data: {
+               "gameId": localStorage.getItem(localStorage.getItem("game_id"))
+           }
+       }).then((res) => {
+           if(res.data.success) {
+
+           } else {
+               alert("Your game is ")
+           }
+       }).catch((err) => {
+           alert("Connection failed please check your internet access")
+       })
    }
+
     handleData(data, err){
-        console.log("yakdfögdşlsdm");
-        console.log("errr", err);
         if (err) {
             return;
         }
@@ -163,9 +178,9 @@ class AdminManage extends React.Component {
                 alert("You have a connection problem")
             })
         }
-        
+
         this.setState({
-            totalQR:data.data.hints.hint.length,  
+            totalQR:data.data.hints.hint.length,
             //findingQR: data.data.submittedQRs,
             playersData: data.data.ranking,
             playerNumber:  data.data.ranking.length-1,
@@ -184,7 +199,7 @@ class AdminManage extends React.Component {
 
         var user_lat = localStorage.getItem("lat")
         var user_lng = localStorage.getItem("lng")
-        
+
         var latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
         var lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
         var result = Math.sqrt(latDiff+lngDiff)
@@ -199,10 +214,10 @@ class AdminManage extends React.Component {
                 <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
                     <p>Warning!!</p>
                     You are out of the area!!!
-            </div>  
+            </div>
             this.setState({x:y})
         }
-        
+
     }
     closeCamera(){
         var content = ""
@@ -210,7 +225,7 @@ class AdminManage extends React.Component {
     }
     openCamera(){
         var content =<div className="modal active" id="modal-id">
-        
+
         <div className="modal-container">
           <div className="modal-header">
             <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
@@ -236,13 +251,13 @@ class AdminManage extends React.Component {
 
       this.setState({qrDiv: content})
     }
-    //NEW: I added QR submit 
+    //NEW: I added QR submit
     updateHint(){
         console.log("state", this.state);
         if (this.state.found_QRs.includes(this.state.hintContent)) {
             alert("You already submitted this QR")
             return;
-        } 
+        }
         axios({
             method: 'post',
             url: config.SUBMIT_QR_URL,
@@ -255,17 +270,17 @@ class AdminManage extends React.Component {
                 "userId": localStorage.getItem("userId")
             }
         }).then((res) => {
-        
+
             if(res.data.success) {
-                
+
                 let newFound_QRS = this.state.found_QRs
                 newFound_QRS.push(this.state.hintContent)
                 this.setState({findingQR: newFound_QRS.length, qrDiv:"", found_QRs: newFound_QRS})
                 console.log("x:"+this.state.findingQR);
-            
+
             } else {
                 alert("QR code does not match your hint, please submit QR in correct order")
-            }       
+            }
         }).catch((err) => {
             console.log( this.state.hintContent, this.state.qrData, this.state.gameId, localStorage.getItem("userId"))
             console.log("err", err);
@@ -275,7 +290,7 @@ class AdminManage extends React.Component {
 
     handleScan = data => {
         var content=<div className="modal active" id="modal-id">
-        
+
         <div className="modal-container">
           <div className="modal-header">
             <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
@@ -312,20 +327,20 @@ class AdminManage extends React.Component {
     //Inform all users!
     handleTime(){
         clearInterval(timee);
-        
+
         var input = this.state.a +" "+ this.state.b
         countDownDate=new Date(input).getTime();
         timee = setInterval(this.changeTime, 1000);
-      
+
     }
     changeTime(){
-      
+
         // Get today's date and time
         var now = new Date().getTime();
-            
+
         // Find the distance between now and the count down date
         var distance = countDownDate - now;
-            
+
         // Time calculations for days, hours, minutes and seconds
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -336,8 +351,8 @@ class AdminManage extends React.Component {
             remainingTime: days + "d " + hours + "h "
             + minutes + "m " + seconds + "s "
         })
-        
-        // If the count down is over, write some text 
+
+        // If the count down is over, write some text
         if (distance < 0) {
             clearInterval(timee);
             this.setState({
@@ -345,19 +360,19 @@ class AdminManage extends React.Component {
         })
         }
         const ExampleCustomInput = ({ value, onClick }) => (
-            
+
             <button className="btn btn-sm" onClick={onClick} ref={this.myRef}>
               {value} {this.setState({a:value})}
             </button>
           );
           const ExampleCustomInput2 = ({ value, onClick }) => (
-            
+
             <button className="btn btn-sm" onClick={onClick} ref={this.myRef}>
               {value} {this.setState({b:value})}
             </button>
           );
         const content =<div>
-        Remaining time is 
+        Remaining time is
         <div className="timeBox">
         {this.state.remainingTime}
         </div>
@@ -380,14 +395,14 @@ class AdminManage extends React.Component {
             dateFormat="h:mm aa"
             customInput={<ExampleCustomInput2 />}
         />
-            
+
             &nbsp;&nbsp;
         <button className="btn btn-primary btn-sm" onClick={this.handleTime}><i className="icon icon-edit"></i>
             Change Time
         </button>
         </div>
         this.setState({hint:false, timecontent:content})
-       
+
     }
 
     //warning??????
@@ -420,38 +435,38 @@ class AdminManage extends React.Component {
         playersData: newPlayerData
      })
    }
- 
-    
+
+
     render() {
-       
+
         return (
-            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
+            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s
             <div className="flex-centered">  <LocTracker time={5000}/> <UpdateGame time={5000} gameId={this.state.gameId} onData={this.handleData} />{this.state.x}
             {this.state.qrDiv}
             <div className="card">
-                 
+
                 <div style={{color:"red", textAlign:"center", fontSize:20}} >You are the owner of the game!</div>
-                <div className="header">  
-                {this.state.start ? 
+                <div className="header">
+                {this.state.start ?
                     <div className="columns">
-                    <div className="column col-6 col-xs-12">                     
-                    <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
+                    <div className="column col-6 col-xs-12">
+                    <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
                     <p>Description of the Game: {this.state.description}</p>
                     </div>
-                    <div className="column col-6 col-xs-12">  
+                    <div className="column col-6 col-xs-12">
                     <button class="btn btn-primary" onClick={this.startGame}>Start Game</button>
                     </div>
-                    </div>: <div><p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
+                    </div>: <div><p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
                     <p>Description of the Game: {this.state.description}</p> </div> }
-                 
-                </div> 
+
+                </div>
                 <div className="container">
                 <div className="columns">
                 <div className="column col-8 col-xs-12">
 
-                <div className="map"> 
-                
-                <WrappedMap  
+                <div className="map">
+
+                <WrappedMap
                     googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s `}
                     loadingElement = {<div style={{height:"100%"}} />}
                     containerElement = {<div style={{height:"100%"}} />}
@@ -460,17 +475,17 @@ class AdminManage extends React.Component {
                     radius = {this.state.center_radius}
                     mapElement = {<div style={{height:"100%"}} />}
                 />
-                </div> 
-                </div> 
+                </div>
+                </div>
 
                 <div className="column col-4 col-xs-12">
-                    
-                    <div className="leaderboard"> 
+
+                    <div className="leaderboard">
                     <br/>
                     {this.state.game_type !== "Time Rush" ? <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
                             <br></br>
                             <div className="bar bar-lg">
-                            <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%', 
+                            <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%',
                             background: '#2196f3'}} aria-valuenow= {(this.state.findingQR*100)/this.state.totalQR} aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             </div> : this.state.timecontent}
@@ -481,13 +496,13 @@ class AdminManage extends React.Component {
                     {
                         this.state.playersData.map((item, key) =>
                         <li className="menu-item" key={item._id}>
-                        
+
                         <div className="tile-icon">
-                            
+
                             <figure className="avatar">
                             <img src={avatar[this.state.playersData.indexOf(item)%avatar.length]} alt="Avatar">
-                            
-                            </img> 
+
+                            </img>
                             {this.state.admin_name===item.names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
                             </figure>
                         </div>
@@ -496,7 +511,7 @@ class AdminManage extends React.Component {
                         {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
                         <button className="btn btn-error" onClick={() => this.kickPlayer(item)}>X</button>
                         </p>
-                        
+
                         </div>
                             </li>
                     )
@@ -524,12 +539,12 @@ class AdminManage extends React.Component {
                                 </div>
                                 </div>
                             </div>
-                        </div>              
-                    </div> 
+                        </div>
+                    </div>
                 </div>
                 </div>
                 </div>
-                
+
             </div>
             </div>
         )

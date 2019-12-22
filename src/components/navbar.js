@@ -3,9 +3,9 @@ import {withRouter} from "react-router";
 
 
 class Navbar extends React.Component {
+    
     signout = () => {
-        localStorage.removeItem("userId")
-        localStorage.removeItem("token")
+        localStorage.clear()
         this.props.history.push("/");
     }
 
@@ -15,6 +15,7 @@ class Navbar extends React.Component {
         }
         return fn.bind(this);
     }
+
     render(){
         return(
             <div style={{backgroundColor: "black"}}>

@@ -8,8 +8,6 @@ import PropTypes from "prop-types"
         time => update interval
         game_id => id of the game
         onData => callback function for data update
-
-
 */
 
 class UpdateGame extends React.Component {
@@ -31,7 +29,7 @@ class UpdateGame extends React.Component {
         ).then( (res) => {
             if (res.data.success) {
                 this.props.onData(res.data, null)
-            } 
+            }
         }).catch( (err) => {
             this.props.onData(null, err)
         })
