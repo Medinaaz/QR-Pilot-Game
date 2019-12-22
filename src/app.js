@@ -15,11 +15,11 @@ class App extends React.Component {
     render() {
         return (
             <Router>
-                <Route path="/create-game" exact component={CreateGame} />
-                <Route path="/manage-game" exact component={ManageGame} />
-                <Route path="/play-game" exact component={PlayGame} />
-                <Route path="/profile" exact component={Profile} />
-                <Route path="/join-game" exact component={JoinGame} />
+                <PrivateRoute path="/create-game" exact component={CreateGame} />
+                <PrivateRoute path="/manage-game" exact component={ManageGame} />
+                <PrivateRoute path="/play-game" exact component={PlayGame} />
+                <PrivateRoute path="/profile" exact component={Profile} />
+                <PrivateRoute path="/join-game" exact component={JoinGame} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/login/reset-password" exact component={ResetPassword}/>
                 <Route path="/" exact component={SignUp} />
