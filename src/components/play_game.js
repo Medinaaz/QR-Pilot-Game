@@ -181,9 +181,10 @@ class Managegame extends React.Component {
             description: data.data.description,
             game_type: data.data.type,
             all_hints: data.data.hints.hint,
+            status: data.data.status,
             hintContent: this.state.all_hints[this.state.found_QRs.length]
         });
-
+        
         var user_lat = localStorage.getItem("lat")
         var user_lng = localStorage.getItem("lng")
 
