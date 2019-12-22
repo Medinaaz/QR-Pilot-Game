@@ -21,56 +21,56 @@ const avatar = [
 function Map(props){
     //lat lg state
     console.log(props)
-   // const google=window.google;
+    // const google=window.google;
     const [number, desc] = useState(null);
     return(
         <GoogleMap defaultZoom={15}
-            defaultCenter={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
-            center={{
-                lat: parseFloat(props.lat),
-                lng: parseFloat(props.lng)
-            }}
+                   defaultCenter={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
+                   center={{
+                       lat: parseFloat(props.lat),
+                       lng: parseFloat(props.lng)
+                   }}
         >
-        <Marker key="1" position={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
-        onClick={()=> {
-           // desc(this);
-        }}
-        />
-
-
-        <Circle
-            center={{
-                lat: parseFloat(props.lat),
-                lng: parseFloat(props.lng)
-            }}
-            radius={props.radius}
-            options={{strokeColor: "red"}}
+            <Marker key="1" position={{lat: parseFloat(props.lat), lng: parseFloat(props.lng)}}
+                    onClick={()=> {
+                        // desc(this);
+                    }}
             />
 
-        {number && (
-            <InfoWindow position={{
-                lat:number.lat , lng: number.lng
-            }}
-            onCloseClick={() => {
-                desc(null);
-            }}
-            >
-            <div style={{fontWeight:"bold"}}>
-            <figure className="avatar">
-            <img src={number.avatar} alt="Avatar">
 
-            </img>
-            {number.owner?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
-            </figure>
-            {number.username}
-            </div></InfoWindow>
-        )}
+            <Circle
+                center={{
+                    lat: parseFloat(props.lat),
+                    lng: parseFloat(props.lng)
+                }}
+                radius={props.radius}
+                options={{strokeColor: "red"}}
+            />
+
+            {number && (
+                <InfoWindow position={{
+                    lat:number.lat , lng: number.lng
+                }}
+                            onCloseClick={() => {
+                                desc(null);
+                            }}
+                >
+                    <div style={{fontWeight:"bold"}}>
+                        <figure className="avatar">
+                            <img src={number.avatar} alt="Avatar">
+
+                            </img>
+                            {number.owner?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                        </figure>
+                        {number.username}
+                    </div></InfoWindow>
+            )}
 
         </GoogleMap>
     );
 }
 
-var countDownDate;
+let countDownDate;
 const WrappedMap = withScriptjs(withGoogleMap(Map));
 let timee;
 class AdminManage extends React.Component {
@@ -127,29 +127,29 @@ class AdminManage extends React.Component {
         localStorage.removeItem("game_id")
     }
     */
-   startGame(){
-       this.setState({start:false});
+    startGame(){
+        this.setState({start:false});
 
-       axios({
-           method: 'post',
-           url: config.START_GAME,
-           headers: {'Content-Type': 'application/json',
-               'Authorization': localStorage.getItem("token")},
-           data: {
-               "gameId": localStorage.getItem(localStorage.getItem("game_id"))
-           }
-       }).then((res) => {
-           console.log(res);
-           if(res.data.success) {
+        axios({
+            method: 'post',
+            url: config.START_GAME,
+            headers: {'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token")},
+            data: {
+                "gameId": localStorage.getItem("game_id")
+            }
+        }).then((res) => {
+            console.log(res);
+            if(res.data.success) {
 
-           } else {
-               alert("Your game is ")
-           }
-       }).catch((err) => {
-           console.log(err)
-           alert("Connection failed please check your internet access")
-       })
-   }
+            } else {
+                alert("Your game is ")
+            }
+        }).catch((err) => {
+            console.log(err)
+            alert("Connection failed please check your internet access")
+        })
+    }
 
     handleData(data, err){
         if (err) {
@@ -160,7 +160,6 @@ class AdminManage extends React.Component {
         this.setState({
             gameName: data.data.title
         })
-
 
         if (this.state.admin_name === "" ){
             axios({
@@ -199,12 +198,12 @@ class AdminManage extends React.Component {
             this.setState({hint: true})
         }
 
-        var user_lat = localStorage.getItem("lat")
-        var user_lng = localStorage.getItem("lng")
+        let user_lat = localStorage.getItem("lat")
+        let user_lng = localStorage.getItem("lng")
 
-        var latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
-        var lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
-        var result = Math.sqrt(latDiff+lngDiff)
+        let latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
+        let lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
+        let result = Math.sqrt(latDiff+lngDiff)
 
         console.log("111111111111111", result);
 
@@ -212,10 +211,10 @@ class AdminManage extends React.Component {
             console.log("222222222222222", result);
 
             console.log("result");
-            var y =<div className="toast toast-warning" style={{textAlign:'center'}}>
+            let y =<div className="toast toast-warning" style={{textAlign:'center'}}>
                 <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
-                    <p>Warning!!</p>
-                    You are out of the area!!!
+                <p>Warning!!</p>
+                You are out of the area!!!
             </div>
             this.setState({x:y})
         }
@@ -228,30 +227,30 @@ class AdminManage extends React.Component {
     openCamera(){
         var content =<div className="modal active" id="modal-id">
 
-        <div className="modal-container">
-          <div className="modal-header">
-            <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
-            <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
-          </div>
-          <div className="modal-body">
-            <div className="content">
-            <div className="flex-centered">
-            <QrReader
-                delay={300}
-                onError={this.handleError}
-                onScan={this.handleScan}
-                style={{ width: '80%' }}
-                />
+            <div className="modal-container">
+                <div className="modal-header">
+                    <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
+                    <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
+                </div>
+                <div className="modal-body">
+                    <div className="content">
+                        <div className="flex-centered">
+                            <QrReader
+                                delay={300}
+                                onError={this.handleError}
+                                onScan={this.handleScan}
+                                style={{ width: '80%' }}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="modal-footer">
+                    <button onClick={this.closeCamera} className="btn" aria-label="Close">Close</button>
+                </div>
             </div>
-          </div>
-          </div>
-          <div className="modal-footer">
-          <button onClick={this.closeCamera} className="btn" aria-label="Close">Close</button>
         </div>
-        </div>
-      </div>
 
-      this.setState({qrDiv: content})
+        this.setState({qrDiv: content})
     }
     //NEW: I added QR submit
     updateHint(){
@@ -264,7 +263,7 @@ class AdminManage extends React.Component {
             method: 'post',
             url: config.SUBMIT_QR_URL,
             headers: {'Content-Type': 'application/json',
-                      'Authorization': localStorage.getItem("token")},
+                'Authorization': localStorage.getItem("token")},
             data: {
                 "hint": this.state.hintContent,
                 "hintSecret": this.state.qrData,
@@ -291,46 +290,46 @@ class AdminManage extends React.Component {
     }
 
     handleScan = data => {
-        var content=<div className="modal active" id="modal-id">
+        let content=<div className="modal active" id="modal-id">
 
-        <div className="modal-container">
-          <div className="modal-header">
-            <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
-            <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
-          </div>
-          <div className="modal-body">
-            <div className="content">
-            <div className="flex-centered" style={{textAlign:'center', color:'blue', fontWeight:'bold', fontSize:20}}>
-            Congratulations! <br></br>
-            You read the qr code.<br></br>
-            "{data}"
+            <div className="modal-container">
+                <div className="modal-header">
+                    <button  onClick={this.closeCamera} className="btn btn-clear float-right" aria-label="Close"></button>
+                    <div className="modal-title h5" style={{textAlign:"center"}}>Scan The QR Code</div>
+                </div>
+                <div className="modal-body">
+                    <div className="content">
+                        <div className="flex-centered" style={{textAlign:'center', color:'blue', fontWeight:'bold', fontSize:20}}>
+                            Congratulations! <br></br>
+                            You read the qr code.<br></br>
+                            "{data}"
+                        </div>
+                    </div>
+                </div>
+                <div className="modal-footer">
+                    <button className="btn btn-primary" onClick={this.updateHint}>Submit</button>
+                    &nbsp;&nbsp;
+                    <button className="btn" onClick={this.openCamera}>Back</button>
+                </div>
             </div>
-          </div>
-          </div>
-          <div className="modal-footer">
-          <button className="btn btn-primary" onClick={this.updateHint}>Submit</button>
-          &nbsp;&nbsp;
-          <button className="btn" onClick={this.openCamera}>Back</button>
         </div>
-        </div>
-      </div>
         if (data) {
-          this.setState({
-            qrData: data,
-            qrDiv:content
-          })
+            this.setState({
+                qrData: data,
+                qrDiv:content
+            })
         }
         //alert(this.state.qrData);
-      }
+    }
 
-      handleError = err => {
+    handleError = err => {
         console.error(err)
-      }
+    }
     //Inform all users!
     handleTime(){
         clearInterval(timee);
 
-        var input = this.state.a +" "+ this.state.b
+        let input = this.state.a +" "+ this.state.b
         countDownDate=new Date(input).getTime();
         timee = setInterval(this.changeTime, 1000);
 
@@ -338,70 +337,70 @@ class AdminManage extends React.Component {
     changeTime(){
 
         // Get today's date and time
-        var now = new Date().getTime();
+        let now = new Date().getTime();
 
         // Find the distance between now and the count down date
-        var distance = countDownDate - now;
+        let distance = countDownDate - now;
 
         // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         this.setState({
             remainingTime: days + "d " + hours + "h "
-            + minutes + "m " + seconds + "s "
+                + minutes + "m " + seconds + "s "
         })
 
         // If the count down is over, write some text
         if (distance < 0) {
             clearInterval(timee);
             this.setState({
-            remainingTime: "Game Over"
-        })
+                remainingTime: "Game Over"
+            })
         }
         const ExampleCustomInput = ({ value, onClick }) => (
 
             <button className="btn btn-sm" onClick={onClick} ref={this.myRef}>
-              {value} {this.setState({a:value})}
+                {value} {this.setState({a:value})}
             </button>
-          );
-          const ExampleCustomInput2 = ({ value, onClick }) => (
+        );
+        const ExampleCustomInput2 = ({ value, onClick }) => (
 
             <button className="btn btn-sm" onClick={onClick} ref={this.myRef}>
-              {value} {this.setState({b:value})}
+                {value} {this.setState({b:value})}
             </button>
-          );
+        );
         const content =<div>
-        Remaining time is
-        <div className="timeBox">
-        {this.state.remainingTime}
-        </div>
-        <br/>
-        <DatePicker
-        showPopperArrow={true}
-        selected={this.state.startDate}
-        onChange={date =>  this.setState({startDate: date})}
-        dateFormat="MMMM d, yyyy"
-        customInput={<ExampleCustomInput />}
-        />
-                &nbsp;&nbsp;
-        <DatePicker
-            selected={this.state.startDate}
-            onChange={date =>  this.setState({startDate: date})}
-            showTimeSelect
-            showTimeSelectOnly
-            timeIntervals={15}
-            timeCaption="Time"
-            dateFormat="h:mm aa"
-            customInput={<ExampleCustomInput2 />}
-        />
+            Remaining time is
+            <div className="timeBox">
+                {this.state.remainingTime}
+            </div>
+            <br/>
+            <DatePicker
+                showPopperArrow={true}
+                selected={this.state.startDate}
+                onChange={date =>  this.setState({startDate: date})}
+                dateFormat="MMMM d, yyyy"
+                customInput={<ExampleCustomInput />}
+            />
+            &nbsp;&nbsp;
+            <DatePicker
+                selected={this.state.startDate}
+                onChange={date =>  this.setState({startDate: date})}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                timeCaption="Time"
+                dateFormat="h:mm aa"
+                customInput={<ExampleCustomInput2 />}
+            />
 
             &nbsp;&nbsp;
-        <button className="btn btn-primary btn-sm" onClick={this.handleTime}><i className="icon icon-edit"></i>
-            Change Time
-        </button>
+            <button className="btn btn-primary btn-sm" onClick={this.handleTime}><i className="icon icon-edit"></i>
+                Change Time
+            </button>
         </div>
         this.setState({hint:false, timecontent:content})
 
@@ -412,142 +411,155 @@ class AdminManage extends React.Component {
         this.setState({x:""})
     }
 
-   componentDidMount() {
-       /*
-        data.sort((a, b) => Number(b.score) - Number(a.score));
-        console.log("descending", data);
-        this.setState({playerData: data})*/
+    componentDidMount() {
+        /*
+         data.sort((a, b) => Number(b.score) - Number(a.score));
+         console.log("descending", data);
+         this.setState({playerData: data})*/
 
         //It can be controlled in a time interval.
         let game_title = localStorage.getItem("game_title")
         let game_id = localStorage.getItem("game_id")
         console.log(game_id)
         this.setState({ gameName: game_title, gameId:game_id  })
-   }
+    }
 
-   //Inform player!!!!
-   kickPlayer(element){
-       var newPlayerData = this.state.playersData;
-    console.log(this.state.playersData);
-     var index = this.state.playersData.findIndex(obj => obj.names===element.names);
-     console.log(index);
-     newPlayerData.splice(index,1);
-     console.log(newPlayerData);
-     this.setState({
-        playersData: newPlayerData
-     })
-   }
-
+    kickPlayer(element){
+        axios({
+            method: 'post',
+            url: config.KICK_PLAYER,
+            headers: {'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token")},
+            data: {
+                "gameId": localStorage.getItem("game_id"),
+                "username": element.names
+            }
+        }).then((res) => {
+            console.log(res);
+            if(res.data.success) {
+                let newPlayerData = this.state.playersData;
+                let index = this.state.playersData.findIndex(obj => obj.names === element.names);
+                newPlayerData.splice(index,1);
+                this.setState({
+                    playersData: newPlayerData
+                })
+            } else {
+                alert("Can not delete delete that player")
+            }
+        }).catch((err) => {
+            console.log(err);
+            alert("Connection failed please check your internet access")
+        })
+    }
 
     render() {
-
         return (
             //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s
             <div className="flex-centered">  <LocTracker time={5000}/> <UpdateGame time={5000} gameId={this.state.gameId} onData={this.handleData} />{this.state.x}
-            {this.state.qrDiv}
-            <div className="card">
+                {this.state.qrDiv}
+                <div className="card">
 
-                <div style={{color:"red", textAlign:"center", fontSize:20}} >You are the owner of the game!</div>
-                <div className="header">
-                {this.state.start ?
-                    <div className="columns">
-                    <div className="column col-6 col-xs-12">
-                    <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
-                    <p>Description of the Game: {this.state.description}</p>
-                    </div>
-                    <div className="column col-6 col-xs-12">
-                    <button class="btn btn-primary" onClick={this.startGame}>Start Game</button>
-                    </div>
-                    </div>: <div><p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
-                    <p>Description of the Game: {this.state.description}</p> </div> }
-
-                </div>
-                <div className="container">
-                <div className="columns">
-                <div className="column col-8 col-xs-12">
-
-                <div className="map">
-
-                <WrappedMap
-                    googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s `}
-                    loadingElement = {<div style={{height:"100%"}} />}
-                    containerElement = {<div style={{height:"100%"}} />}
-                    lat = {this.state.center_lat}
-                    lng = {this.state.center_lng}
-                    radius = {this.state.center_radius}
-                    mapElement = {<div style={{height:"100%"}} />}
-                />
-                </div>
-                </div>
-
-                <div className="column col-4 col-xs-12">
-
-                    <div className="leaderboard">
-                    <br/>
-                    {this.state.game_type !== "Time Rush" ? <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
-                            <br></br>
-                            <div className="bar bar-lg">
-                            <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%',
-                            background: '#2196f3'}} aria-valuenow= {(this.state.findingQR*100)/this.state.totalQR} aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            </div> : this.state.timecontent}
-                    <br></br>
-                    Leaderboard
-                    <div className="flex-centered" >
-                    <ul className="menu">
-                    {
-                        this.state.playersData.map((item, key) =>
-                        <li className="menu-item" key={item._id}>
-
-                        <div className="tile-icon">
-
-                            <figure className="avatar">
-                            <img src={avatar[this.state.playersData.indexOf(item)%avatar.length]} alt="Avatar">
-
-                            </img>
-                            {this.state.admin_name===item.names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
-                            </figure>
-                        </div>
-                        <div className="tile-content">
-                        <p className="tile-title">
-                        {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
-                        <button className="btn btn-error" onClick={() => this.kickPlayer(item)}>X</button>
-                        </p>
-
-                        </div>
-                            </li>
-                    )
-                    }
-                    </ul>
-                    </div>
-
-                    <br/>
-                    Submit a QR
-                    <div className="flex-centered" >
-                    <button onClick={this.openCamera}><img src="./camera.png" className="img-responsive ..." alt="..."></img></button>
-                        </div>
-                    <br/>
-                    Hint
-                    <br/>
-                    <div className="popover popover-up">
-                            <img src="./hint.png" className="img-responsive ..." alt="..."></img>
-                            <div className="popover-container">
-                                <div className="card">
-                                <div className="card-header">
-                                    Hint #{this.state.found_QRs.length+1}
+                    <div style={{color:"red", textAlign:"center", fontSize:20}} >You are the owner of the game!</div>
+                    <div className="header">
+                        {this.state.start ?
+                            <div className="columns">
+                                <div className="column col-6 col-xs-12">
+                                    <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
+                                    <p>Description of the Game: {this.state.description}</p>
                                 </div>
-                                <div className="card-body">
-                                    {this.state.hintContent}
+                                <div className="column col-6 col-xs-12">
+                                    <button class="btn btn-primary" onClick={this.startGame}>Start Game</button>
                                 </div>
+                            </div>: <div><p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
+                                <p>Description of the Game: {this.state.description}</p> </div> }
+
+                    </div>
+                    <div className="container">
+                        <div className="columns">
+                            <div className="column col-8 col-xs-12">
+
+                                <div className="map">
+
+                                    <WrappedMap
+                                        googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s `}
+                                        loadingElement = {<div style={{height:"100%"}} />}
+                                        containerElement = {<div style={{height:"100%"}} />}
+                                        lat = {this.state.center_lat}
+                                        lng = {this.state.center_lng}
+                                        radius = {this.state.center_radius}
+                                        mapElement = {<div style={{height:"100%"}} />}
+                                    />
                                 </div>
                             </div>
+
+                            <div className="column col-4 col-xs-12">
+
+                                <div className="leaderboard">
+                                    <br/>
+                                    {this.state.game_type !== "Time Rush" ? <div>Remaining number of QRs is {this.state.totalQR - this.state.findingQR}
+                                        <br></br>
+                                        <div className="bar bar-lg">
+                                            <div className="bar-item" role="progressbar" style={{width: (this.state.findingQR*100)/this.state.totalQR+'%',
+                                                background: '#2196f3'}} aria-valuenow= {(this.state.findingQR*100)/this.state.totalQR} aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div> : this.state.timecontent}
+                                    <br></br>
+                                    Leaderboard
+                                    <div className="flex-centered" >
+                                        <ul className="menu">
+                                            {
+                                                this.state.playersData.map((item, key) =>
+                                                    <li className="menu-item" key={item._id}>
+
+                                                        <div className="tile-icon">
+
+                                                            <figure className="avatar">
+                                                                <img src={avatar[this.state.playersData.indexOf(item)%avatar.length]} alt="Avatar">
+
+                                                                </img>
+                                                                {this.state.admin_name===item.names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                                                            </figure>
+                                                        </div>
+                                                        <div className="tile-content">
+                                                            <p className="tile-title">
+                                                                {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
+                                                                <button className="btn btn-error" onClick={() => this.kickPlayer(item)}>X</button>
+                                                            </p>
+
+                                                        </div>
+                                                    </li>
+                                                )
+                                            }
+                                        </ul>
+                                    </div>
+
+                                    <br/>
+                                    Submit a QR
+                                    <div className="flex-centered" >
+                                        <button onClick={this.openCamera}><img src="./camera.png" className="img-responsive ..." alt="..."></img></button>
+                                    </div>
+                                    <br/>
+                                    Hint
+                                    <br/>
+                                    <div className="popover popover-up">
+                                        <img src="./hint.png" className="img-responsive ..." alt="..."></img>
+                                        <div className="popover-container">
+                                            <div className="card">
+                                                <div className="card-header">
+                                                    Hint #{this.state.found_QRs.length+1}
+                                                </div>
+                                                <div className="card-body">
+                                                    {this.state.hintContent}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                </div>
-                </div>
 
-            </div>
+                </div>
             </div>
         )
     }

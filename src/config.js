@@ -10,7 +10,8 @@ const development = {
     JOIN_URL:  BASE_URL + "join-game/",
     PROFILE_URL:  BASE_URL + "user/",
     SUBMIT_QR_URL: BASE_URL + "submit-QR",
-    START_GAME: BASE_URL + "start-game"
+    START_GAME: BASE_URL + "start-game",
+    KICK_PLAYER: BASE_URL + "kick-player"
 };
 
 const production = {
@@ -21,7 +22,8 @@ const production = {
     JOIN_URL:  BASE_URL + "join-game/",
     PROFILE_URL:  BASE_URL + "user/",
     SUBMIT_QR_URL: BASE_URL + "submit-QR",
-    START_GAME: BASE_URL + "start-game"
+    START_GAME: BASE_URL + "start-game",
+    KICK_PLAYER: BASE_URL + "kick-player"
 };
 
 const config = {
