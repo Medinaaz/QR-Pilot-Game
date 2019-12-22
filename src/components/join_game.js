@@ -91,7 +91,7 @@ class JoinGame extends React.Component {
                                     />
                             <button className="btn btn-primary btn-lg input-group-btn" onClick={this.join}>Join Game</button>
                         </div >
-                        {this.state.invalid_code ? <p className="text-error">Could not find any game with this code</p>: ""}
+                        {this.state.invalid_code ? <p className="text-error">Could not find any game with this code!</p>: ""}
                         </div>
                     </div>
                 </div>

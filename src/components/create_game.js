@@ -25,7 +25,7 @@ const Location2Geo = {
       longitude: "29.023522"
     },
 
-    "Kadikoy Bull" : {
+    "Kadıköy Bull" : {
       latitude: "40.990437",
       longitude: "29.029146"
     },
@@ -40,12 +40,12 @@ const Location2Geo = {
       longitude: "28.973243"
     },
 
-    "Uskudar Fountain of Ahmed III" : {
+    "Üsküdar Fountain of Ahmed III" : {
       latitude: "41.026785",
       longitude: "29.015357"
     },
 
-    "Macka Park" : {
+    "Maçka Park" : {
       latitude:   "41.042234",
       longitude:  "28.994765"
     }
@@ -170,15 +170,6 @@ class CreateGame extends React.Component {
       this.download_QR(i)
   }
 
-  /*
-  May help later
-  get_qr_blob = (index) => {
-    const canvas = document.getElementById(this.state.hints[index]);
-    canvas.toBlob( blob => {
-        return blob
-     }, 'image/png', 1)
-  }
-  */
 
   download_QR = (index) => {
     const canvas = document.getElementById(this.state.secrets[index]);
@@ -250,7 +241,7 @@ class CreateGame extends React.Component {
               <div className="modal-container">
                 <div className="modal-header">
                   <button onClick={this.go("manage-game")} className="btn btn-clear float-right" aria-label="Close"></button>
-                  <div className=" p-centered  modal-title h5">The more the merrier, Share this code with friends :)</div>
+                  <div className=" p-centered  modal-title h5">The more the merrier! Share this code with friends :)</div>
                 </div>
                   <h2 className = " p-centered text-primary">{this.state.share_code}</h2>
               </div>
@@ -302,7 +293,7 @@ class CreateGame extends React.Component {
                       />
               <button className="btn btn-primary btn-lg input-group-btn" onClick={this.add_hint}>Add Hint</button>
             </div >
-            {this.state.hint_err ? <p className="text-error">At least one hint is needed</p>: ""}
+            {this.state.hint_err ? <p className="text-error">At least one hint is needed!</p>: ""}
             <div style={{paddingTop: "3%" }}>
               <button onClick={this.download_all} className="btn btn-success">Print QR codes <i className="icon icon-download"></i></button>
             </div>
@@ -340,7 +331,7 @@ class CreateGame extends React.Component {
                           type="number"
                           onChange={this.handleChange}
                           value={this.state.game_duration}/>
-                  {this.state.game_duration_err ? <p className="text-error">Game duration must be greater than 0 minutes</p>: ""}
+                  {this.state.game_duration_err ? <p className="text-error">Game duration must be greater than 0 minutes!</p>: ""}
                 </div>
 
 
@@ -384,7 +375,7 @@ class CreateGame extends React.Component {
                   </label>
                 </div>
 
-                {this.state.geolocation_err ? <p className="text-error">All geolocation information must be given</p>: ""}
+                {this.state.geolocation_err ? <p className="text-error">All geolocation information must be given!</p>: ""}
 
 
 

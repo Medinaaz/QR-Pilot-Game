@@ -151,7 +151,7 @@ class Managegame extends React.Component {
             this.props.history.push("/profile");
             localStorage.removeItem("game_id")
             localStorage.removeItem("game_title")
-            alert("You have been kicked by the Admin, please behave !!!");
+            alert("You have been kicked by the Admin !!!");
         }
 
         this.setState({
@@ -170,10 +170,10 @@ class Managegame extends React.Component {
                         admin_name: res.data.data.username
                     })
                 } else {
-                    alert("Could not fetch admin info")
+                    alert("Could not fetch admin info.")
                 }
             }).catch( err => {
-                alert("You have a connection problem")
+                alert("You have a connection problem!")
             })
         }
 
@@ -219,7 +219,7 @@ class Managegame extends React.Component {
 
     updateHint(){
         if (this.state.found_QRs.includes(this.state.hintContent)) {
-            alert("You already submitted this QR")
+            alert("You already submitted this QR.")
             return;
         }
         axios({
@@ -240,10 +240,10 @@ class Managegame extends React.Component {
                 this.setState({findingQR: newFound_QRS.length, qrDiv:"", found_QRs: newFound_QRS})
 
             } else {
-                alert("QR code does not match your hint, please submit QR in correct order")
+                alert("QR code does not match your hint, please submit QRs in correct order.")
             }
         }).catch((err) => {
-            alert("QR code does not match your hint, please submit QR in correct order")
+            alert("QR code does not match your hint, please submit QRs in correct order.")
         })
     }
 
@@ -283,11 +283,7 @@ class Managegame extends React.Component {
       handleError = err => {
         console.error(err)
       }
-    /*
-    componentWillUnmount(){
-        localStorage.removeItem("game_data")
-    }
-     */
+
     changeTime(){
          // Get today's date and time
          let now = new Date().getTime();
@@ -415,8 +411,8 @@ class Managegame extends React.Component {
                 <div className="card">
                         <div className="header">
 
-                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
-                             <p>Description of the Game: {this.state.description}</p>
+                             <p>Playing "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
+                             <p>Game Description: {this.state.description}</p>
                         </div>
                         <div className="container">
                         <div className="columns">

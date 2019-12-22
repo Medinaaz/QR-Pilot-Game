@@ -45,7 +45,7 @@ export default class ResetPassword extends Component {
         e.preventDefault()
         axios({
             method: 'get',
-            url: config.PROFILE_URL + this.state.username, //TODO: this does not work
+            url: config.PROFILE_URL + this.state.username,
             headers: {'Content-Type': 'application/json',
                 'Authorization': null},
         }).then( (res) => {
@@ -102,7 +102,7 @@ export default class ResetPassword extends Component {
                         <div style={{paddingTop: "2%"}}>
                             <button onClick={this.submitAnswer} className="btn btn-success btn-lg">Submit</button>
                         </div>
-                        {this.state.confirmation_error? <p className="text-error">Secret answer is wrong</p>: ""}
+                        {this.state.confirmation_error? <p className="text-error">Secret answer is wrong!</p>: ""}
                     </div>
                 </div>
                 <div className="col-4 col-lg-3 col-md-2"></div>

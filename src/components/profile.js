@@ -277,7 +277,7 @@ export default class Profile extends React.Component {
                                                         />
                                                     </div>
                                                     {this.state.user_err ?
-                                                        <p className="text-error">You didn't change your username</p> : ""}
+                                                        <p className="text-error">You didn't change your username.</p> : ""}
                                                     <div className="form-group">
                                                         <div style={{paddingLeft: "20%"}}><h6 style={{color: "MediumSeaGreen", fontSize: "12px"}}>Password</h6>
                                                             <input className="form-input input-lg"
@@ -289,7 +289,7 @@ export default class Profile extends React.Component {
                                                         </div>
                                                         {this.state.pass_err ?
                                                             <p className="text-error">You didn't change your
-                                                                password</p> : ""}
+                                                                password.</p> : ""}
 
                                                         <div className="form-group">
                                                             <div style={{paddingLeft: "20%"}}>
@@ -303,7 +303,7 @@ export default class Profile extends React.Component {
                                                             </div>
                                                             {this.state.secret_err ?
                                                                 <p className="text-error">You didn't change your secret
-                                                                    question</p> : ""}
+                                                                    question.</p> : ""}
 
                                                             <div className="form-group">
                                                                 <div style={{paddingLeft: "20%"}}>
@@ -318,7 +318,7 @@ export default class Profile extends React.Component {
                                                                 </div>
                                                                 {this.state.answ_err ?
                                                                     <p className="text-error">You didn't change your secret
-                                                                        answer</p> : ""}
+                                                                        answer.</p> : ""}
                                                                 <div style={{paddingTop: "1%", paddingLeft: "20%"}}>
                                                                     <Form.Group id="formGridCheckbox">
                                                                         <Form.Check type="checkbox" label=" " />

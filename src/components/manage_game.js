@@ -120,14 +120,6 @@ class AdminManage extends React.Component {
 
     }
 
-    //Kullanıcı atıldığında çıkart
-
-    /*
-    componentWillUnmount() {
-        localStorage.removeItem("game_title")
-        localStorage.removeItem("game_id")
-    }
-    */
     startGame(){
         this.setState({start:false});
 
@@ -147,7 +139,7 @@ class AdminManage extends React.Component {
             }
         }).catch((err) => {
             console.log(err)
-            alert("Connection failed please check your internet access")
+            alert("Connection failed! Please check your internet access.")
         })
     }
 
@@ -172,10 +164,10 @@ class AdminManage extends React.Component {
                         admin_name: res.data.data.username
                     })
                 } else {
-                    alert("Could not fetch admin info")
+                    alert("Could not fetch admin info!")
                 }
             }).catch( err => {
-                alert("You have a connection problem")
+                alert("You have a connection problem!")
             })
         }
 
@@ -203,7 +195,7 @@ class AdminManage extends React.Component {
             this.props.history.push("/profile");
             localStorage.removeItem("game_id")
             localStorage.removeItem("game_title")
-            alert("You have been kicked by the Admin, please behave !!!");
+            alert("You have been kicked by the Admin !!!");
         }
         
         if(data.data.type==="Standard"){
@@ -262,7 +254,7 @@ class AdminManage extends React.Component {
     //NEW: I added QR submit
     updateHint(){
         if (this.state.found_QRs.includes(this.state.hintContent)) {
-            alert("You already submitted this QR")
+            alert("You already submitted this QR.")
             return;
         }
         axios({
@@ -285,11 +277,11 @@ class AdminManage extends React.Component {
                 this.setState({findingQR: newFound_QRS.length, qrDiv:"", found_QRs: newFound_QRS})
 
             } else {
-                alert("QR code does not match your hint, please submit QR in correct order")
+                alert("QR code does not match your hint, please submit QRs in correct order.")
             }
         }).catch((err) => {
             console.log("err", err);
-            alert("QR code does not match your hint, please submit QR in correct order")
+            alert("QR code does not match your hint, please submit QRs in correct order.")
         })
     }
 
@@ -451,11 +443,11 @@ class AdminManage extends React.Component {
                 })
                 console.log("new game data", res.data);
             } else {
-                alert("Can not delete delete that player")
+                alert("Can not delete delete this player!")
             }
         }).catch((err) => {
             console.log(err);
-            alert("Connection failed please check your internet access")
+            alert("Connection failed! Please check your internet access.")
         })
     }
 
@@ -468,7 +460,7 @@ class AdminManage extends React.Component {
             <a class="modal-overlay" href="#modals" aria-label="Close"></a>
             <div className="modal-container" role="document">
               <div className="modal-header">
-                <div className="modal-title h5" style={{textAlign:"center"}}>Game is ended!</div>
+                <div className="modal-title h5" style={{textAlign:"center"}}>Game ended!</div>
               </div>
               <div className="modal-body">
                 <div className="content">
@@ -524,14 +516,14 @@ class AdminManage extends React.Component {
                         {this.state.start ?
                             <div className="columns">
                                 <div className="column col-6 col-xs-12">
-                                    <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
-                                    <p>Description of the Game: {this.state.description}</p>
+                                    <p>Playing "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
+                                    <p>Game Description: {this.state.description}</p>
                                 </div>
                                 <div className="column col-6 col-xs-12">
                                     <button class="btn btn-primary" onClick={this.startGame}>Start Game</button>
                                 </div>
-                            </div>: <div><p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
-                                <p>Description of the Game: {this.state.description}</p> </div> }
+                            </div>: <div><p>Playing "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
+                                <p>Game Description: {this.state.description}</p> </div> }
 
                     </div>
                     <div className="container">

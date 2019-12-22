@@ -100,7 +100,7 @@ class SignUp extends Component {
                                         placeholder="Enter your username"
                                         name="username" value={this.state.username} onChange={this.handleChange}/>
                                 </div>
-                                {this.state.username_err ? <p className="text-error">You must enter username!</p> : ""}
+                                {this.state.username_err ? <p className="text-error">You must enter a username!</p> : ""}
 
                                 <div className="FormField">
                                     <label className="FormField__Label" htmlFor="email">Email </label>
@@ -108,7 +108,7 @@ class SignUp extends Component {
                                         placeholder="Enter your email"
                                         name="email" value={this.state.email} onChange={this.handleChange}/>
                                 </div>
-                                {this.state.email_err ? <p className="text-error">You must enter email!</p> : ""}
+                                {this.state.email_err ? <p className="text-error">You must enter an email!</p> : ""}
 
                                 <div className="FormField">
                                     <label className="FormField__Label" htmlFor="password">Password </label>
@@ -116,7 +116,7 @@ class SignUp extends Component {
                                         placeholder="Enter your password"
                                         name="password" value={this.state.password} onChange={this.handleChange}/>
                                 </div>
-                                {this.state.password_err ? <p className="text-error">You must enter password!</p> : ""}
+                                {this.state.password_err ? <p className="text-error">You must enter a password!</p> : ""}
 
                                 <div className="FormField">
                                     <label className="FormField__Label" htmlFor="secretq">Secret Question </label>
@@ -171,7 +171,7 @@ class SignUp extends Component {
                                         placeholder="Enter your username"
                                         name="username" value={this.state.username} onChange={this.handleChange}/>
                                 </div>
-                                {this.state.username_err ? <p className="text-error">You must enter username!</p> : ""}
+                                {this.state.username_err ? <p className="text-error">You must enter a username!</p> : ""}
 
                                 <div className="FormField">
                                     <label className="FormField__Label" htmlFor="email_mobile">Email </label>
@@ -179,7 +179,7 @@ class SignUp extends Component {
                                         placeholder="Enter your email"
                                         name="email" value={this.state.email} onChange={this.handleChange}/>
                                 </div>
-                                {this.state.email_err ? <p className="text-error">You must enter email!</p> : ""}
+                                {this.state.email_err ? <p className="text-error">You must enter an email!</p> : ""}
 
                                 <div className="FormField">
                                     <label className="FormField__Label" htmlFor="password_mobile">Password </label>
@@ -187,7 +187,7 @@ class SignUp extends Component {
                                         placeholder="Enter your password"
                                         name="password" value={this.state.password} onChange={this.handleChange}/>
                                 </div>
-                                {this.state.password_err ? <p className="text-error">You must enter password!</p> : ""}
+                                {this.state.password_err ? <p className="text-error">You must enter a password!</p> : ""}
 
                                 <div className="FormField">
                                     <label className="FormField__Label" htmlFor="secretq_mobile">Secret Question </label>
