@@ -1,42 +1,15 @@
-import React,{ useRef }  from "react";
-import { Fragment } from "react";
+import React  from "react";
 import Grid from "@material-ui/core/Grid";
-import Typography from '@material-ui/core/Typography';
 import Paper from "@material-ui/core/Paper";
 import Navbar from "./navbar"
-import {Container} from "@material-ui/core";
 import Sky from 'react-sky';
-import { FaBeer } from 'react-icons/fa';
-import Button from "@material-ui/core/Button";
-import QRCode from "qrcode.react";
 import config from "../config";
 import axios from "axios";
 import Typical from 'react-typical'
 import Form from 'react-bootstrap/Form'
-import {useSpring, animated} from 'react-spring'
 import Logo from  "./history.png"
 import Logo1 from  "./avatar.png"
 
-
-
-
-const history = [
-    {
-        "title":"game1",
-        "score": 51,
-        "rank":1
-    },
-    {
-        "title":"game2",
-        "score": 32,
-        "rank":2
-    },
-    {
-        "title":"game3",
-        "score": 10,
-        "rank":3
-    },
-]
 
 const myImage = require('../components/medii.png');
 const imgMyimageexample = require('../components/prof_pic.png');
@@ -240,7 +213,7 @@ export default class Profile extends React.Component {
                                     !this.state.viewEdit ? (
                                         <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 400}}>
                                             <Grid container alignItems="flex-start">
-                                                <img src={Logo}/>
+                                                <img alt="logo" src={Logo}/>
                                                 <table style={{paddingTop: "20%"}}
                                                        className="table table-striped table-hover">
                                                     <thead>
@@ -269,7 +242,7 @@ export default class Profile extends React.Component {
                                         /*enter another grid that shows the profile*/
                                         <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 400}}>
                                             <Grid container alignItems="flex-start">
-                                                <img src={Logo1}/>
+                                                <img alt="logo" src={Logo1}/>
                                                 <div className="form-group">
                                                     <div style={{paddingLeft: "20%"}}>
                                                         <h6 style={{color: "MediumSeaGreen", fontSize: "12px"}}>Username</h6>
