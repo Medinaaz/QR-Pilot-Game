@@ -139,12 +139,14 @@ class AdminManage extends React.Component {
                "gameId": localStorage.getItem(localStorage.getItem("game_id"))
            }
        }).then((res) => {
+           console.log(res);
            if(res.data.success) {
 
            } else {
                alert("Your game is ")
            }
        }).catch((err) => {
+           console.log(err)
            alert("Connection failed please check your internet access")
        })
    }

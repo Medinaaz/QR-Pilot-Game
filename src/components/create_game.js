@@ -136,7 +136,7 @@ class CreateGame extends React.Component {
               "title": this.state.game_title,
               "adminId": this.state.user_id,
               "type": this.state.game_type,
-              "gameLength": this.state.duration,
+              "gameLength": this.state.game_duration,
               "status": "created",
               "location": {
                 "latitude": this.state.latitude,
@@ -164,7 +164,7 @@ class CreateGame extends React.Component {
       }
     })
 }
-      
+
 
   download_all = (e) => {
     e.preventDefault()
@@ -208,7 +208,7 @@ class CreateGame extends React.Component {
       arr.splice(key, 1)
       this.setState({
           hints: arr
-          
+
       })
     }
   }
@@ -235,7 +235,7 @@ class CreateGame extends React.Component {
   add_hint = () => {
     if (this.state.hint_input === "") {
       return;
-    } 
+    }
     this.setState({
       hints: this.state.hints.concat(this.state.hint_input),
       secrets: this.state.secrets.concat(uuid.v4()),
@@ -265,7 +265,7 @@ class CreateGame extends React.Component {
               <h1 className="hide-lg">Manage Hints</h1>
               <h3 className="show-lg">Manage Hints</h3>
             </div>
-            
+
             <table style={{paddingTop: "10%" }} className="table table-striped table-hover">
               <thead>
                 <tr>
@@ -273,7 +273,7 @@ class CreateGame extends React.Component {
                 </tr>
               </thead>
               <tbody style = {{backgroundColor: "white"}}>
-                {this.state.hints.map((item,key) => 
+                {this.state.hints.map((item,key) =>
                   <tr key={key}>
                     <td>{item}</td>
                     <td>
@@ -295,8 +295,8 @@ class CreateGame extends React.Component {
               </tbody>
             </table>
             <div className="input-group">
-              <input type="text" 
-                      className="form-input input-lg" 
+              <input type="text"
+                      className="form-input input-lg"
                       placeholder="Enter new hint"
                       name="hint_input"
                       onChange={this.handleChange}
@@ -308,7 +308,7 @@ class CreateGame extends React.Component {
             <div style={{paddingTop: "3%" }}>
               <button onClick={this.download_all} className="btn btn-success">Print QR codes <i className="icon icon-download"></i></button>
             </div>
-          
+
             </div>
             <div className="divider-vert hide-lg" data-content=" "></div>
             <div className="divider show-lg" data-content=" "></div>
@@ -344,10 +344,10 @@ class CreateGame extends React.Component {
                           value={this.state.game_duration}/>
                   {this.state.game_duration_err ? <p className="text-error">Game duration must be greater than 0 minutes</p>: ""}
                 </div>
-                
+
 
                 {
-                  this.state.custom_location ? 
+                  this.state.custom_location ?
                   (<form style={{paddingTop: "4%"}} className="form-horizontal">
                       <div className="form-group">
                         <div className="col-4 col-sm-12">
@@ -386,10 +386,10 @@ class CreateGame extends React.Component {
                   </label>
                 </div>
 
-                {this.state.geolocation_err ? <p className="text-error">All geolocation information must be given</p>: ""} 
-                
-                
-                
+                {this.state.geolocation_err ? <p className="text-error">All geolocation information must be given</p>: ""}
+
+
+
                 <div style={{paddingTop: "4%"}}>
                   <textarea className="form-input input-lg"
                             placeholder="Game Description ..."
@@ -406,7 +406,7 @@ class CreateGame extends React.Component {
             </div>
 
             <div className="col-3 col-lg-2 col-md-1">
-            
+
             </div>
             </div>
         </div>
