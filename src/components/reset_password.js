@@ -1,12 +1,6 @@
 import React, { Component } from "react";
-import { Auth } from "aws-amplify";
-import { Link } from "react-router-dom";
-import {
-    FormGroup,
-    FormControl,
-    FormLabel
-} from "react-bootstrap";
-import "./reset_password.css";
+import config from "../config";
+import axios from "axios";
 
 export default class ResetPassword extends Component {
     constructor(props) {
@@ -16,20 +10,11 @@ export default class ResetPassword extends Component {
             secretq:"",
             secreta:"",
             password: "",
-            codeSent: false,
-            confirmed: false,
-            confirmPassword: "",
-            isConfirming: false,
-            isSendingCode: false
+            username: "",
+            real_secret_answer: "",
+            answer_confirmed: false,
+            confirmation_error: false
         };
-    }
-
-    validateResetForm() {
-        return (
-            this.state.code.length > 0 &&
-            this.state.password.length > 0 &&
-            this.state.password === this.state.confirmPassword
-        );
     }
 
     handleChange = event => {
@@ -38,99 +23,85 @@ export default class ResetPassword extends Component {
         });
     };
 
-    handleSendCodeClick = async event => {
-        event.preventDefault();
-
-        this.setState({ isSendingCode: true });
-
-        try {
-            await Auth.forgotPassword(this.state.secreta);
-            this.setState({ codeSent: true });
-        } catch (e) {
-            alert(e.message);
-            this.setState({ isSendingCode: false });
+    submitAnswer = (e) => {
+        e.preventDefault()
+        if (this.state.real_secret_answer === this.state.secreta) {
+            this.setPassword({
+                answer_confirmed: true
+            })
+        } else {
+            this.setPassword({
+                answer_confirmed: false,
+                confirmation_error: true
+            })
         }
-    };
-
-    handleConfirmClick = async event => {
-        event.preventDefault();
-
-        this.setState({ isConfirming: true });
-
-        try {
-            await Auth.forgotPasswordSubmit(
-                this.state.secreta,
-                this.state.password
-            );
-            this.setState({ confirmed: true });
-        } catch (e) {
-            alert(e.message);
-            this.setState({ isConfirming: false });
-        }
-    };
-
-    renderRequestCodeForm() {
-        return (
-            <form onSubmit={this.handleSendCodeClick}>
-                <FormGroup bsSize="large" controlId="secreta">
-                    <FormLabel>Answer</FormLabel>
-                    <FormControl
-                        autoFocus
-                        type="secreta"
-                        value={this.state.secreta}
-                        onChange={this.handleChange}
-                    />
-                </FormGroup>
-            </form>
-        );
     }
 
-    renderConfirmationForm() {
-        return (
-            <form onSubmit={this.handleConfirmClick}>
-
-                <FormGroup bsSize="large" controlId="password">
-                    <FormLabel>New Password</FormLabel>
-                    <FormControl
-                        type="password"
-                        value={this.state.password}
-                        onChange={this.handleChange}
-                    />
-                </FormGroup>
-                <FormGroup bsSize="large" controlId="confirmPassword">
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl
-                        type="password"
-                        onChange={this.handleChange}
-                        value={this.state.confirmPassword}
-                    />
-                </FormGroup>
-
-            </form>
-        );
+    setPassword = (e) => {
+        e.preventDefault()
     }
 
-    renderSuccessMessage() {
-        return (
-            <div className="success">
-                <p>Your password has been reset.</p>
-                <p>
-                    <Link to="/login">
-                        Click here to login with your new credentials.
-                    </Link>
-                </p>
-            </div>
-        );
+    fetchQ  = (e) => {
+        e.preventDefault()
+        axios({
+            method: 'get',
+            url: config.PROFILE_URL + this.state.username, //TODO: this does not work
+            headers: {'Content-Type': 'application/json',
+                'Authorization': null},
+        }).then( (res) => {
+            if (res.data.success) {
+                this.setState({
+                    secretq: res.data.secretQuestion,
+                    real_secret_answer: res.data.secretAnswer
+                }) 
+                
+            } 
+        }).catch((err) => {
+            alert(err)
+        })
     }
+    
 
     render() {
         return (
-            <div className="ResetPassword">
-                {!this.state.codeSent
-                    ? this.renderRequestCodeForm()
-                    : !this.state.confirmed
-                        ? this.renderConfirmationForm()
-                        : this.renderSuccessMessage()}
+            <div className="columns">
+                <div className="col-4 col-lg-3 col-md-2"></div>
+                <div className="col-4 col-lg-6 col-md-8">
+                    <h2 style={{textAlign: "center", paddingTop: "8%"}} className="text-error">Reset Password</h2>
+                    <div style={{paddingTop: "5%"}} className="form-group">
+                        <div className="input-group" style={{paddingTop: "4%"}}>
+                            <input className="form-input input-lg"
+                                    placeholder="Username ..."
+                                    name="username"
+                                    onChange={this.handleChange}
+                                    value={this.state.username}/>
+                            <button className="btn btn-primary btn-lg input-group-btn">Fetch Question</button>
+                        </div>
+
+                        <div style={{paddingTop: "4%"}}>
+                        <input className="form-input input-lg"
+                                placeholder="Secret Question"
+                                name="secretq"
+                                type="text"
+                                onChange={this.handleChange}
+                                value={this.state.secretq}>
+                        </input>
+                        </div>
+
+                        <div style={{paddingTop: "4%"}}>
+                        <input className="form-input input-lg"
+                                placeholder="Secret Answer"
+                                name="secreta"
+                                type="text"
+                                value={this.state.secreta}/>
+                        </div>
+                        <div style={{paddingTop: "2%"}}>
+                            <button className="btn btn-success btn-lg">Submit</button>
+                        </div>
+                        {this.state.confirmation_error? <p className="text-error">Secret answer is wrong</p>: ""}
+                    </div>
+                </div>
+                <div className="col-4 col-lg-3 col-md-2"></div>
             </div>
         );
     }
