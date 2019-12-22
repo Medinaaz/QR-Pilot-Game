@@ -106,7 +106,8 @@ class AdminManage extends React.Component {
             center_lat: 0,
             center_lng: 0,
             center_radius: 0,
-            description:""
+            description:"",
+            start: true
         }
         this.kickPlayer = this.kickPlayer.bind(this);
         this.changeTime = this.changeTime.bind(this);
@@ -118,6 +119,7 @@ class AdminManage extends React.Component {
         this.updateHint = this.updateHint.bind(this);
         this.handleData = this.handleData.bind(this);
         this.closeCamera = this.closeCamera.bind(this);
+        this.startGame = this.startGame.bind(this);
 
     }
 
@@ -129,6 +131,9 @@ class AdminManage extends React.Component {
         localStorage.removeItem("game_id")
     }
     */
+   startGame(){
+       this.setState({start:false})
+   }
     handleData(data, err){
         console.log("yakdfögdşlsdm");
         console.log("errr", err);
@@ -426,9 +431,19 @@ class AdminManage extends React.Component {
             <div className="card">
                  
                 <div style={{color:"red", textAlign:"center", fontSize:20}} >You are the owner of the game!</div>
-                <div className="header">                              
+                <div className="header">  
+                {this.state.start ? 
+                    <div className="columns">
+                    <div className="column col-6 col-xs-12">                     
                     <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
                     <p>Description of the Game: {this.state.description}</p>
+                    </div>
+                    <div className="column col-6 col-xs-12">  
+                    <button class="btn btn-primary" onClick={this.startGame}>Start Game</button>
+                    </div>
+                    </div>: <div><p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
+                    <p>Description of the Game: {this.state.description}</p> </div> }
+                 
                 </div> 
                 <div className="container">
                 <div className="columns">
