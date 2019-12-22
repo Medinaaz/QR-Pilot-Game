@@ -103,6 +103,7 @@ class Managegame extends React.Component {
         this.updateHint = this.updateHint.bind(this);
         this.handleData = this.handleData.bind(this);
         this.closeCamera = this.closeCamera.bind(this);
+        this.returnProfile = this.returnProfile.bind(this);
     }
     openCamera(){
         let content =<div className="modal active" id="modal-id">
@@ -312,6 +313,9 @@ class Managegame extends React.Component {
     closeWarning(){
         this.setState({x:""})
     }
+    returnProfile(){
+        this.props.history.push("/profile");
+    }
     componentDidMount() {
         /*
          data.sort((a, b) => Number(b.score) - Number(a.score));
@@ -349,6 +353,58 @@ class Managegame extends React.Component {
             </div>
             </div>
           </div>: null}
+          {this.state.status==="Ended" ? <div className="modal modal-lg active" id="example-modal-1">
+            <a class="modal-overlay" href="#modals" aria-label="Close"></a>
+            <div className="modal-container" role="document">
+              <div className="modal-header">
+                <div className="modal-title h5" style={{textAlign:"center"}}>Game is ended!</div>
+              </div>
+              <div className="modal-body">
+                <div className="content">
+                <div className="flex-centered">
+                    <figure className="avatar">
+                    <img src={avatar[0]} alt="Avatar">
+                    </img>
+                    {this.state.admin_name===this.state.playersData[0].names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                    </figure>
+                    &nbsp;
+                     {this.state.playersData[0].names} is the Winner!
+
+                    <br></br>
+                     <div className="flex-centered" >
+                    <ul className="menu">
+                    {
+                            this.state.playersData.map((item, key) =>
+                            <li className="menu-item" key={item._id}>
+
+                            <div className="tile-icon">
+
+                                <figure className="avatar">
+                                <img src={avatar[this.state.playersData.indexOf(item)%avatar.length]} alt="Avatar">
+
+                                </img>
+                                {this.state.admin_name===item.names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                                </figure>
+                            </div>
+                            <div className="tile-content">
+                            <p className="tile-title">
+                            {item.names}&nbsp;&nbsp;-&nbsp;&nbsp;<span style={{color:"#FF0000"}}>{item.scores}</span>&nbsp;
+                            </p>
+
+                            </div>
+                                </li>
+                        )
+                            }
+                        </ul>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    <div className="modal-footer">
+                    <button className="btn btn-primary" onClick={this.returnProfile}>Return Profile Page</button>
+                </div>
+                </div>
+                </div>: null}
                 <div className="card">
                         <div className="header">
 
