@@ -14,6 +14,9 @@ import axios from "axios";
 import Typical from 'react-typical'
 import Form from 'react-bootstrap/Form'
 import {useSpring, animated} from 'react-spring'
+import Logo from  "./history.png"
+import Logo1 from  "./avatar.png"
+
 
 
 
@@ -232,20 +235,17 @@ export default class Profile extends React.Component {
                                             </div>
                                         </Grid>
                                     </Paper>
-
                                 </Grid>
-
                                 {
                                     !this.state.viewEdit ? (
                                         <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 400}}>
                                             <Grid container alignItems="flex-start">
-                                                <div className="timeBox">
-                                                    <h6 style={{color: "MediumSeaGreen", fontSize: "23px"}}>GAME HISTORY</h6>
-                                                </div>
-                                                <table style={{paddingTop: "10%"}}
+                                                <img src={Logo}/>
+                                                <table style={{paddingTop: "20%"}}
                                                        className="table table-striped table-hover">
                                                     <thead>
                                                     <tr>
+
                                                         <th>Game Title</th>
                                                         <th>Score</th>
                                                         <th>Rank</th>
@@ -269,12 +269,7 @@ export default class Profile extends React.Component {
                                         /*enter another grid that shows the profile*/
                                         <Paper style={{width: 350, marginLeft: 10, marginTop: 40, height: 400}}>
                                             <Grid container alignItems="flex-start">
-                                                <h6 style={{
-                                                    color: "MediumSeaGreen",
-                                                    fontSize: "25px",
-                                                    marginTop: "5%",
-                                                    marginLeft: "5%",
-                                                }}>EDIT</h6>
+                                                <img src={Logo1}/>
                                                 <div className="form-group">
                                                     <div style={{paddingLeft: "20%"}}>
                                                         <h6 style={{color: "MediumSeaGreen", fontSize: "12px"}}>Username</h6>
