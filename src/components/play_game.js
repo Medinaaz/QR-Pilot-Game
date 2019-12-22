@@ -204,7 +204,7 @@ class Managegame extends React.Component {
 
         let latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
         let lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
-        let result = Math.sqrt(latDiff+lngDiff)
+        let result = Math.sqrt(latDiff+lngDiff)*10000
 
         if(result > this.state.center_radius) {
             let y =<div className="toast toast-warning" style={{textAlign:'center'}}>

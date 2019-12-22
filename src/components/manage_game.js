@@ -183,8 +183,8 @@ class AdminManage extends React.Component {
             totalQR:data.data.hints.hint.length,
             //findingQR: data.data.submittedQRs,
             playersData: data.data.ranking,
-            playerNumber:  data.data.ranking.length-1,
-            center_radius  :data.data.location.radius,
+            playerNumber: data.data.ranking.length-1,
+            center_radius: data.data.location.radius,
             center_lat: data.data.location.latitude,
             center_lng: data.data.location.longitude,
             description: data.data.description,
@@ -199,7 +199,13 @@ class AdminManage extends React.Component {
             }}
         )
         
-
+        if (data.data.ranking.length === 0){
+            this.props.history.push("/profile");
+            localStorage.removeItem("game_id")
+            localStorage.removeItem("game_title")
+            alert("You have been kicked by the Admin, please behave !!!");
+        }
+        
         if(data.data.type==="Standard"){
             this.setState({hint: true})
         }
@@ -209,7 +215,7 @@ class AdminManage extends React.Component {
 
         let latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
         let lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
-        let result = Math.sqrt(latDiff+lngDiff)
+        let result = Math.sqrt(latDiff+lngDiff)*10000
 
         if(result > this.state.center_radius) {
             let y =<div className="toast toast-warning" style={{textAlign:'center'}}>
