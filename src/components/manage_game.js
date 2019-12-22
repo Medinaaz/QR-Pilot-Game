@@ -283,7 +283,7 @@ class AdminManage extends React.Component {
             }
         }).catch((err) => {
             console.log("err", err);
-            alert("Connection failed please check your internet access")
+            alert("QR code does not match your hint, please submit QR in correct order")
         })
     }
 

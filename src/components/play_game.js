@@ -243,7 +243,7 @@ class Managegame extends React.Component {
                 alert("QR code does not match your hint, please submit QR in correct order")
             }
         }).catch((err) => {
-            alert("Connection failed please check your internet access")
+            alert("QR code does not match your hint, please submit QR in correct order")
         })
     }
 
