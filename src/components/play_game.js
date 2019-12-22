@@ -391,7 +391,7 @@ class Managegame extends React.Component {
                                         <img src={avatar[this.state.playersData.indexOf(item)%avatar.length]} alt="Avatar">
                                         
                                         </img> 
-                                        {item.owner?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
+                                        {this.state.admin_name===item.names?<img src="./star.png" className="avatar-icon" alt="Star"/>:null}
                                         </figure>
                                     </div>
                                     <div className="tile-content">
