@@ -105,7 +105,8 @@ export default class Profile extends React.Component {
             if (res.data.success) {
                 this.setState({
                     username: res.data.data.username,
-                    email: res.data.data.email
+                    email: res.data.data.email,
+                    gameInfos: res.data.data.history.sort((a, b) => (a.gameCreateDate < b.gameCreateDate) ? 1 : -1)
                 })
             }
 
@@ -254,9 +255,9 @@ export default class Profile extends React.Component {
                                                     {
                                                         this.state.gameInfos.map((item, key) =>
                                                             <tr key={key}>
-                                                                <td>{item.title}</td>
+                                                                <td>{item.gameTitle}</td>
                                                                 <td>{item.score}</td>
-                                                                <td>{item.rank} </td>
+                                                                <td>{item.ranking} </td>
                                                             </tr>
                                                         )
                                                     }
