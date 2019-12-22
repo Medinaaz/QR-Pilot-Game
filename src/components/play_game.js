@@ -95,7 +95,8 @@ class Managegame extends React.Component {
             center_lng: 0,
             center_radius: 0,
             description:"",
-            status:"created"
+            status:"created",
+            playerId:"",
         }
         this.changeTime = this.changeTime.bind(this);
         this.closeWarning = this.closeWarning.bind(this);
@@ -170,7 +171,7 @@ class Managegame extends React.Component {
                 alert("You have a connection problem")
             })
         }
-
+        var player_Id = localStorage.getItem("userId");
         this.setState({
             totalQR:data.data.hints.hint.length,
             playersData: data.data.ranking,
@@ -182,7 +183,8 @@ class Managegame extends React.Component {
             game_type: data.data.type,
             all_hints: data.data.hints.hint,
             status: data.data.status,
-            hintContent: this.state.all_hints[this.state.found_QRs.length]
+            hintContent: this.state.all_hints[this.state.found_QRs.length],
+            playerId: player_Id
         });
         
         var user_lat = localStorage.getItem("lat")
@@ -204,6 +206,11 @@ class Managegame extends React.Component {
                     You are out of the area!!!
             </div>
             this.setState({x:y})
+        }
+
+        var value = data.data.players.indexOf(player_Id);
+        if(value < 0 ){
+            this.props.history.push("/profile")
         }
 
     }
