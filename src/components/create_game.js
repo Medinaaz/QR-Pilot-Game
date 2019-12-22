@@ -85,8 +85,7 @@ class CreateGame extends React.Component {
       custom_location: false,
       //pop share link
       show_share_code: false,
-      //TODO set state accordingly (after create game)
-      share_code: "Ab5CQr"
+      share_code: ""
     }
     this.submit_data = this.submit_data.bind(this)
   }
@@ -137,6 +136,8 @@ class CreateGame extends React.Component {
               "title": this.state.game_title,
               "adminId": this.state.user_id,
               "type": this.state.game_type,
+              "gameLength": this.state.duration,
+              "status": "created",
               "location": {
                 "latitude": this.state.latitude,
                 "longitude": this.state.longitude,

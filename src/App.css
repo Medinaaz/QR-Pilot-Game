@@ -1,4 +1,16 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #2E4158;
+}
+
 .App {
+    height: 130vh;
+    display: flex;
+    color: white;
+}
+
+.AppLogin {
     height: 100vh;
     display: flex;
     color: white;
@@ -13,7 +25,6 @@
     width: 50%;
     background-color: #2E4158;
     padding: 25px 40px;
-    overflow: auto;
 }
 
 .PageSwitcher {

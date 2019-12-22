@@ -72,84 +72,153 @@ class SignUp extends Component {
 
     render() {
         return (
-            <div className="App">
-                <div className="App__Aside">
-                    <img src={qrcode} alt="QR Icon"/>
-                </div>
-                <div className="App__Form">
-
-                    <div className="PageSwitcher">
-                        <NavLink to="/login" activeClassName="PageSwitcher__Item--Active"
-                                 className="PageSwitcher__Item">Login </NavLink>
-                        <NavLink exact to="/" activeClassName="PageSwitcher__Item--Active"
-                                 className="PageSwitcher__Item">Sign Up </NavLink>
+            <div>
+                <div className="App hide-sm">
+                    <div style={{backgroundColor: "#66DAC7"}} className="App__Aside">
+                        <img src={qrcode} alt="QR Icon"/>
                     </div>
+                    <div className="App__Form">
+                        <div className="PageSwitcher">
+                            <NavLink to="/login" activeClassName="PageSwitcher__Item--Active"
+                                    className="PageSwitcher__Item">Login </NavLink>
+                            <NavLink exact to="/" activeClassName="PageSwitcher__Item--Active"
+                                    className="PageSwitcher__Item">Sign Up </NavLink>
+                        </div>
 
-                    <div className="FormTitle">
-                        <NavLink to="/login" activeClassName="FormTitle__Link--Active"
-                                 className="FormTitle__Link">Login</NavLink> or <NavLink exact to="/"
-                                                                                         activeClassName="FormTitle__Link--Active"
-                                                                                         className="FormTitle__Link">Sign
-                        Up</NavLink>
-                    </div>
-                    <div className="FormCenter">
-                        <form onSubmit={this.handleSubmit} className="FormFields">
+                        <div className="FormTitle">
+                            <NavLink to="/login" activeClassName="FormTitle__Link--Active"
+                                    className="FormTitle__Link">Login</NavLink> or <NavLink exact to="/"
+                                                                                            activeClassName="FormTitle__Link--Active"
+                                                                                            className="FormTitle__Link">Sign
+                            Up</NavLink>
+                        </div>
+                        <div className="FormCenter">
+                            <form onSubmit={this.handleSubmit} className="FormFields">
 
-                            <div className="FormField">
-                                <label className="FormField__Label" htmlFor="username">Username </label>
-                                <input type="text" id="username" className="FormField__Input"
-                                       placeholder="Enter your username"
-                                       name="username" value={this.state.username} onChange={this.handleChange}/>
-                            </div>
-                            {this.state.username_err ? <p className="text-error">You must enter username!</p> : ""}
-
-                            <div className="FormField">
-                                <label className="FormField__Label" htmlFor="email">Email </label>
-                                <input type="text" id="email" className="FormField__Input"
-                                       placeholder="Enter your email"
-                                       name="email" value={this.state.email} onChange={this.handleChange}/>
-                            </div>
-                            {this.state.email_err ? <p className="text-error">You must enter email!</p> : ""}
-
-                            <div className="FormField">
-                                <label className="FormField__Label" htmlFor="password">Password </label>
-                                <input type="password" id="password" className="FormField__Input"
-                                       placeholder="Enter your password"
-                                       name="password" value={this.state.password} onChange={this.handleChange}/>
-                            </div>
-                            {this.state.password_err ? <p className="text-error">You must enter password!</p> : ""}
-
-                            <div className="FormField">
-                                <label className="FormField__Label" htmlFor="secretq">Secret Question </label>
-                                <input type="text" id="secretq" className="FormField__Input"
-                                       placeholder="Enter your secret question"
-                                       name="secretQuestion" value={this.state.secretQuestion}
-                                       onChange={this.handleChange}/>
-                            </div>
-                            {this.state.secretq_err ?
-                                <p className="text-error">You must enter a secret question!</p> : ""}
-
-                            <div className="FormField">
-                                <label className="FormField__Label" htmlFor="secreta">Secret Answer </label>
-                                <input type="text" id="secreta" className="FormField__Input"
-                                       placeholder="Enter your secret answer"
-                                       name="secretAnswer" value={this.state.secretAnswer}
-                                       onChange={this.handleChange}/>
-                            </div>
-                            {this.state.secreta_err ?
-                                <p className="text-error">You must enter a secret answer!</p> : ""}
-
-                            <div>
                                 <div className="FormField">
-                                    <button className="FormField__Button nr-20">Sign Up</button>
+                                    <label className="FormField__Label" htmlFor="username">Username </label>
+                                    <input type="text" id="username" className="FormField__Input"
+                                        placeholder="Enter your username"
+                                        name="username" value={this.state.username} onChange={this.handleChange}/>
                                 </div>
-                            </div>
+                                {this.state.username_err ? <p className="text-error">You must enter username!</p> : ""}
 
-                        </form>
+                                <div className="FormField">
+                                    <label className="FormField__Label" htmlFor="email">Email </label>
+                                    <input type="text" id="email" className="FormField__Input"
+                                        placeholder="Enter your email"
+                                        name="email" value={this.state.email} onChange={this.handleChange}/>
+                                </div>
+                                {this.state.email_err ? <p className="text-error">You must enter email!</p> : ""}
+
+                                <div className="FormField">
+                                    <label className="FormField__Label" htmlFor="password">Password </label>
+                                    <input type="password" id="password" className="FormField__Input"
+                                        placeholder="Enter your password"
+                                        name="password" value={this.state.password} onChange={this.handleChange}/>
+                                </div>
+                                {this.state.password_err ? <p className="text-error">You must enter password!</p> : ""}
+
+                                <div className="FormField">
+                                    <label className="FormField__Label" htmlFor="secretq">Secret Question </label>
+                                    <input type="text" id="secretq" className="FormField__Input"
+                                        placeholder="Enter your secret question"
+                                        name="secretQuestion" value={this.state.secretQuestion}
+                                        onChange={this.handleChange}/>
+                                </div>
+                                {this.state.secretq_err ?
+                                    <p className="text-error">You must enter a secret question!</p> : ""}
+
+                                <div className="FormField">
+                                    <label className="FormField__Label" htmlFor="secreta">Secret Answer </label>
+                                    <input type="text" id="secreta" className="FormField__Input"
+                                        placeholder="Enter your secret answer"
+                                        name="secretAnswer" value={this.state.secretAnswer}
+                                        onChange={this.handleChange}/>
+                                </div>
+                                {this.state.secreta_err ?
+                                    <p className="text-error">You must enter a secret answer!</p> : ""}
+
+                                <div>
+                                    <div className="FormField">
+                                        <button className="FormField__Button nr-20">Sign Up</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div style={{backgroundColor: "#2E4158", textAlign: "center", height: "100%"}} className="App show-sm">
+                        <div className="PageSwitcher">
+                            <NavLink to="/login" activeClassName="PageSwitcher__Item--Active"
+                                    className="PageSwitcher__Item">Login </NavLink>
+                            <NavLink exact to="/" activeClassName="PageSwitcher__Item--Active"
+                                    className="PageSwitcher__Item">Sign Up </NavLink>
+                        </div>
 
+                        <div className="FormTitle">
+                            <NavLink to="/login" activeClassName="FormTitle__Link--Active"
+                                    className="FormTitle__Link">Login</NavLink> or <NavLink exact to="/"
+                                                                                            activeClassName="FormTitle__Link--Active"
+                                                                                            className="FormTitle__Link">Sign
+                            Up</NavLink>
+                        </div>
+                        <div className="FormCenter">
+                            <form onSubmit={this.handleSubmit} className="FormFields">
+
+                                <div className="FormField">
+                                    <label className="FormField__Label" htmlFor="username_mobile">Username </label>
+                                    <input type="text" id="username_mobile" className="FormField__Input"
+                                        placeholder="Enter your username"
+                                        name="username" value={this.state.username} onChange={this.handleChange}/>
+                                </div>
+                                {this.state.username_err ? <p className="text-error">You must enter username!</p> : ""}
+
+                                <div className="FormField">
+                                    <label className="FormField__Label" htmlFor="email_mobile">Email </label>
+                                    <input type="text" id="email_mobile" className="FormField__Input"
+                                        placeholder="Enter your email"
+                                        name="email" value={this.state.email} onChange={this.handleChange}/>
+                                </div>
+                                {this.state.email_err ? <p className="text-error">You must enter email!</p> : ""}
+
+                                <div className="FormField">
+                                    <label className="FormField__Label" htmlFor="password_mobile">Password </label>
+                                    <input type="password" id="password_mobile" className="FormField__Input"
+                                        placeholder="Enter your password"
+                                        name="password" value={this.state.password} onChange={this.handleChange}/>
+                                </div>
+                                {this.state.password_err ? <p className="text-error">You must enter password!</p> : ""}
+
+                                <div className="FormField">
+                                    <label className="FormField__Label" htmlFor="secretq_mobile">Secret Question </label>
+                                    <input type="text" id="secretq_mobile" className="FormField__Input"
+                                        placeholder="Enter your secret question"
+                                        name="secretQuestion" value={this.state.secretQuestion}
+                                        onChange={this.handleChange}/>
+                                </div>
+                                {this.state.secretq_err ?
+                                    <p className="text-error">You must enter a secret question!</p> : ""}
+
+                                <div className="FormField">
+                                    <label className="FormField__Label" htmlFor="secreta_mobile">Secret Answer </label>
+                                    <input type="text" id="secreta_mobile" className="FormField__Input"
+                                        placeholder="Enter your secret answer"
+                                        name="secretAnswer" value={this.state.secretAnswer}
+                                        onChange={this.handleChange}/>
+                                </div>
+                                {this.state.secreta_err ?
+                                    <p className="text-error">You must enter a secret answer!</p> : ""}
+
+                                <div>
+                                    <div className="FormField">
+                                        <button className="FormField__Button nr-20">Sign Up</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
         );
     }
 }
