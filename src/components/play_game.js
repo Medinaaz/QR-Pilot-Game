@@ -189,7 +189,7 @@ class Managegame extends React.Component {
 
         var latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
         var lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
-        var result = Math.sqrt(latDiff+lngDiff)*100000
+        var result = Math.sqrt(latDiff+lngDiff)
 
         console.log("111111111111111", result);
 
@@ -434,7 +434,7 @@ class Managegame extends React.Component {
                                 <div className="popover-container">
                                     <div className="card">
                                     <div className="card-header">
-                                        Hint #1
+                                        Hint #{this.state.found_QRs.length+1}
                                     </div>
                                     <div className="card-body">
                                         {this.state.hintContent}

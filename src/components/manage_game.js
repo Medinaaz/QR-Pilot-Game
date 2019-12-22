@@ -532,7 +532,7 @@ class AdminManage extends React.Component {
                             <div className="popover-container">
                                 <div className="card">
                                 <div className="card-header">
-                                    Hint #1
+                                    Hint #{this.state.found_QRs.length+1}
                                 </div>
                                 <div className="card-body">
                                     {this.state.hintContent}
