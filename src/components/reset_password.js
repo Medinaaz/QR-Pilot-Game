@@ -19,7 +19,7 @@ export default class ResetPassword extends Component {
 
     handleChange = event => {
         this.setState({
-            [event.target.id]: event.target.value
+            [event.target.name]: event.target.value
         });
     };
 
@@ -73,9 +73,11 @@ export default class ResetPassword extends Component {
                             <input className="form-input input-lg"
                                     placeholder="Username ..."
                                     name="username"
+                                    type="text"
                                     onChange={this.handleChange}
-                                    value={this.state.username}/>
-                            <button className="btn btn-primary btn-lg input-group-btn">Fetch Question</button>
+                                    value={this.state.username}
+                            />
+                            <button  onClick={this.fetchQ} className="btn btn-primary btn-lg input-group-btn">Fetch Question</button>
                         </div>
 
                         <div style={{paddingTop: "4%"}}>
@@ -84,19 +86,21 @@ export default class ResetPassword extends Component {
                                 name="secretq"
                                 type="text"
                                 onChange={this.handleChange}
-                                value={this.state.secretq}>
-                        </input>
+                                value={this.state.secretq}
+                        />
                         </div>
 
                         <div style={{paddingTop: "4%"}}>
                         <input className="form-input input-lg"
                                 placeholder="Secret Answer"
                                 name="secreta"
+                                onChange={this.handleChange}
                                 type="text"
-                                value={this.state.secreta}/>
+                                value={this.state.secreta}
+                        />
                         </div>
                         <div style={{paddingTop: "2%"}}>
-                            <button className="btn btn-success btn-lg">Submit</button>
+                            <button onClick={this.submitAnswer} className="btn btn-success btn-lg">Submit</button>
                         </div>
                         {this.state.confirmation_error? <p className="text-error">Secret answer is wrong</p>: ""}
                     </div>

@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import qrcode from "../qr-code.png";
-import {BrowserRouter as Router, NavLink} from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import axios from "axios";
 import config from "../config";
 
