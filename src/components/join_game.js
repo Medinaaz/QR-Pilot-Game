@@ -78,7 +78,7 @@ class JoinGame extends React.Component {
             <div >
                 <Navbar />
                 <div className={"modal modal-md " + (this.state.show_modal=== true ? "active" : "")}>
-                    <a href="/profile" className="modal-overlay" aria-label="Close"> </a>
+                    <a href="/profile" onClick={this.close} className="modal-overlay" aria-label="Close"> </a>
                     <div className="modal-container">
                         <div className="modal-header">
                         <button onClick={this.close} className="btn btn-clear float-right" aria-label="Close"></button>
