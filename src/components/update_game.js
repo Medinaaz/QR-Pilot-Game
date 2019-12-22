@@ -33,7 +33,7 @@ class UpdateGame extends React.Component {
         }).catch( (err) => {
             this.props.onData(null, err)
         })
-    }
+    };
 
     componentDidMount(){
         var userId = localStorage.getItem("userId")
