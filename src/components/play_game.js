@@ -353,7 +353,7 @@ class Managegame extends React.Component {
             </div>
             </div>
           </div>: null}
-          {this.state.status==="Ended" ? <div className="modal modal-lg active" id="example-modal-1">
+          {this.state.status==="Ended" ? <div className="modal active" id="example-modal-1">
             <a class="modal-overlay" href="#modals" aria-label="Close"></a>
             <div className="modal-container" role="document">
               <div className="modal-header">
@@ -370,6 +370,8 @@ class Managegame extends React.Component {
                     &nbsp;
                      {this.state.playersData[0].names} is the Winner!
 
+                    <br></br>
+                    <br></br>
                     <br></br>
                      <div className="flex-centered" >
                     <ul className="menu">

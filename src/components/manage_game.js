@@ -103,6 +103,7 @@ class AdminManage extends React.Component {
             center_radius: 0,
             description:"",
             start: true,
+            status: "created"
         }
         this.kickPlayer = this.kickPlayer.bind(this);
         this.changeTime = this.changeTime.bind(this);
@@ -189,7 +190,8 @@ class AdminManage extends React.Component {
             description: data.data.description,
             game_type: data.data.type,
             all_hints: data.data.hints.hint,
-            hintContent: this.state.all_hints[this.state.found_QRs.length]
+            hintContent: this.state.all_hints[this.state.found_QRs.length],
+            status: data.data.status,
         })
 
         if(data.data.type==="Standard"){
@@ -450,7 +452,7 @@ class AdminManage extends React.Component {
             //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s
             <div className="flex-centered">  <LocTracker time={5000}/> <UpdateGame time={5000} gameId={this.state.gameId} onData={this.handleData} />{this.state.x}
                 {this.state.qrDiv}
-                {this.state.status==="Ended" ? <div className="modal modal-lg active" id="example-modal-1">
+                {this.state.status==="Ended" ? <div className="modal active" id="example-modal-1">
             <a class="modal-overlay" href="#modals" aria-label="Close"></a>
             <div className="modal-container" role="document">
               <div className="modal-header">
