@@ -9,6 +9,9 @@ import Typical from 'react-typical'
 import Form from 'react-bootstrap/Form'
 import Logo from  "./history.png"
 import Logo1 from  "./avatar.png"
+import crypto from "crypto"
+
+
 
 
 const myImage = require('../components/medii.png');
@@ -26,23 +29,22 @@ export default class Profile extends React.Component {
     constructor() {
         super();
         this.state ={
-            userId: " ",
-            userToken: " ",
-            text: " ",
-            username: " ",
-            email: " ",
-            new_username: " ",
+            userId: "",
+            userToken: "",
+            text: "",
+            username: "",
+            email: "",
+            new_username: "",
             viewEdit: false,
             gameInfos: [],
-            gameNumber:" ",
-            gameRank: " ",
-            gameScore:" ",
-            password: " ",
-            secretQuestion: " ",
-            usernameInput: " ",
-            passwInput: " ",
-            secretInput: " ",
-            secretAnswer:" ",
+            gameNumber:"",
+            gameRank: "",
+            gameScore:"",
+            password: "",
+            secretQuestion: "",
+            usernameInput: "",
+            passwInput: "",
+            secretAnswer:"",
             user_err: false,
             pass_err: false,
             secret_err: false,
@@ -109,41 +111,47 @@ export default class Profile extends React.Component {
         })
     }
 
-    handleSubmitClick  = (e) =>{
-        e.preventDefault()
-        this.setState({
-            viewEdit: true
-        })
-    }
+    
 
     handleChange = (e) => {
-        if (e.target.name === "userInput"){
-            this.setState({
-                username: e.target.value,
-            })
-        } else if (e.target.name === "passwInput") {
-            this.setState({
-                passwInput: e.target.value,
-            })
-
-        } else {
-            this.setState({
-                [e.target.name]: e.target.value
-            });
-        }
+        this.setState({
+            [e.target.name]: e.target.value
+        });
     };
 
     async submit_data(e) {
         e.preventDefault();
 
+        let update_data = {}
+        if (this.state.passwInput !== "") {
+            let salt = crypto.randomBytes(128).toString('base64');
+            let passwordHash = crypto.pbkdf2Sync(this.state.password, salt, 1, 128, 'sha1');
+            update_data.passwordHash = passwordHash
+            update_data.salt = salt
+        }
+
+        if (this.state.secretAnswer !== "") {
+            update_data.secretAnswer = this.state.secretAnswer
+        }
+
+        if (this.state.secretQuestion !== "") {
+            update_data.secretQuestion = this.state.secretQuestion 
+        }
+
+        if(this.state.username !== "") {
+            update_data.username = this.state.usernameInput
+        }
+        
+
+        console.log(update_data)
+
         const res = await axios({
             method: 'put',
-            url: config.PROFILE_URL,
+            url: config.PROFILE_URL + localStorage.getItem("userId"),
             headers: {'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem("token")},
             data: {
-                username: this.state.username,
-                password: this.state.password
+                update_data
             }
         });
 
@@ -273,9 +281,9 @@ export default class Profile extends React.Component {
                                                                 <h6 style={{color: "MediumSeaGreen", fontSize: "12px"}}>Secret Question</h6>
                                                                 <input className="form-input input-lg"
                                                                        placeholder="Enter new secret question"
-                                                                       name="secretInput"
+                                                                       name="secretQuestion"
                                                                        onChange={this.handleChange}
-                                                                       value={this.state.secretInput}
+                                                                       value={this.state.secretQuestion}
                                                                 />
                                                             </div>
                                                             {this.state.secret_err ?
