@@ -70,7 +70,7 @@ function Map(props){
 
 const WrappedMap = withScriptjs(withGoogleMap(Map));
 let timee;
-var countDownDate;
+let countDownDate;
 class Managegame extends React.Component {
     constructor() {
         super();
@@ -107,7 +107,7 @@ class Managegame extends React.Component {
     }
     openCamera(){
         console.log("girdi");
-        var content =<div className="modal active" id="modal-id">
+        let content =<div className="modal active" id="modal-id">
 
         <div className="modal-container">
           <div className="modal-header">
@@ -138,7 +138,7 @@ class Managegame extends React.Component {
     }
 
     closeCamera(){
-        var content = ""
+        let content = ""
         this.setState({qrDiv: content})
     }
 
@@ -148,6 +148,12 @@ class Managegame extends React.Component {
         }
 
         console.log(data);
+
+        let value = data.data.players.indexOf(localStorage.getItem("userId"));
+        if(value < 0 ){
+            this.props.history.push("/profile");
+            alert("You have been kicked by the Admin, please behave");
+        }
 
         this.setState({
             gameName: data.data.title
@@ -171,7 +177,9 @@ class Managegame extends React.Component {
                 alert("You have a connection problem")
             })
         }
-        var player_Id = localStorage.getItem("userId");
+
+        let player_Id = localStorage.getItem("userId");
+
         this.setState({
             totalQR:data.data.hints.hint.length,
             playersData: data.data.ranking,
@@ -186,31 +194,21 @@ class Managegame extends React.Component {
             hintContent: this.state.all_hints[this.state.found_QRs.length],
             playerId: player_Id
         });
-        
-        var user_lat = localStorage.getItem("lat")
-        var user_lng = localStorage.getItem("lng")
 
-        var latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
-        var lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
-        var result = Math.sqrt(latDiff+lngDiff)
+        let user_lat = localStorage.getItem("lat")
+        let user_lng = localStorage.getItem("lng")
 
-        console.log("111111111111111", result);
+        let latDiff = (user_lat - this.state.center_lat)*(user_lat - this.state.center_lat)
+        let lngDiff = (user_lng - this.state.center_lng)*(user_lng - this.state.center_lng)
+        let result = Math.sqrt(latDiff+lngDiff)
 
         if(result > this.state.center_radius) {
-            console.log("222222222222222", result);
-
-            console.log("result");
-            var y =<div className="toast toast-warning" style={{textAlign:'center'}}>
+            let y =<div className="toast toast-warning" style={{textAlign:'center'}}>
                 <button className="btn btn-clear float-right" onClick={this.closeWarning}></button>
                     <p>Warning!!</p>
                     You are out of the area!!!
             </div>
             this.setState({x:y})
-        }
-
-        var value = data.data.players.indexOf(player_Id);
-        if(value < 0 ){
-            this.props.history.push("/profile")
         }
 
     }
@@ -248,7 +246,7 @@ class Managegame extends React.Component {
     }
 
     handleScan = data => {
-        var content=<div className="modal active" id="modal-id">
+        let content=<div className="modal active" id="modal-id">
 
         <div className="modal-container">
           <div className="modal-header">
@@ -291,16 +289,16 @@ class Managegame extends React.Component {
      */
     changeTime(){
          // Get today's date and time
-         var now = new Date().getTime();
+         let now = new Date().getTime();
 
          // Find the distance between now and the count down date
-         var distance = countDownDate - now;
+         let distance = countDownDate - now;
 
          // Time calculations for days, hours, minutes and seconds
-         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+         let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+         let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+         let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
          this.setState({
              remainingTime: days + "d " + hours + "h "
@@ -338,8 +336,8 @@ class Managegame extends React.Component {
     render() {
 
         return (
-            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s 
-            
+            //&key=AIzaSyBN9jFsxQ7fF3czjlbT359QOchyU9Cnu-s
+
             <div className="flex-centered">  <LocTracker time={5000}/>  <UpdateGame time={5000} gameId={this.state.gameId} onData={this.handleData} />{this.state.x}
             {this.state.qrDiv}
             {this.state.status === "created"? <div className="modal active" id="example-modal-1">
@@ -356,16 +354,16 @@ class Managegame extends React.Component {
               </div>
               </div>
               <div className="modal-footer">
-              
+
             </div>
             </div>
           </div>: null}
-                <div className="card">   
-                        <div className="header"> 
-                           
-                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p> 
-                             <p>Description of the Game: {this.state.description}</p> 
-                        </div> 
+                <div className="card">
+                        <div className="header">
+
+                             <p>Playing on "{this.state.gameName}" with {this.state.playerNumber} other players!</p>
+                             <p>Description of the Game: {this.state.description}</p>
+                        </div>
                         <div className="container">
                         <div className="columns">
                         <div className="column col-8 col-xs-12">
